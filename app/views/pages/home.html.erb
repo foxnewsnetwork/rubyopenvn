@@ -1,0 +1,179 @@
+<!-- Home page -->
+<%= javascript_include_tag "/javascripts/pages/index.js" %>
+<style type="text/css">
+	.splash-laptop{ 
+		background-image : url('<%= @laptop %>');
+		background-size : 100% 100%;
+		width : 35%;
+		height : 80%;
+		margin-left : 30%;
+		margin-top : 5%;
+	}
+</style>
+	
+<div class="hiddencontent">
+	<%= hidden_field_tag "", @header, :class => "hiddencontent", :id => "hiddenheader" %> 
+	<%= hidden_field_tag "", @referer,  :id => "hiddenreferer", :class => "hiddencontent" %>
+</div>
+<div class="cover1 backdrop">
+	<div class="centertext">
+			<h1>Visual Novels on the Cloud</h1>
+				<h5 class="centered">Where imagination meets everything else</h5>
+	</div>
+	<div class="splash-laptop"> </div>
+	<div class="right-hand">
+		<div class="splash-righthand"> </div>
+		<div class="splash-waveright waveright-a"></div>
+		<div class="splash-waveright waveright-b"></div>
+		<div class="splash-waveright waveright-c"></div>
+	</div>
+	<div class="left-hand">
+		<div class="splash-lefthand"></div>
+		<div class="splash-waveleft waveleft-a"></div>
+		<div class="splash-waveleft waveleft-b"></div>
+		<div class="splash-waveleft waveleft-c"></div>
+	</div>
+</div>	
+<div class="stacks bumpedown">
+	<div id="signupbox-top">
+		<ul class="signup">
+			<%= form_tag "/user", :method => "POST", :id => "signup2" do %>
+				<%= hidden_field_tag "user[referer]", @referer, :class => "hiddencontent", :id => "referer2"%>
+				<li class="signup">
+					<%= text_field_tag "user[name]", "", :id => "name2", :class => "signup", :placeholder => "Name..." %>
+					<%= text_field_tag "user[email]", "", :id => "email2", :class => "signup", :placeholder => "Email..." %>
+				</li>
+				<li class="signup">
+					<%= password_field_tag "user[password]", "", :id => "password2", :class => "signup", :placeholder => "Password..." %>
+					<%= submit_tag "Request Invite", :class => "btn btn-primary btn-large obtrusive", :id => "submit2" %>
+				</li>
+			<% end %>
+		</ul>
+	</div>
+</div>					
+<div class="container">
+	<div class="row">
+		<div class="span12 centered">
+			<h2>Share your fantasy fiction world.</h2>
+			<h2>But building a VN is a lot of work.</h2>
+			<h1 class="examples">There is... character art, planning, backgrounds,</h1>
+			<h2 class="examples">audio, BGM, coloring, CGs,</h2>
+			<h3 class="examples">coordination, monetization, story,</h3>
+			<h4 class="examples">distribution, platform-issues, feedback</h4>
+			<h6 class="examples">QC, editing, translation...</h6>
+		</div>
+	</div>
+	<div class="row">
+		<br />
+		<div class="span12 centered">
+			<h1>On FFOpenVN, things are easier.
+				<div class="arrow1" style="float : right;"></div>
+			</h1>
+		</div>
+		<div class="span6 centered">
+			<ul class="introduction">
+				<li class="introduction">
+					<div class="checkmark"></div>
+					<h4>Immediate feedback</h4>
+					<p>Who is everyone's favorite character? What do the readers think? FFOpenVN keeps track for you all your readers and their feedback.</p>
+				</li>
+				<li class="introduction">
+					<div class="checkmark"></div>
+					<h4>Easy money</h4>
+					<p>FFOpenVN gives you the option of designating shoppable areas so you can sell real stuff through your VNs and make money doing it.</p>
+				</li>
+				<li class="introduction">
+					<div class="checkmark"></div>
+					<h4>It's still yours</h4>
+					<p>It's your story and it always will be. FFOpenVN will drive readers to you, but we don't claim to own what belongs to you.</p>
+				</li>
+			</ul>
+		</div>
+		<div class="span6 centered">
+			<ul class="introduction">
+				<li class="introduction">
+					<div class="checkmark"></div>
+					<h4>Open-transparency artwork</h4>
+					<p>Like open-source for code. On FFOpenVN, If you see artwork you like, fork it and use it in your own novel. Credits and attribution is taken care of by us.</p>
+				</li>
+				<li class="introduction">
+					<div class="checkmark"></div>
+					<h4>No programming required</h4>
+					<p>FFOpenVN takes care of the low level coding so you don't have to (unless you really want to).</p>
+				</li>
+				<li class="introduction">
+					<div class="checkmark"></div>
+					<h4>Universally accessible</h4>
+					<p>Access FFOpenVN through your phone, at work, or through API!</p>
+				</li>
+			</ul>
+		</div>
+	</div>
+	<div class="row">
+		<div class="arrow2" style="position : absolute; top : 1250px; left : 200px;"></div>
+		<div class="arrow1" style="position : absolute; top : 1500px; left : 650px;"></div>
+		<div class="arrow3" style="position : absolute; top : 1725px; left : 650px;"></div>
+		<div class="divider centered"></div>
+		<div class="span12 centered">
+			<h1>Forked works on FFOpenVN</h1>
+			<br />
+		</div>
+		<div class="span3">
+			<div class="icon2"></div>
+		</div>
+		<div class="span2">
+			<div class="icon3"></div>
+		</div>
+		<div class="span2">
+			<div class="icon4"></div>
+		</div>
+		<div class="span2">
+			<div class="icon6"></div>
+		</div>
+		<div class="span3">
+			<div class="icon8"></div>
+		</div>
+	</div>
+	<div class="row">
+		<div class="divider centered"></div>
+		<div class="span6 highlightbox">
+			<h1>Join beta</h1>
+			<h2>Early accounts get...</h2>
+			<ul>
+				<li>
+					<h3>Significantly more content storage room</h3>
+				</li>
+				<li> 
+					<h3>Extra private VNs</h3>
+				</li>
+				<li>
+					<h3>Other benefits</h3>
+				</li>
+			</ul>
+		</div>
+		<div class="span5 highlightbox">
+			<div id="signupbox-bottom">
+				<ul class="signup" style="margin-left: -1em; margin-top: 0.5em;">
+					<%= form_tag "/user", :method => "post", :id => "signup3" do %>
+						<%= hidden_field_tag "user[referer]", @referer, :id => "referer2", :class => "hiddencontent" %>
+						<li class="signup">
+							<%= text_field_tag "user[name]", "", :placeholder => "Name...", :id => "name3", :class => "signup" %>
+						</li>
+						<li class="signup">
+							<%= text_field_tag "user[email]", "", :placeholder => "Email...", :id => "email3", :class => "signup" %>
+						</li>
+						<li class="signup">
+							<%= password_field_tag "user[password]", "", :placeholder => "Password...", :id => "password3", :class => "signup" %>
+						</li>
+						<li class="signup" style="margin-top: 1em;">
+							<%= submit_tag "Request Invite", :id => "submit3", :class => "btn btn-primary btn-large obtrusive" %>
+						</li>
+					<% end %>
+				</ul>
+			</div>
+		</div>
+	</div>
+</div>							
+<%= debug(@referer) if Rails.env.development? %>
+<%= debug(@header) if Rails.env.development? %>
+<%= debug(@laptop) if Rails.env.development? %>
