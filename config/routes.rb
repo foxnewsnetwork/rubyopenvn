@@ -1,5 +1,7 @@
 Rubyopenvn::Application.routes.draw do
-  get "pages/home"
+  devise_for :users
+
+  resource :users
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
