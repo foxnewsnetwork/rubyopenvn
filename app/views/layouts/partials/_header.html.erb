@@ -1,21 +1,87 @@
-<!-- standard header -->
-<div class="navbar">
-	<div class="navbar-fixed-top">
-		<div class="navbar-inner">
-			<div class="container">
-				<a class="brand" href="/">
-					<img class="logo" src="/images/logo.png" alt="ffopenvn logo" />
-					<%= @title %>
-				</a>
-				<ul class="nav">
-					<li>
-						<%= link_to "Login", "#" %>
-					</li>
-					<li>
-						<%= link_to "Signup", "#" %>
-					</li>
-				</ul>
+<!-- Header style -->
+<style type="text/css">
+	.floatbox { 
+		position : absolute;
+		top : 15%;
+		left : 35%;
+		right : 35%;
+		width : auto;
+		border : 2px solid black;
+		background-color : rgb(245, 245, 235);
+		z-index : 998;
+		padding: 1em;
+	}
+</style>
+<!-- Header javascript -->
+<% unless user_signed_in? %>
+  <script type="text/javascript">
+    $(document).ready( function() { 
+      $("#signupbox").hide();
+      $("#loginbox").hide();
+      $("#signupopener").click( function(){ 
+        $("#signupbox").show();
+      } ); // end click
+      $("#loginbox").click( function(){ 
+        $("#loginbox").show();
+      } ); // end click
+      $("#signupbox").focusout( function(){ 
+      	$("this").hide();
+      } ); // end focusout
+      $("#loginbox").focusout( function(){ 
+      	$("this").hide();
+      } ); // end focusout
+    } ); // end ready
+  </script>
+  <!-- Javascript boxes -->
+  <div id="signupbox" class="floatbox">
+    <%= render "users/partials/signup" %>
+  </div>
+  <div id="loginbox" class="floatbox">
+    <%= render "users/partials/login" %>
+  </div>
+  <!-- standard header -->
+	<div class="navbar">
+		<div class="navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="container">
+					<a class="brand" href="/">
+						<img class="logo" src="/images/logo.png" alt="ffopenvn logo" />
+						<%= @title %>
+					</a>
+					<ul class="nav">
+						<li>
+							<%= link_to "Login", "#loginopener", :id => "loginopener" %>
+						</li>
+						<li>
+							<%= link_to "Signup", "#signupopener", :id => "signupopener" %>
+						</li>
+					</ul>
+				</div>
 			</div>
 		</div>
 	</div>
-</div>
+<% else %>
+	<!-- Personalized header -->
+	<div class="navbar">
+		<div class="navbar-fixed-top">
+			<div class="navbar-inner">
+				<div class="container">
+					<a class="brand" href="/">
+						<img class="logo" src="/images/logo.png" alt="ffopenvn logo" />
+						<%= @title %>
+					</a>
+					<ul class="nav">
+						<li>
+							<%= link_to escape_javascript(current_user.name), user_path(current_user) %>
+						</li>
+						<li>
+							<%= link_to "Sign out", destroy_user_session_path, :method => :delete %>
+						</li>
+					</ul>
+				</div>
+			</div>
+		</div>
+	</div>
+<% end %>
+
+

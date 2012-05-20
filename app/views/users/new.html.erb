@@ -1,2 +1,11 @@
-<h1>Users#new</h1>
-<p>Find me in app/views/users/new.html.erb</p>
+<!-- new user form -->
+<div class="container">
+  <div class="row">
+    <div class="pushedown" style="margin-top : 5em;"></div>
+  </div>
+  <div class="row">
+    <div class="span12">
+      <%= render "users/partials/signup", :user => @user %>
+    </div>
+  </div>
+</div>

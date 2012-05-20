@@ -1,0 +1,20 @@
+<!-- User signup form -->
+<%= form_tag users_path, :method => "post", :remote => true do %>
+  <ul class="signupform">
+    <li class="signupform">
+      <%= text_field_tag "user[name]", "", :placeholder => "Name..." %>
+    </li>
+    <li class="signupform">
+      <%= email_field_tag "user[email]", "", :placeholder => "Email..." %>
+    </li>
+    <li class="signupform">
+      <%= password_field_tag "user[password]", "", :placeholder => "Password..." %>
+    </li>
+    <li class="signupform">
+      <%= password_field_tag "user[password_confirmation]", "", :placeholder => "Password again..." %>
+    </li>
+    <li class="signupform">
+      <%= submit_tag "", :value => "Submit" %>
+    </li>
+  </ul>
+<% end %>  

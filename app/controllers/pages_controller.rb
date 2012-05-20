@@ -11,5 +11,8 @@ class PagesController < ApplicationController
 
   def legal
   end
-
+  
+  def error404
+    render "404"
+  end
 end

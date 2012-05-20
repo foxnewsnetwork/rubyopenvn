@@ -1,0 +1,14 @@
+<!-- User login form -->
+<%= form_tag user_session_path, :method => "post", :remote => true do %>
+  <ul class="loginform">
+    <li class="loginform">
+      <%= email_field_tag "user[email]", "", :placeholder => "Email..." %>
+    </li>
+    <li class="loginform">
+      <%= password_field_tag "user[password]", "", :placeholder => "Password..." %>
+    </li>
+    <li class="loginform">
+      <%= submit_tag "", :value => "Submit" %>
+    </li>
+  </ul>
+<% end %>  

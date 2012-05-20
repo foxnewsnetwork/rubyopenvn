@@ -1,0 +1,120 @@
+<!-- featured tabs for users -->
+<style type="text/css">
+  .featuredtabs1 { 
+	  background-image : url("/images/tour-collaboration.png");
+  }
+  .featuredtabs2 { 
+	  background-image : url("/images/tour-email.png");
+  }
+  .featuredtabs3 { 
+	  background-image : url("/images/tour-mac.png");
+  }
+  .featuredtabs4 { 
+	  background-image : url("/images/tour-updates.png");
+  }
+  .featuredtabs5 { 
+	  background-image : url("/images/upa.png");
+  }
+  .featuredtabs6 { 
+	  background-image : url("/images/upa.png");
+  }  
+</style>
+
+<div class="span12">
+  <ul class="featuredtabs">
+    <li class="featuredtabs">
+      <a href="/users/<%= @user.id %>?usertab=team" class="featuredtabs">
+        <div class="featuredtabicon featuredtabs1">
+          <h3 class="featuredtext">
+            Team
+            <%= img_tag("/images/tour-goarrow.png", :alt => "go arrow") %>
+          </h3>
+        </div>
+      </a>
+    </li>
+    <li class="featuredtabs">
+      <a href="/users/<%= @user.id %>?usertab=team" class="featuredtabs">
+        <div class="featuredtabicon featuredtabs1">
+          <h3 class="featuredtext">
+            Team
+            <%= img_tag("/images/tour-goarrow.png", :alt => "go arrow") %>
+          </h3>
+        </div>
+      </a>
+    </li>
+    <li class="featuredtabs">
+      <a href="/users/<%= @user.id %>?usertab=team" class="featuredtabs">
+        <div class="featuredtabicon featuredtabs1">
+          <h3 class="featuredtext">
+            Team
+            <%= img_tag("/images/tour-goarrow.png", :alt => "go arrow") %>
+          </h3>
+        </div>
+      </a>
+    </li>
+    <li class="featuredtabs">
+      <a href="/users/<%= @user.id %>?usertab=team" class="featuredtabs">
+        <div class="featuredtabicon featuredtabs1">
+          <h3 class="featuredtext">
+            Team
+            <%= img_tag("/images/tour-goarrow.png", :alt => "go arrow") %>
+          </h3>
+        </div>
+      </a>
+    </li>
+    <li class="featuredtabs">
+      <a href="/users/<%= @user.id %>?usertab=team" class="featuredtabs">
+        <div class="featuredtabicon featuredtabs1">
+          <h3 class="featuredtext">
+            Team
+            <%= img_tag("/images/tour-goarrow.png", :alt => "go arrow") %>
+          </h3>
+        </div>
+      </a>
+    </li>
+    <li class="featuredtabs">
+      <a href="/users/<%= @user.id %>?usertab=team" class="featuredtabs">
+        <div class="featuredtabicon featuredtabs1">
+          <h3 class="featuredtext">
+            Team
+            <%= img_tag("/images/tour-goarrow.png", :alt => "go arrow") %>
+          </h3>
+        </div>
+      </a>
+    </li>
+  </ul>
+</div>
+.span12
+	ul.featuredtabs
+		li.featuredtabs
+			a.featuredtabs(href="/user/#{player._id}?usertab=team")
+				.featuredtabicon.featuredtabs1				
+				h3.featuredtext Team 
+					img(alt="go arrow", src="/images/tour-goarrow.png")
+		li.featuredtabs
+			a.featuredtabs(href="/user/#{player._id}?usertab=novel")
+				.featuredtabicon.featuredtabs2				
+				h3.featuredtext Visual Novels 
+					img(alt="go arrow", src="/images/tour-goarrow.png")
+		li.featuredtabs
+			a.featuredtabs(href="/user/#{player._id}?usertab=profile")
+				.featuredtabicon.featuredtabs3
+				h3.featuredtext Profile 
+					img(alt="go arrow", src="/images/tour-goarrow.png")
+.span12			
+	ul.featuredtabs
+		li.featuredtabs
+			a.featuredtabs(href="/user/#{player._id}?usertab=update")
+				.featuredtabicon.featuredtabs4
+				h3.featuredtext Update Feeds
+					img(alt="go arrow", src="/images/tour-goarrow.png")
+		li.featuredtabs
+			a.featuredtabs(href="/user/#{player._id}?usertab=")
+				.featuredtabicon.featuredtabs5
+				h3.featuredtext Not Sure 
+					img(alt="go arrow", src="/images/tour-goarrow.png")
+		li.featuredtabs
+			a.featuredtabs(href="/user/#{player._id}?usertab=")
+				.featuredtabicon.featuredtabs6
+				h3.featuredtext Not Sure
+					img(alt="go arrow", src="/images/tour-goarrow.png")
