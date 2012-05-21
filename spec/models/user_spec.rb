@@ -1,8 +1,9 @@
 require 'spec_helper'
 
 describe User do
-  pending "add some examples to (or delete) #{__FILE__}"
-end
+  describe "Validations testing" do
+  end # Validatiosn testing
+end # User
 
 # == Schema Information
 #

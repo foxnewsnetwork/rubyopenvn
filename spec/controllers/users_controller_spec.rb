@@ -30,5 +30,19 @@ describe UsersController do
     end
   end
   
-  
+  describe "New user creation" do
+    it "should create a new user and redirect to it" do
+      @data = { :name => "foxnewsnetwork", :password => "1234567", :email => "foxnewsnetwork@gmail.com" }
+      post :create, @data
+      response.should have_selector( "h1", :text => "foxnewsnetwork" ) 
+    end # it
+    
+    it "should not make a user if given crap" do
+      @data = { :name => "fjkasdf" }
+      post :create, @data
+      response.should have_selector( "h2", :text => "failed" )
+    end # it
+    
+   
+  end # end new user creation
 end

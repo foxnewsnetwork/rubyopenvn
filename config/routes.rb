@@ -1,4 +1,10 @@
 Rubyopenvn::Application.routes.draw do
+  resources :scenes
+
+  resources :chapters
+
+  resources :stories
+
   devise_for :users
 
   resource :users
