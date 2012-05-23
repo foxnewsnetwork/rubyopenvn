@@ -4,8 +4,9 @@ require 'factories'
 describe StoriesController do
   
   describe "metatest" do
+    login_user
     it "should pass" do
-      post :create, :story => { :title => "kdfji20uj02ugj", :summary => "fjo24f902f" }
+      post :create
       1.should eq(1)
     end # it
   end # metatest
@@ -53,6 +54,7 @@ describe StoriesController do
   end # describe
   
   describe "failed post 'create'" do
+    login_user
     before(:each) do
       @user = User.create( :name => "test", :password => "1234567", :email => "test@test.test" )
   		@attr = { 
@@ -67,22 +69,23 @@ describe StoriesController do
     
     it "should not create a new story" do
       lambda do
-        post :create, { :story => @attr, :login => @login }
+        post :create, :story => @attr
       end.should_not change(Story, :count)
     end # it
     
     it "should redirect to new story page" do
-      post :create, { :story => @attr, :login => @login }
+      post :create, :story => @attr
       response.should redirect_to new_story_path
     end # it
     
     it "should leave some sort of flash notice" do
-      post :create, { :story => @attr, :login => @login }
+      post :create, :story => @attr
       flash[:notice].should =~ /blank/i
     end # it
   end # describe
   
   describe "successful post 'create'" do
+    login_user
   	before(:each) do
   		o =  [('a'..'z'),('A'..'Z')].map{|i| i.to_a}.flatten
   		@data = (0..50).map{ o[rand(o.length)]  }.join
@@ -99,18 +102,18 @@ describe StoriesController do
   	
     it "should let an user create a story" do
     	lambda do
-      	post :create, { :story => @attr, :login => @login }
+      	post :create, :story => @attr
       end.should change(Story, :count).by(1)
     end # it
     
     it "should redirect to the correct story page" do
-      post :create, { :story => @attr, :login => @login }
+      post :create, :story => @attr
       @story = assigns(:story)
       response.should render_template "stories/show"
     end # it
     
     it "should leave some sort of flash notice" do
-      post :create, { :story => @attr, :login => @login }
+      post :create, :story => @attr
       flash[:notice].should =~ /success/i
     end # it
   end # describe
@@ -121,24 +124,25 @@ describe StoriesController do
     end # before
     it "should redirect to the signin page" do
       post :create
-      response.should redirect_to new_user_sessions_path
+      response.should redirect_to new_user_session_path
     end # it
     it "should redirect to the signin page" do
       delete :destroy, :id => @rid
-      response.should redirect_to new_user_sessions_path
+      response.should redirect_to new_user_session_path
     end # it
     it "should redirect to the signin page" do
       put :update, :id => @rid
-      response.should redirect_to new_user_sessions_path
+      response.should redirect_to new_user_session_path
     end # it
   end # Access control
   
   describe "successful put updates" do
+    login_user
     before(:each) do
       o =  [('a'..'z'),('A'..'Z')].map{|i| i.to_a}.flatten
   		oo = (0..50).map{ o[rand(o.length)]  }.join
       @user = Factory(:user)
-      @story = Factory(:story, :association => @user)
+      @story = Factory(:story, :author => @user)
       @attr = { 
         :title => oo ,
         :summary => "changed junk"
@@ -146,18 +150,18 @@ describe StoriesController do
     end # before
     
     it "should correctly update the attributes" do
-      put :update, :id => @story.id, :story => @attr, :login => @user
+      put :update, :id => @story.id, :story => @attr
       story = assigns(:story)
       story[title].should eq( @attr[:title] )
     end # it
     
     it "should redirect back to the story page" do
-      put :update, :id => @story.id, :story => @attr, :login => @user
+      put :update, :id => @story.id, :story => @attr
       response.should render @story
     end # it
     
     it "should display some sort of flash message" do
-      put :update, :id => @story.id, :story => @attr, :login => @user
+      put :update, :id => @story.id, :story => @attr
       flash[:notice].should =~ /changed/i
     end # it
   end # successful put updates
@@ -167,7 +171,7 @@ describe StoriesController do
       o =  [('a'..'z'),('A'..'Z')].map{|i| i.to_a}.flatten
   		oo = (0..50).map{ o[rand(o.length)]  }.join
       @user = Factory(:user)
-      @story = Factory(:story, :association => @user)
+      @story = Factory(:story, :author => @user)
       @attr = { 
         :title => oo ,
         :summary => "changed junk"
@@ -183,7 +187,7 @@ describe StoriesController do
     
     it "should redirect to the signin page" do
       put :update, :id => @story.id, :story => @attr
-      response.should redirect_to new_user_sessions_path
+      response.should redirect_to new_user_session_path
     end # it
     
     it "should display some sort of flash message" do
@@ -193,9 +197,10 @@ describe StoriesController do
   end # describe
   
   describe "failed put updates - bad information" do
+    login_user
     before(:each) do
       @user = Factory(:user)
-      @story = Factory(:story, :association => @user)
+      @story = Factory(:story, :author => @user)
       @attr = { 
         :title => "" ,
         :summary => "changed junk"
@@ -203,19 +208,19 @@ describe StoriesController do
     end # before
     
     it "should not change anything" do
-      put :update, :id => @story.id, :story => @attr, :login => @user
+      put :update, :id => @story.id, :story => @attr
       story = assigns(:story)
       story.title.should_not eq(@attr[:title])
       story.title.should eq(@story.title)
     end # it
     
     it "should rerender to the edit page" do
-      put :update, :id => @story.id, :story => @attr, :login => @user
+      put :update, :id => @story.id, :story => @attr
       response.should render_template( "stories/edit" )
     end # it
     
     it "should display some sort of flash message" do
-      put :update, :id => @story.id, :story => @attr, :login => @user
+      put :update, :id => @story.id, :story => @attr
       flash[:error].should =~ /bad/i    
     end # it
   end # describe
@@ -223,7 +228,7 @@ describe StoriesController do
   describe "successful delete" do
     before(:each) do
       @user = Factory(:user)
-      @story = Factory(:story, :association => @user)
+      @story = Factory(:story, :author => @user)
     end # before
     
     it "should change kill the story" do
@@ -247,7 +252,7 @@ describe StoriesController do
   describe "failed delete - access control" do
     before(:each) do
       @user = Factory(:user)
-      @story = Factory(:story, :association => @user)
+      @story = Factory(:story, :author => @user)
     end # before
     
     it "should not do anything" do
@@ -259,7 +264,7 @@ describe StoriesController do
     it "should redirect the user to the signin page" do
       request.env['HTTP_REFERER'] = stories_path
       delete :destroy, :id => @story.id
-      response.should redirect_to new_user_sessions_path
+      response.should redirect_to new_user_session_path
     end # it
     
     it "should display some sort of flash message" do

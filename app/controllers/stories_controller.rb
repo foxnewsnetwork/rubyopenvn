@@ -39,8 +39,8 @@ class StoriesController < ApplicationController
     	respond_to do |format|
     		format.js
     		format.html do
-    			render @story if success_flag
-    			redirect_to new_stories_path unless success_flag
+    			render "stories/show" if success_flag
+    			redirect_to new_story_path unless success_flag
     		end # format.html
     	end # respond_to
     else
