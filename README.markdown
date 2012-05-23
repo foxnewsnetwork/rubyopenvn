@@ -1,3 +1,12 @@
+Guiding Principles for General Programming
+=
+1. Obscurity is the best security
+2. Never reinvent the wheel
+3. Fuck mathematical elegance, go for crappy operational
+4. Deal with security problems if and only if an incident has occured
+5. Avoid writing code
+6. Avoid complicated packages (i.e. devise, warden, rails, etc.)
+
 == Welcome to Rails
 
 Rails is a web-application framework that includes everything needed to create

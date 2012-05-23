@@ -9,7 +9,17 @@ class User < ActiveRecord::Base
   
   # Relationships
   has_many :stories, :foreign_key => :owner_id
-end
+  
+  def self.authenticate(data)
+    return nil if data.nil?
+    return nil if data[:email].nil?
+    return nil if data[:password].nil?
+    @user = User.find_by_email( data[:email] )
+    return nil if @user.nil?
+    return @user if @user.valid_password?( data[:password] )
+    return nil
+  end # authenticate
+end # User
 
 # == Schema Information
 #

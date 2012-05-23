@@ -1,13 +1,13 @@
 Rubyopenvn::Application.routes.draw do
-  resources :scenes
-
-  resources :chapters
-
-  resources :stories
+  # Story stacks
+  resources :stories do
+    resources :chapters, :except => [:new] do
+      resources :scenes, :only => [:create, :update, :destroy, :index]
+    end # chapters
+  end # stories
 
   devise_for :users
-
-  resource :users
+  resource :users, :only => [:show, :edit, :new, :index]
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
