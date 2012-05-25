@@ -19,15 +19,16 @@ class Chapter < ActiveRecord::Base
 	public :spawn
 end # Chapter
 
+
 # == Schema Information
 #
 # Table name: chapters
 #
 #  id         :integer(4)      not null, primary key
-#  title      :string(255)
 #  story_id   :integer(4)
 #  parent_id  :integer(4)
 #  created_at :datetime
 #  updated_at :datetime
+#  title      :string(255)     default("Untitled")
 #
 

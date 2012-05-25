@@ -18,6 +18,7 @@ describe User do
       }
       @user = User.create!(@attr)
     end # before
+
     it "should return a valid user token" do
       user = User.authenticate(@attr)
       user.should eq(@user)
@@ -37,9 +38,10 @@ describe User do
     #it "should return the null token" do
     #	User.login(@attr2).should be_blank
     #end # it
-    
+
   end # describe
 end # User
+
 
 # == Schema Information
 #
@@ -56,9 +58,9 @@ end # User
 #  last_sign_in_at        :datetime
 #  current_sign_in_ip     :string(255)
 #  last_sign_in_ip        :string(255)
-#  name                   :string(255)
-#  points                 :integer(4)
 #  created_at             :datetime
 #  updated_at             :datetime
+#  points                 :integer(4)      default(0)
+#  name                   :string(255)     default("anonymous")
 #
 
