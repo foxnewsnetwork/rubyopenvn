@@ -1,3 +1,16 @@
+Guide on how to Setup and run this thing
+=
+1. bundle install
+2. mv ./config/database.yml.[yourinstance] ./config/database.yml -f
+3. bundle exec rake db:Schema:load
+4. bundle exec thin start
+
+OR
+
+Run the shell script tubgirl.exe.sh
+
+If your database isn't connecting, go into the database.yml file and change the configs there so it matches your system
+
 Guiding Principles for General Programming
 =
 1. Obscurity is the best security

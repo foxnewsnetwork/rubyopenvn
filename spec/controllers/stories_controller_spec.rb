@@ -103,10 +103,9 @@ describe StoriesController do
       end.should change(Story, :count).by(1)
     end # it
     
-    it "should redirect to the correct story page" do
+    it "should redirect to the correct story edit page" do
       post :create, :story => @attr
-      @story = assigns(:story)
-      response.should render_template "stories/show"
+      response.should render_template "stories/edit"
       end # it
     
     it "should leave some sort of flash notice" do
@@ -299,4 +298,5 @@ describe StoriesController do
       flash[:notice].should =~ /permission/i
     end # it
   end # describe
+  
 end # describe

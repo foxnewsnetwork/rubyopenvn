@@ -22,8 +22,30 @@ class ChaptersController < ApplicationController
   # Post Section
   ######
   def create
-  
-  end
+    if user_signed_in?
+      @story = Story.find_by_id(params[:story_id])
+      if @story.owner_id == current_user.id
+        @chapter = @story.chapters.create!(params[:chapter])
+        flash[:notice] = "New chapter creation successful"
+        respond_to do |format|
+          format.js 
+          format.html { redirect_to edit_story_chapters_path(@story, @chapter) }
+        end # respond_to
+      else
+        flash[:notice] = "Chapter forking not successful because forking has not been implemeneted yet. Sorry."
+        respond_to do |format|
+          format.js { render "errors/flash.js.erb" }
+          format.html { redirect_to :back }
+        end # respond_to
+      end # if
+    else
+      flash[:notice] = "You cannot make new chapters without signing in, buddy."
+      respond_to do |format|
+        format.js { render "errors/flash.js.erb" }
+        format.html { redirect_to new_user_session_path }
+      end # respond_to
+    end # if
+  end # create
   
   ######
   # Put Section
@@ -36,6 +58,25 @@ class ChaptersController < ApplicationController
   # Delete Section
   ######
   def destroy
-  
-  end
+    if user_signed_in?
+      @story = Story.find_by_id(params[:story_id])
+      if @story.owner_id == current_user.id
+        @chapter = Chapter.find_by_id(params[:id])
+        @chapter.delete
+        flash[:notice] = "Story successfully deleted."
+      else
+        flash[:notice] = "Story deletion failed because you're not the owner of this story."
+      end # if
+      respond_to do |format|
+        format.js
+        format.html { redirect_to :back }
+      end # respond_to
+    else 
+      flash[:notice] = "Delete failed because you are not allowed to delete stuff without signing in."
+      respond_to do |format|
+        format.js { render "errors/flash.js.erb" }
+        format.html { redirect_to new_user_session_path }
+      end # respond_to
+    end # if
+  end # destroy
 end # ChaptersController
