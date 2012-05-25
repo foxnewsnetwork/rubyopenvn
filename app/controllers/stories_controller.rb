@@ -35,7 +35,7 @@ class StoriesController < ApplicationController
     if user_signed_in?
     	@story = current_user.stories.new(params[:story])
     	success_flag = @story.save
-    	flash[:notice] = success_flag ? "Story successfully created" : "Story creation failled"
+    	flash[:notice] = success_flag ? "Story successfully created" : "Story creation failled; blank"
     	respond_to do |format|
     		format.js
     		format.html do
@@ -60,13 +60,52 @@ class StoriesController < ApplicationController
   # Put Section
   ######
   def update
-  
-  end
+    if user_signed_in?
+      @story = Story.find_by_id( params[:id] )
+      if current_user.id == @story.owner_id
+        @story.update_attributes( params[:story] )
+        flash[:notice] = "Successfully updated story attributes"
+      else
+        flash[:error] = "Failed because you should not be making anonymous changes to people's stories"
+      end # if
+      respond_to do |format|
+        format.js
+        format.html { redirect_to story_path(@story) }
+      end # respond_to
+    else
+      flash[:error] = "Failed because you should not be making anonymous changes to people's stories"
+      respond_to do |format|
+        format.js { render "errors/flash.js.erb" }
+        format.html { redirect_to new_user_session_path }
+      end # respond_to
+    end # if
+  end # update
   
   ######
   # Delete Section
   ######
   def destroy
-  
-  end
+    unless user_signed_in?
+      flash[:notice] = "You do not have permission to delete works if you're not signed in."
+      respond_to do |format|
+        format.js { 
+          render "errors/flash.js.erb" 
+          redirect_to new_user_session_path
+        }
+        format.html { redirect_to new_user_session_path }
+      end # respond_to
+      return
+    end # unless
+    @story = Story.find_by_id(params[:id])
+    if @story.owner_id == current_user.id
+      @story.delete
+      flash[:notice] = "Story successfully deleted."
+    else
+      flash[:notice] = "You do not have permission to delete works if you're not signed in."
+    end # if
+    respond_to do |format|
+      format.js 
+      format.html { redirect_to :back }
+    end # respond_to
+  end # destroy
 end # StoriesController

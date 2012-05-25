@@ -27,15 +27,16 @@ describe Chapter do
   end # end describe
 end # chapter
 
+
 # == Schema Information
 #
 # Table name: chapters
 #
 #  id         :integer(4)      not null, primary key
-#  title      :string(255)
 #  story_id   :integer(4)
 #  parent_id  :integer(4)
 #  created_at :datetime
 #  updated_at :datetime
+#  title      :string(255)     default("Untitled")
 #
 

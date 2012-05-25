@@ -29,15 +29,16 @@ describe Story do
 end # end Story
 
 
+
 # == Schema Information
 #
 # Table name: stories
 #
 #  id         :integer(4)      not null, primary key
-#  title      :string(255)
 #  owner_id   :integer(4)
-#  summary    :string(255)
 #  created_at :datetime
 #  updated_at :datetime
+#  title      :string(255)     default("Untitled")
+#  summary    :string(255)     default("Unwritten")
 #
 
