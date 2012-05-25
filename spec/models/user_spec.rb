@@ -13,19 +13,30 @@ describe User do
         :password => "1234567"
       }
       @attr2 = { 
-      	:email => "alice" + rand(123) + "@asdf.asdf" ,
+      	:email => "alice" + rand(123).to_s + "@asdf.asdf" ,
       	:password => "123041jt01jt"
       }
       @user = User.create!(@attr)
     end # before
     it "should return a valid user token" do
-      token = User.login(@attr)
-      token.should eq(@user.token)
+      user = User.authenticate(@attr)
+      user.should eq(@user)
     end # it
-    
+
     it "should return the null token" do
-    	User.login(@attr2).should be_blank
+    	User.authenticate(@attr2).should be_blank
     end # it
+
+    # Below are removed and replaced with authenticate.
+    # Authentication checks for validity fine enough if we need tokes we can add later
+    #it "should return a valid user token" do
+    #  token = User.login(@attr)
+    #  token.should eq(@user.token)
+    #end # it
+    #
+    #it "should return the null token" do
+    #	User.login(@attr2).should be_blank
+    #end # it
     
   end # describe
 end # User
