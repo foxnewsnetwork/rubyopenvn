@@ -16,7 +16,18 @@ class Chapter < ActiveRecord::Base
 		return child
 	end # spawn
 	
-	public :spawn
+	def dirty_jsonify
+    sids = self.scenes # 1
+    sdids = SceneData.where(:id => sids) # 2
+    relationships = ElementRelationship.where(:sid => sdids) # 3
+    eid = []
+    relationships.each do |x|
+      eid << x.pid
+      eid << x.cid
+    end # each
+    elements = Element.where(:id => eid) # 4
+    return { :scenes => sids, :scene_data => sdids, :relationships => relationships, :elements => elements }.as_json
+  end # dirty_jsonify
 end # Chapter
 
 

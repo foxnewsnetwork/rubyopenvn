@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120523230944) do
+ActiveRecord::Schema.define(:version => 20120526223513) do
 
   create_table "chapters", :force => true do |t|
     t.integer  "story_id"
@@ -21,11 +21,53 @@ ActiveRecord::Schema.define(:version => 20120523230944) do
     t.string   "title",      :default => "Untitled"
   end
 
+  create_table "element_relationships", :force => true do |t|
+    t.float    "width",      :default => 0.0
+    t.float    "height",     :default => 0.0
+    t.float    "left",       :default => 0.0
+    t.float    "top",        :default => 0.0
+    t.integer  "pid"
+    t.integer  "cid"
+    t.integer  "sid"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "zindex",     :default => 0
+  end
+
+  add_index "element_relationships", ["cid"], :name => "index_element_relationships_on_cid"
+  add_index "element_relationships", ["pid", "cid"], :name => "index_element_relationships_on_pid_and_cid"
+  add_index "element_relationships", ["pid"], :name => "index_element_relationships_on_pid"
+  add_index "element_relationships", ["sid", "pid", "cid"], :name => "index_element_relationships_on_sid_and_pid_and_cid", :unique => true
+  add_index "element_relationships", ["sid"], :name => "index_element_relationships_on_sid"
+
+  create_table "elements", :force => true do |t|
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.string   "metadata"
+  end
+
+  create_table "scene_data", :force => true do |t|
+    t.integer  "scene_id"
+    t.integer  "element_id"
+    t.float    "width",      :default => 0.0
+    t.float    "height",     :default => 0.0
+    t.float    "left",       :default => 0.0
+    t.float    "top",        :default => 0.0
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "zindex",     :default => 0
+  end
+
+  add_index "scene_data", ["element_id"], :name => "index_scene_data_on_element_id"
+  add_index "scene_data", ["scene_id", "element_id"], :name => "index_scene_data_on_scene_id_and_element_id", :unique => true
+  add_index "scene_data", ["scene_id"], :name => "index_scene_data_on_scene_id"
+
   create_table "scenes", :force => true do |t|
     t.integer  "chapter_id"
     t.integer  "parent_id"
     t.datetime "created_at"
     t.datetime "updated_at"
+    t.integer  "number"
   end
 
   create_table "stories", :force => true do |t|

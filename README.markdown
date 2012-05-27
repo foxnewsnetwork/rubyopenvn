@@ -1,7 +1,7 @@
 Guide on how to Setup and run this thing
 =
 1. bundle install
-2. mv ./config/database.yml.[yourinstance] ./config/database.yml -f
+2. cp ./config/database.yml.[yourinstance] ./config/database.yml -f
 3. bundle exec rake db:Schema:load
 4. bundle exec thin start
 

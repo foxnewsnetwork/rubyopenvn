@@ -3,7 +3,7 @@ class Scene < ActiveRecord::Base
   belongs_to :chapter
   belongs_to :parent, :class_name => "Scene"
   has_many :children, :class_name => "Scene", :foreign_key => :parent_id
-  
+  has_many :scene_data, :class_name => "SceneData", :dependent => :destroy
   # spawns children; use this instead of self.children.create
 	def spawn
 		child = self.children.create!
@@ -11,6 +11,10 @@ class Scene < ActiveRecord::Base
 		child.save
 		return child
 	end # spawn
+  
+  def load_dirty
+    
+  end # load_dirty
 end
 
 # == Schema Information

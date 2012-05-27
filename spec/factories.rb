@@ -18,3 +18,4 @@ end
 Factory.sequence :name do |n|
   "Alice McTest#{n}"
 end
+

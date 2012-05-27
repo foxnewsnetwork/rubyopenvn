@@ -25,6 +25,51 @@ describe Chapter do
       @story.chapters.should include(@c1, @c2, @c3)
     end # it
   end # end describe
+  describe "dirty-load" do
+    before(:each) do
+      # step 1: standard stuff
+      @user = Factory(:user)
+      @story = Factory(:story, :author => @user)
+      @chapter = @story.chapters.create
+      
+      # step 1.5: inbetween
+      @elements = []
+      (0..29).each do |x|
+        @elements << Element.create(:metadata => (0..25).map { |x| ("a".."z").map{ |y| y }[rand(26)] }.join )
+      end # each
+      
+      # Step 2: scenes & relationships
+      @scenes = [@chapter.scenes.create( :number => rand(100) )]
+      (1..10).each do |x|
+        @scenes << @scenes[x-1].spawn
+        (0..2).each do |y|
+          scene_data = @scenes[x].scene_data.create({
+            :width => rand(256),
+            :height => rand(256),
+            :top => rand(256),
+            :left => rand(256) ,
+            :zindex => rand(256)
+          })
+          (0..rand(28)).each do |z|
+            scene_data.relate({
+              :parent => @elements[z] ,
+              :child => @elements[z+1] ,
+              :width => rand(256),
+              :height => rand(256),
+              :top => rand(256),
+              :left => rand(256),
+              :zindex => rand(256)
+            })
+          end # each
+        end # each
+      end # each
+    end # before
+    it "should at least respond" do
+      dirty_json = @chapter.dirty_jsonify
+      puts dirty_json
+      dirty_json.should_not be_blank
+    end # it
+  end # dirty-jsonify
 end # chapter
 
 
