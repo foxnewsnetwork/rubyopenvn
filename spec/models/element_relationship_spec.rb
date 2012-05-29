@@ -6,6 +6,7 @@ describe ElementRelationship do
   
 end # ElementRelationship
 
+
 # == Schema Information
 #
 # Table name: element_relationships
@@ -20,5 +21,6 @@ end # ElementRelationship
 #  sid        :integer(4)
 #  created_at :datetime
 #  updated_at :datetime
+#  zindex     :integer(4)      default(0)
 #
 

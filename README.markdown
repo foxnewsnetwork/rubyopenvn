@@ -1,3 +1,7 @@
+Production TO-DO List
+=
+1. Setup paperclip S3 storage
+
 Guide on how to Setup and run this thing
 =
 1. bundle install

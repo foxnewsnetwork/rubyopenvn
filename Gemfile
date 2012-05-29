@@ -2,7 +2,7 @@ source 'http://rubygems.org'
 
 gem 'rails', '3.0.11'
 gem 'will_paginate', '~> 3.0.0'
-gem "paperclip", "~> 2.4"
+gem "paperclip", "~> 3.0"
 gem "thin", '1.3.1'
 gem 'jquery-rails', '>= 1.0.12'
 gem 'devise', '1.5.3'
@@ -13,15 +13,18 @@ group :development do
   gem 'nifty-generators'
   gem 'annotate', '2.4.0'
   gem "letter_opener"
-end
+end # development
 
 group :test do
   gem 'rspec', '2.0.1'
   gem 'webrat', '0.7.1'
   gem 'factory_girl', '~>2.1.0'
 #  gem 'factory_girl_rails', '1.0'
-end
+end # test
 
+group :production do
+  gem "aws-sdk", "~>1.3.4"
+end # production
 
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'

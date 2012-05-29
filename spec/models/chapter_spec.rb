@@ -35,7 +35,7 @@ describe Chapter do
       # step 1.5: inbetween
       @elements = []
       (0..29).each do |x|
-        @elements << Element.create(:metadata => (0..25).map { |x| ("a".."z").map{ |y| y }[rand(26)] }.join )
+        @elements << Factory(:element)
       end # each
       
       # Step 2: scenes & relationships

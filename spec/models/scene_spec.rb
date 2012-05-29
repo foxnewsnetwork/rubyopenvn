@@ -29,6 +29,7 @@ describe Scene do
   end # end describe
 end # end Scene
 
+
 # == Schema Information
 #
 # Table name: scenes
@@ -38,5 +39,6 @@ end # end Scene
 #  parent_id  :integer(4)
 #  created_at :datetime
 #  updated_at :datetime
+#  number     :integer(4)
 #
 

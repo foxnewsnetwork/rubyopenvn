@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120526223513) do
+ActiveRecord::Schema.define(:version => 20120528021742) do
 
   create_table "chapters", :force => true do |t|
     t.integer  "story_id"
@@ -44,6 +44,10 @@ ActiveRecord::Schema.define(:version => 20120526223513) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "metadata"
+    t.string   "picture_file_name"
+    t.string   "picture_content_type"
+    t.integer  "picture_file_size"
+    t.datetime "picture_updated_at"
   end
 
   create_table "scene_data", :force => true do |t|

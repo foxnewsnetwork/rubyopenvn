@@ -17,6 +17,7 @@ class Scene < ActiveRecord::Base
   end # load_dirty
 end
 
+
 # == Schema Information
 #
 # Table name: scenes
@@ -26,5 +27,6 @@ end
 #  parent_id  :integer(4)
 #  created_at :datetime
 #  updated_at :datetime
+#  number     :integer(4)
 #
 

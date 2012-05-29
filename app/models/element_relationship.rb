@@ -6,6 +6,7 @@ class ElementRelationship < ActiveRecord::Base
 	attr_accessible :width, :height, :left, :top, :pid, :cid, :sid
 end
 
+
 # == Schema Information
 #
 # Table name: element_relationships
@@ -20,5 +21,6 @@ end
 #  sid        :integer(4)
 #  created_at :datetime
 #  updated_at :datetime
+#  zindex     :integer(4)      default(0)
 #
 

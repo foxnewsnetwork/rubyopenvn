@@ -5,3 +5,4 @@ Some Notes
 2.5. assigns(:story) or other such uses of assigns also doesn't work. Work around it, please.
 3. Integration tests will be implemented in the nearby future
 4. Helper tests and views tests will not be implemented
+5. Be sure to occasionally purge ./public/images/elements/ otherwise that folder is going to overflow

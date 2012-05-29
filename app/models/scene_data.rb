@@ -26,6 +26,7 @@ class SceneData < ActiveRecord::Base
   end # relate
 end # SceneData
 
+
 # == Schema Information
 #
 # Table name: scene_data
@@ -39,5 +40,6 @@ end # SceneData
 #  top        :float           default(0.0)
 #  created_at :datetime
 #  updated_at :datetime
+#  zindex     :integer(4)      default(0)
 #
 
