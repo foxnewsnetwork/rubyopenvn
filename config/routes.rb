@@ -7,7 +7,7 @@ Rubyopenvn::Application.routes.draw do
   end # stories
 
   devise_for :users
-  resource :users, :only => [:show, :edit, :new, :index]
+  resource :users
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
