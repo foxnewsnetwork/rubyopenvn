@@ -205,23 +205,27 @@ describe ChaptersController do
       before(:each) do
         @story = Factory(:story, :author => @current_user)
         @chapter = @story.chapters.create
-        @attr = { :title => @referer }
+        @attr = { :title => Factory.next(:random_string) }
       end # before
       
+      # Once again, the lambda.should is broken, forcing me to uglifiy
       it "should change the title" do
-        lambda do
-          put :update, :id => @chapter, :story_id => @attr
-        end.should change(Chapter.find_by_id(@chapter.id), :title).from("Untitled").to(@referer)
+        # lambda do
+        #  put :update, :id => @chapter, :story_id => @story.id, :chapter => @attr
+        # end.should change(@chapter, :title).from("Untitled").to(@attr[:title])
+        @attr.each do |key, val|
+          put :update, :story_id => @story.id, :id => @chapter.id, :chapter => @attr
+          assigns(:chapter)[key].should eq(@attr[key])
+        end # each
       end # it
       
       it "should redirect the user back" do
-        puts @referer
-        put :update, :story_id => @story, :id => @chapter.id
+        put :update, :id => @chapter, :story_id => @story.id, :chapter => @attr
         response.should redirect_to edit_story_chapter_path(@story, @chapter)
       end # it
       
       it "should display a flash message" do
-        put :update, :id => @chapter, :story_id => @attr
+        put :update, :id => @chapter, :story_id => @story.id, :chapter => @attr
         flash[:notice].should =~ /success/i
         flash[:error].should_not eq("Trevor is a fag")
       end # it
@@ -232,26 +236,25 @@ describe ChaptersController do
         @story = Factory(:story, :author => @user)
         @chapter = @story.chapters.create
         @attr = { 
-          :title => "Some title here" ,
-          :summary => "this should not even matter"
+          :title => Factory.next(:random_string)
         }
       end # before
       
       it "should not change anything" do
         @attr.each do |key, val|
           lambda do 
-            put :update, :story_id => @story.id, :chapter => @attr
+            put :update, :story_id => @story.id, :id => @chapter.id, :chapter => @attr
           end.should_not change(Chapter.find_by_id(@chapter.id), key)
         end # each
       end # it
       
       it "should redirect the user to the signin page" do
-        put :update, :story_id => @story.id, :chapter => @attr
+        put :update, :story_id => @story.id, :id => @chapter.id, :chapter => @attr
         response.should redirect_to new_user_session_path
       end # it
       
       it "should display a flash message" do
-        put :update, :story_id => @story.id, :chapter => @attr
+        put :update, :story_id => @story.id, :id => @chapter.id, :chapter => @attr
         flash[:notice].should =~ /fail/i
       end # it
     end # fail anonymous
@@ -262,25 +265,24 @@ describe ChaptersController do
         @story = Factory(:story, :author => @user)
         @chapter = @story.chapters.create
         @attr = { 
-          :title => "Some title here" ,
-          :summary => "this should not even matter"
+          :title => Factory.next(:random_string)
         }
       end # before
       it "should not change anything" do
         @attr.each do |key, val|
           lambda do 
-            put :update, :story_id => @story.id, :chapter => @attr
+            put :update, :story_id => @story.id, :id => @chapter.id, :chapter => @attr
           end.should_not change(Chapter.find_by_id(@chapter.id), key)
         end # each
       end # it
       
       it "should redirect the user back" do
-        put :update, :story_id => @story.id, :chapter => @attr
+        put :update, :story_id => @story.id, :id => @chapter.id, :chapter => @attr
         response.should redirect_to @referer
       end # it
       
       it "should display a flash message" do
-        put :update, :story_id => @story.id, :chapter => @attr
+        put :update, :story_id => @story.id, :id => @chapter.id, :chapter => @attr
         flash[:notice].should =~ /fail/i
       end # it
     end # fail wrong
