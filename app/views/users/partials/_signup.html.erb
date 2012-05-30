@@ -1,5 +1,15 @@
+<script type="text/javascript">
+  $(document).ready( function() { 
+    $("#user-signup-form").submit( function() { 
+      alert("submitted");
+      $( "submit-signup-form" ).attr("disabled", "disabled");
+      $( "submit-signup-form" ).attr("value", "Process...");
+      return true;
+    } ); // $().submit
+  } ); // document.ready
+</script>
 <!-- User signup form -->
-<%= form_tag users_path, :method => "post", :remote => true do %>
+<%= form_tag users_path, :method => "post", :id => "user-signup-form" do %>
   <ul class="signupform">
     <li class="signupform">
       <%= text_field_tag "user[name]", "", :placeholder => "Name..." %>
@@ -14,7 +24,7 @@
       <%= password_field_tag "user[password_confirmation]", "", :placeholder => "Password again..." %>
     </li>
     <li class="signupform">
-      <%= submit_tag "", :value => "Submit" %>
+      <%= submit_tag "", :value => "Submit", :id => "submit-signup-form" %>
     </li>
   </ul>
 <% end %>  

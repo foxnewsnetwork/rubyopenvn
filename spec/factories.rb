@@ -37,4 +37,6 @@ Factory.sequence :name do |n|
   "Alice McTest#{n}"
 end
 
-
+Factory.sequence :random_string do |n|
+  (0..55).map { |x| ("a".."z").map { |y| y }[rand(26)] }.join
+end

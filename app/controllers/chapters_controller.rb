@@ -56,17 +56,20 @@ class ChaptersController < ApplicationController
           @story = @chapter.story
           if current_user.id == @story.owner_id
             @chapter.update_attributes( params[:chapter] )
-
             flash[:notice] = "Successfully updated chapter attributes"
+            respond_to do |format|
+              format.js
+              format.html { redirect_to edit_story_chapter_path(@story, @chapter) }
+            end # respond_to
           else
-            flash[:error] = "Failed due to permissions conflict"
+            flash[:notice] = "Failed due to permissions conflict"
+            respond_to do |format|
+              format.js
+              format.html { redirect_to :back }
+            end # respond_to
           end # if
-          respond_to do |format|
-            format.js
-            format.html { redirect_to edit_story_chapter_path(@story, @chapter) }
-          end # respond_to
         else
-          flash[:error] = "Failed because you should not be making anonymous changes to people's stories"
+          flash[:notice] = "Failed because you should not be making anonymous changes to people's stories"
           respond_to do |format|
             format.js { render "errors/flash.js.erb" }
             format.html { redirect_to new_user_session_path }

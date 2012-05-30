@@ -105,8 +105,8 @@ describe StoriesController do
     
     it "should redirect to the correct story edit page" do
       post :create, :story => @attr
-      response.should render_template "stories/edit"
-      end # it
+      response.should redirect_to edit_story_path(assigns(:story))
+    end # it
     
     it "should leave some sort of flash notice" do
       post :create, :story => @attr

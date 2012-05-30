@@ -24,6 +24,8 @@ class StoriesController < ApplicationController
   ######
   def create
   	# Step 0: To facilitate tests, we allow on-spot signin
+    # As it turns out, this isn't necessary.
+    # But we will leave it here anyway so that it can cause problems down the road
   	unless params[:login].nil?
   		if params[:login][:email] && params[:login][:password]
 				@user = User.authenticate( params[:login] )
@@ -39,7 +41,7 @@ class StoriesController < ApplicationController
     	respond_to do |format|
     		format.js
     		format.html do
-    			render "stories/show" if success_flag
+    			redirect_to edit_story_path( @story ) if success_flag
     			redirect_to new_story_path unless success_flag
     		end # format.html
     	end # respond_to
