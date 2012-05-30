@@ -53,15 +53,16 @@ class ChaptersController < ApplicationController
   def update
     if user_signed_in?
           @chapter = Chapter.find_by_id( params[:id] )
+          @story = @chapter.story
           if current_user.id == @story.owner_id
-            @chapter.update_attributes( params[:chapter] )
-            flash[:notice] = "Successfully updated story attributes"
+            @chapter.update_attributes( params[:story_id] )
+            flash[:notice] = "Successfully updated chapter attributes"
           else
-            flash[:error] = "Failed because you should not be making anonymous changes to people's stories"
+            flash[:error] = "Failed due to permissions conflict"
           end # if
           respond_to do |format|
             format.js
-            format.html { redirect_to story_path(@story) }
+            format.html { redirect_to edit_story_chapter_path(@story, @chapter) }
           end # respond_to
         else
           flash[:error] = "Failed because you should not be making anonymous changes to people's stories"

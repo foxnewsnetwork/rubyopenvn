@@ -38,7 +38,7 @@
       <file leaf-file-name="chapters_controller_spec.rb" pinned="false" current="true" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/spec/controllers/chapters_controller_spec.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="53" column="85" selection-start="1791" selection-end="1791" vertical-scroll-proportion="-5.122257">
+            <state line="210" column="10" selection-start="6943" selection-end="6943" vertical-scroll-proportion="0.19122256">
               <folding />
             </state>
           </provider>
@@ -47,7 +47,7 @@
       <file leaf-file-name="chapters_controller.rb" pinned="false" current="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/app/controllers/chapters_controller.rb">
           <provider selected="true" editor-type-id="text-editor">
-            <state line="31" column="59" selection-start="549" selection-end="572" vertical-scroll-proportion="0.0">
+            <state line="57" column="56" selection-start="1454" selection-end="1454" vertical-scroll-proportion="0.0">
               <folding />
             </state>
           </provider>
@@ -101,8 +101,8 @@
         <option value="$PROJECT_DIR$/spec/factories.rb" />
         <option value="$PROJECT_DIR$/spec/controllers/scenes_controller_spec.rb" />
         <option value="$PROJECT_DIR$/spec/controllers/stories_controller_spec.rb" />
-        <option value="$PROJECT_DIR$/app/controllers/chapters_controller.rb" />
         <option value="$PROJECT_DIR$/spec/controllers/chapters_controller_spec.rb" />
+        <option value="$PROJECT_DIR$/app/controllers/chapters_controller.rb" />
       </list>
     </option>
   </component>
@@ -790,14 +790,14 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/app/controllers/chapters_controller.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="31" column="59" selection-start="549" selection-end="572" vertical-scroll-proportion="0.0">
+        <state line="57" column="56" selection-start="1454" selection-end="1454" vertical-scroll-proportion="0.0">
           <folding />
         </state>
       </provider>
     </entry>
     <entry file="file://$PROJECT_DIR$/spec/controllers/chapters_controller_spec.rb">
       <provider selected="true" editor-type-id="text-editor">
-        <state line="53" column="85" selection-start="1791" selection-end="1791" vertical-scroll-proportion="-5.122257">
+        <state line="210" column="10" selection-start="6943" selection-end="6943" vertical-scroll-proportion="0.19122256">
           <folding />
         </state>
       </provider>

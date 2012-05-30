@@ -51,7 +51,7 @@ describe ChaptersController do
 
       #this is changed a bit. Instead of checking to see if the correct template is shown (which is more correct)
       #we instead test to see if it redirects right. Because of how weird nesting stuff is, the "shown" templating
-      # was weird so the test was failing. So we test for redirect for simplicity now
+
       it "should should render the newly created chapter" do
         post :create, :story_id => @story.id
         @chapter = assigns[:chapter]
@@ -210,17 +210,18 @@ describe ChaptersController do
       
       it "should change the title" do
         lambda do
-          put :update, :story_id => @story.id, :id => @chapter.id
+          put :update, :id => @chapter, :story_id => @attr
         end.should change(Chapter.find_by_id(@chapter.id), :title).from("Untitled").to(@referer)
       end # it
       
       it "should redirect the user back" do
-        put :update, :story_id => @story, :chapter => @attr
-        response.should redirect_to @referer
+        puts @referer
+        put :update, :story_id => @story, :id => @chapter.id
+        response.should redirect_to edit_story_chapter_path(@story, @chapter)
       end # it
       
       it "should display a flash message" do
-        put :update, :story_id => @story, :chapter => @attr
+        put :update, :id => @chapter, :story_id => @attr
         flash[:notice].should =~ /success/i
         flash[:error].should_not eq("Trevor is a fag")
       end # it
