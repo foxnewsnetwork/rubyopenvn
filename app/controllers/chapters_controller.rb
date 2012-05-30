@@ -29,7 +29,7 @@ class ChaptersController < ApplicationController
         flash[:notice] = "New chapter creation successful"
         respond_to do |format|
           format.js 
-          format.html { redirect_to edit_story_chapters_path(@story, @chapter) }
+          format.html { redirect_to edit_story_chapter_path(@story, @chapter) }
         end # respond_to
       else
         flash[:notice] = "Chapter forking not successful because forking has not been implemeneted yet. Sorry."
@@ -51,7 +51,25 @@ class ChaptersController < ApplicationController
   # Put Section
   ######
   def update
-  
+    if user_signed_in?
+          @chapter = Chapter.find_by_id( params[:id] )
+          if current_user.id == @story.owner_id
+            @chapter.update_attributes( params[:chapter] )
+            flash[:notice] = "Successfully updated story attributes"
+          else
+            flash[:error] = "Failed because you should not be making anonymous changes to people's stories"
+          end # if
+          respond_to do |format|
+            format.js
+            format.html { redirect_to story_path(@story) }
+          end # respond_to
+        else
+          flash[:error] = "Failed because you should not be making anonymous changes to people's stories"
+          respond_to do |format|
+            format.js { render "errors/flash.js.erb" }
+            format.html { redirect_to new_user_session_path }
+          end # respond_to
+      end
   end
   
   ######
