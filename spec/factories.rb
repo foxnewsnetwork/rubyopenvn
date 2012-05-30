@@ -20,6 +20,7 @@ end # chapter
 Factory.define :scene do |scene|
   scene.association :author
   scene.association :chapter
+  scene.number 0
 end # scene
 
 Factory.define :element do |element|
