@@ -55,7 +55,8 @@ class ChaptersController < ApplicationController
           @chapter = Chapter.find_by_id( params[:id] )
           @story = @chapter.story
           if current_user.id == @story.owner_id
-            @chapter.update_attributes( params[:story_id] )
+            @chapter.update_attributes( params[:chapter] )
+
             flash[:notice] = "Successfully updated chapter attributes"
           else
             flash[:error] = "Failed due to permissions conflict"

@@ -205,24 +205,26 @@ describe ChaptersController do
       before(:each) do
         @story = Factory(:story, :author => @current_user)
         @chapter = @story.chapters.create
-        @attr = { :title => @referer }
+        @attr = { :title => "New Title" }
       end # before
       
       it "should change the title" do
-        lambda do
-          put :update, :id => @chapter, :story_id => @attr
-        end.should change(Chapter.find_by_id(@chapter.id), :title).from("Untitled").to(@referer)
+
+          put :update, :id => @chapter, :story_id => @story, :chapter => @attr
+        @changed_chapter = Chapter.find(@chapter)
+        @changed_chapter.title.should == "New Title"
       end # it
       
       it "should redirect the user back" do
-        puts @referer
         put :update, :story_id => @story, :id => @chapter.id
         response.should redirect_to edit_story_chapter_path(@story, @chapter)
       end # it
       
       it "should display a flash message" do
         put :update, :id => @chapter, :story_id => @attr
-        flash[:notice].should =~ /success/i
+        flash[:notice].should == "Successfully updated chapter attributes"
+        flash[:error].should_not == "Failed due to permissions conflict"
+
         flash[:error].should_not eq("Trevor is a fag")
       end # it
     end # successful
@@ -233,26 +235,26 @@ describe ChaptersController do
         @chapter = @story.chapters.create
         @attr = { 
           :title => "Some title here" ,
-          :summary => "this should not even matter"
+        #  :summary => "this should not even matter"
         }
       end # before
       
       it "should not change anything" do
         @attr.each do |key, val|
           lambda do 
-            put :update, :story_id => @story.id, :chapter => @attr
+            put :update,:id =>@chapter, :story_id => @story.id, :chapter => @attr
           end.should_not change(Chapter.find_by_id(@chapter.id), key)
         end # each
       end # it
       
       it "should redirect the user to the signin page" do
-        put :update, :story_id => @story.id, :chapter => @attr
+        put :update,:id => @chapter, :story_id => @story.id, :chapter => @attr
         response.should redirect_to new_user_session_path
       end # it
       
       it "should display a flash message" do
-        put :update, :story_id => @story.id, :chapter => @attr
-        flash[:notice].should =~ /fail/i
+        put :update, :id => @chapter, :story_id => @story.id, :chapter => @attr
+        flash[:error].should =~ /fail/i
       end # it
     end # fail anonymous
     describe "failure - wrong user" do
@@ -266,22 +268,24 @@ describe ChaptersController do
           :summary => "this should not even matter"
         }
       end # before
+
+       #Summary is not yet defined for a chapter. Need to migrate
       it "should not change anything" do
         @attr.each do |key, val|
           lambda do 
-            put :update, :story_id => @story.id, :chapter => @attr
+            put :update, :id => @chapter, :story_id => @story.id, :chapter => @attr
           end.should_not change(Chapter.find_by_id(@chapter.id), key)
         end # each
       end # it
       
       it "should redirect the user back" do
-        put :update, :story_id => @story.id, :chapter => @attr
-        response.should redirect_to @referer
+        put :update,:id => @chapter, :story_id => @story.id, :chapter => @attr
+        response.should redirect_to edit_story_chapter_path(@story, @chapter)
       end # it
       
       it "should display a flash message" do
-        put :update, :story_id => @story.id, :chapter => @attr
-        flash[:notice].should =~ /fail/i
+        put :update,:id => @chapter, :story_id => @story.id, :chapter => @attr
+        flash[:error].should =~ /fail/i
       end # it
     end # fail wrong
   end # put requests
