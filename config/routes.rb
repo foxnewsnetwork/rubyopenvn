@@ -10,10 +10,13 @@ Rubyopenvn::Application.routes.draw do
 
   #had to include index to get test to work. How odd?
   #Seems like it works for now so leave it.
+# While this looks like a rspec / rails bug
+# experience says it's my fault
   resource :users do
     get :index
   end
 
+  match "i", :to => "pages#index"
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

@@ -14,31 +14,6 @@
 </style>
 <!-- Header javascript -->
 <% unless user_signed_in? %>
-  <script type="text/javascript">
-    $(document).ready( function() { 
-      $("#signupbox").hide();
-      $("#loginbox").hide();
-      $("#signupopener").click( function(){ 
-        $("#signupbox").show();
-      } ); // end click
-      $("#loginbox").click( function(){ 
-        $("#loginbox").show();
-      } ); // end click
-      $("#signupbox").focusout( function(){ 
-      	$("this").hide();
-      } ); // end focusout
-      $("#loginbox").focusout( function(){ 
-      	$("this").hide();
-      } ); // end focusout
-    } ); // end ready
-  </script>
-  <!-- Javascript boxes -->
-  <div id="signupbox" class="floatbox">
-    <%= render "users/partials/signup" %>
-  </div>
-  <div id="loginbox" class="floatbox">
-    <%= render "users/partials/login" %>
-  </div>
   <!-- standard header -->
 	<div class="navbar">
 		<div class="navbar-fixed-top">
@@ -50,10 +25,10 @@
 					</a>
 					<ul class="nav">
 						<li>
-							<%= link_to "Login", "#loginopener", :id => "loginopener" %>
+							<%= link_to "Login", new_user_session_path %>
 						</li>
 						<li>
-							<%= link_to "Signup", "#signupopener", :id => "signupopener" %>
+							<%= link_to "Signup", new_users_path %>
 						</li>
 					</ul>
 				</div>
@@ -72,7 +47,7 @@
 					</a>
 					<ul class="nav">
 						<li>
-							<%= link_to escape_javascript(current_user.name), user_path(current_user) %>
+							<%= link_to escape_javascript(current_user.name), users_path(current_user) %>
 						</li>
 						<li>
 							<%= link_to "Sign out", destroy_user_session_path, :method => :delete %>
