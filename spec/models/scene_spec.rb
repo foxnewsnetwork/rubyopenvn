@@ -30,6 +30,7 @@ describe Scene do
 end # end Scene
 
 
+
 # == Schema Information
 #
 # Table name: scenes
@@ -40,5 +41,6 @@ end # end Scene
 #  created_at :datetime
 #  updated_at :datetime
 #  number     :integer(4)
+#  owner_id   :integer(4)
 #
 

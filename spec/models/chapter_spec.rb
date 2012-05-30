@@ -73,6 +73,7 @@ describe Chapter do
 end # chapter
 
 
+
 # == Schema Information
 #
 # Table name: chapters
@@ -83,5 +84,6 @@ end # chapter
 #  created_at :datetime
 #  updated_at :datetime
 #  title      :string(255)     default("Untitled")
+#  owner_id   :integer(4)
 #
 

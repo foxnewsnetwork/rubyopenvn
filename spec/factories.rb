@@ -11,6 +11,17 @@ Factory.define :story do |story|
   story.summary "Alice writes model, controller, and integration tests to make sure her code isn't crap when it goes to production"
 end # story
 
+Factory.define :chapter do |chapter|
+  chapter.association :author
+  chapter.association :story
+  chapter.title { Factory.next(:name) }
+end # chapter
+
+Factory.define :scene do |scene|
+  scene.association :author
+  scene.association :chapter
+end # scene
+
 Factory.define :element do |element|
   include ActionDispatch::TestProcess
   element.metadata (0..30).map { |x| ("a".."z").map{ |y| y }[rand(26)] }.join

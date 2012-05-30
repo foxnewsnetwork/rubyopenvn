@@ -1,9 +1,14 @@
 class Scene < ActiveRecord::Base
   # relationships
+  belongs_to :author, :class_name => "User", :foreign_key => :owner_id
   belongs_to :chapter
   belongs_to :parent, :class_name => "Scene"
   has_many :children, :class_name => "Scene", :foreign_key => :parent_id
   has_many :scene_data, :class_name => "SceneData", :dependent => :destroy
+  
+  # Attributes
+  attr_accessible :number
+  
   # spawns children; use this instead of self.children.create
 	def spawn
 		child = self.children.create!
@@ -18,6 +23,7 @@ class Scene < ActiveRecord::Base
 end
 
 
+
 # == Schema Information
 #
 # Table name: scenes
@@ -28,5 +34,6 @@ end
 #  created_at :datetime
 #  updated_at :datetime
 #  number     :integer(4)
+#  owner_id   :integer(4)
 #
 

@@ -10,13 +10,19 @@ describe ScenesController do
     request.env['HTTP_REFERER'] = @referer
   end # before
   describe "get index" do
+    before(:each) do
+      @user = Factory(:user)
+      @story = Factory(:story, :author => @user)
+      @chapter = @story.chapters.create(:title => "Scenes controller test")
+      @scene = @chapter.scenes.create
+    end # before
     it "should be successful" do
-      get 'index', :story => @story.id, :chapter => @chapter.id
+      get 'index', :story_id => @story.id, :chapter_id => @chapter.id
       response.should be_success
     end # it
     it "should also do it in ajax" do
-      xhr :get, :index, :story => @story.id, :chapter => @chapter.id
-      response.should render_template("scenes/index.js.erb")
+      xhr :get, :index, :story_id => @story.id, :chapter_id => @chapter.id
+      response.should render_template("scenes/index")
     end    
   end # get index
   
@@ -24,8 +30,8 @@ describe ScenesController do
     login_user
     before(:each) do
       @story = Factory(:story, :author => @current_user)
-      @chapter = @story.chapters.create( :title => "stuff" )
-    end
+      @chapter = Factory(:chapter, :author => @current_user, :story => @story)
+    end # before
     it "should create" do
       lambda do
         xhr :post, :create, :story_id => @story.id, :chapter_id => @chapter.id
@@ -34,15 +40,15 @@ describe ScenesController do
     
     it "should render the create page" do
       xhr :post, :create, :story_id => @story.id, :chapter_id => @chapter.id
-      response.should render_template( "scenes/create.js.erb" )
+      response.should render_template( "scenes/create" )
     end # it
   end # successful post
   
-  describe "failed post" do
+  describe "failed post - anonymous" do
     before(:each) do
       @user = Factory(:user)
       @story = Factory(:story, :author => @user)
-      @chapter = @story.chapters.create( :title => "stuff" )
+      @chapter = Factory(:chapter, :author => @user, :story => @story)
     end
     it "should not create" do
       lambda do
@@ -52,97 +58,162 @@ describe ScenesController do
     
     it "should render the error page" do
       xhr :post, :create, :story_id => @story.id, :chapter_id => @chapter.id
-      response.should render_template( "scenes/error.js.erb" )
+      response.should render_template( "errors/flash" )
+    end # it
+  end # failed post
+  
+  describe "failed post - wrong" do
+    login_user
+    before(:each) do
+      @user = Factory(:user)
+      @story = Factory(:story, :author => @user)
+      @chapter = Factory(:chapter, :author => @user, :story => @story)
+    end
+    it "should not create" do
+      lambda do
+        xhr :post, :create, :story_id => @story.id, :chapter_id => @chapter.id
+      end.should_not change(Scene, :count)
+    end # it
+    
+    it "should render the error page" do
+      xhr :post, :create, :story_id => @story.id, :chapter_id => @chapter.id
+      response.should render_template( "errors/flash" )
     end # it
   end # failed post
   
   describe "put" do
-    before(:each) do
-      @scene = @chapter.scenes.create
-    end # before
     describe "successful" do
       login_user
       before(:each) do
+        @user = Factory(:user)
         @story = Factory(:story, :author => @current_user)
-        @chapter = @story.chapters.create( :title => "stuff" )
-        @scene = @chapter.scenes.create
-        @attr = { 
-          # Pending
-        }
+        @chapter = Factory(:chapter, :author => @current_user, :story => @story)
+        @scene = Factory(:scene, :author => @current_user, :chapter => @chapter)
+        @attr = { :number => rand(56) }
       end # before
       
+      # ATTN: This test won't pass for some reason. 3 cheers for whoever can get it to pass
       it "should update the scene" do
-        # PENDING
-      end
+        @attr.each do |key, val|
+          lambda do
+            xhr :put, :update, :story_id => @story.id, :chapter_id => @chapter.id, :id => @scene.id, :scene => @attr 
+          end.should change(Scene.find_by_id(@scene.id), key).to(val)
+        end  # each
+      end # it
       
       it "should render the view" do
-        xhr :put, :update, :story_id => @story.id, :chapter_id => @chapter.id, :scene_id => @scene.id, :scene => @attr
-        response.should render_template("scenes/update.js.erb")
+        xhr :put, :update, :story_id => @story.id, :chapter_id => @chapter.id, :id => @scene.id, :scene => @attr
+        response.should render_template("scenes/update")
       end # it
     end # successful 
     
-    describe "failed" do
+    describe "failed - wrong" do
       login_user
       before(:each) do
         @user = Factory(:user)
         @story = Factory(:story, :author => @user)
-        @chapter = @story.chapters.create( :title => "stuff" )
-        @scene = @chapter.scenes.create
-        @attr = { 
-          # PENDING
-        }
+        @chapter = Factory(:chapter, :author => @user, :story => @story)
+        @scene = Factory(:scene, :author => @user, :chapter => @chapter)
+        @attr = { :number => rand(56) }
       end # before
       it "should not change anything" do
         @attr.each do |key, val|
           lambda do
-            xhr :put, :update, :story_id => @story.id, :chapter_id => @chapter.id, :scene_id => @scene.id, :scene => @attr
+            xhr :put, :update, :story_id => @story.id, :chapter_id => @chapter.id, :id => @scene.id, :scene => @attr
           end.should_not change(Scene.find_by_id(@scene.id), key)
+          
         end # each
       end # it
-      
       it "should render the error flash message" do
-        xhr :put, :update, :story_id => @story.id, :chapter_id => @chapter.id, :scene_id => @scene.id
-        response.should render_template( "scenes/error.js.erb" )        
+        xhr :put, :update, :story_id => @story.id, :chapter_id => @chapter.id, :id => @scene.id
+        response.should render_template( "errors/flash" )        
       end # it
-    end # failed 
+    end # failed - wrong
+    describe "failed - anonymous" do
+      before(:each) do
+        @user = Factory(:user)
+        @story = Factory(:story, :author => @user)
+        @chapter = Factory(:chapter, :author => @user, :story => @story)
+        @scene = Factory(:scene, :author => @user, :chapter => @chapter)
+        @attr = { :number => rand(56) }
+      end # before
+      it "should not change anything" do
+        @attr.each do |key, val|
+          lambda do
+            xhr :put, :update, :story_id => @story.id, :chapter_id => @chapter.id, :id => @scene.id, :scene => @attr
+          end.should_not change(Scene.find_by_id(@scene.id), key)
+          
+        end # each
+      end # it
+      it "should render the error flash message" do
+        xhr :put, :update, :story_id => @story.id, :chapter_id => @chapter.id, :id => @scene.id
+        response.should render_template( "errors/flash" )        
+      end # it
+    end # failed - anonymous
   end # put 
   describe "delete" do
     describe "successful" do
       login_user
       before(:each) do
         @story = Factory(:story, :author => @current_user)
-        @chapter = @story.chapters.create( :title => "stuff" )
-        @scene = @chapter.scenes.create
+        @chapter = Factory(:chapter, :author => @current_user, :story => @story)
+        @scene = Factory(:scene, :author => @current_user, :chapter => @chapter)
       end # before
+      
       it "should change the db" do
         lambda do
-          xhr :delete, :destroy, :story_id => @story.id, :chapter_id => @chapter.id, :scene_id => @scene.id
+          xhr :delete, :destroy, :story_id => @story.id, :chapter_id => @chapter.id, :id => @scene.id
         end.should change(Scene, :count).by(-1)
       end # it
       
       it "should render the destroy view" do
-        xhr :delete, :destroy, :story_id => @story.id, :chapter_id => @chapter.id, :scene_id => @scene.id
-        response.should render_template( "scenes/destroy.js.erb" )        
+        xhr :delete, :destroy, :story_id => @story.id, :chapter_id => @chapter.id, :id => @scene.id
+        response.should render_template( "scenes/destroy" )        
       end # it
     end # successful
     
-    describe "failed" do
+    describe "failed - wrong" do
       login_user
       before(:each) do
         @user = Factory(:user)
         @story = Factory(:story, :author => @user)
         @chapter = @story.chapters.create( :title => "stuff" )
+        @chapter.author = @user
+        @chapter.save
         @scene = @chapter.scenes.create
+        @scene.author = @user
+        @scene.save
       end # before
       it "should not change the db" do
         lambda do
-          xhr :delete, :destroy, :story_id => @story.id, :chapter_id => @chapter.id, :scene_id => @scene.id
+          xhr :delete, :destroy, :story_id => @story.id, :chapter_id => @chapter.id, :id => @scene.id
         end.should_not change(Scene, :count)
       end # it
       it "should render the error flash message" do
-        xhr :put, :update, :story_id => @story.id, :chapter_id => @chapter.id, :scene_id => @scene.id
-        response.should render_template( "scenes/error.js.erb" )        
+        xhr :delete, :destroy, :story_id => @story.id, :chapter_id => @chapter.id, :id => @scene.id
+        response.should render_template( "errors/flash" )        
       end # it
     end # failed
+    describe "failed - anonymous" do
+      before(:each) do
+        @user = Factory(:user)
+        @story = Factory(:story, :author => @user)
+        @chapter = @story.chapters.create( :title => "stuff" )
+        @chapter.author = @user
+        @chapter.save
+        @scene = @chapter.scenes.create
+        @scene.author = @user
+        @scene.save
+      end # before
+      it "should not change the db" do
+        lambda do
+          xhr :delete, :destroy, :story_id => @story.id, :chapter_id => @chapter.id, :id => @scene.id
+        end.should_not change(Scene, :count)
+      end # it
+      it "should render the error flash message" do
+        xhr :delete, :destroy, :story_id => @story.id, :chapter_id => @chapter.id, :id => @scene.id
+        response.should render_template( "errors/flash" )        
+      end # it
+    end # failed - anonymous
   end # delete
 end # ScenesController

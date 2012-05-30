@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120528021742) do
+ActiveRecord::Schema.define(:version => 20120529214458) do
 
   create_table "chapters", :force => true do |t|
     t.integer  "story_id"
@@ -19,7 +19,10 @@ ActiveRecord::Schema.define(:version => 20120528021742) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.string   "title",      :default => "Untitled"
+    t.integer  "owner_id"
   end
+
+  add_index "chapters", ["owner_id"], :name => "index_chapters_on_owner_id"
 
   create_table "element_relationships", :force => true do |t|
     t.float    "width",      :default => 0.0
@@ -72,7 +75,10 @@ ActiveRecord::Schema.define(:version => 20120528021742) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "number"
+    t.integer  "owner_id"
   end
+
+  add_index "scenes", ["owner_id"], :name => "index_scenes_on_owner_id"
 
   create_table "stories", :force => true do |t|
     t.integer  "owner_id"

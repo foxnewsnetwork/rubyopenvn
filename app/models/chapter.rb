@@ -3,6 +3,7 @@ class Chapter < ActiveRecord::Base
   attr_accessible :title
   
   # relationships
+  belongs_to :author, :class_name => "User", :foreign_key => :owner_id
   belongs_to :story
   has_many :scenes, :dependent => :destroy 
   belongs_to :parent, :class_name => "Chapter"
@@ -31,6 +32,7 @@ class Chapter < ActiveRecord::Base
 end # Chapter
 
 
+
 # == Schema Information
 #
 # Table name: chapters
@@ -41,5 +43,6 @@ end # Chapter
 #  created_at :datetime
 #  updated_at :datetime
 #  title      :string(255)     default("Untitled")
+#  owner_id   :integer(4)
 #
 

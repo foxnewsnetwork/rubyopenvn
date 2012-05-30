@@ -9,6 +9,8 @@ class User < ActiveRecord::Base
   
   # Relationships
   has_many :stories, :foreign_key => :owner_id
+  has_many :chapters, :foreign_key => :owner_id
+  has_many :scenes, :foreign_key => :owner_id
   
   def self.authenticate(data)
     return nil if data.nil?
