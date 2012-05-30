@@ -146,6 +146,7 @@ DEPENDENCIES
   faker (~> 1.0.0)
   jquery-rails (>= 1.0.12)
   letter_opener
+  multi_json
   mysql2 (~> 0.2.17)
   nifty-generators
   paperclip (~> 3.0)

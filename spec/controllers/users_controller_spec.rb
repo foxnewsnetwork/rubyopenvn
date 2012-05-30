@@ -2,6 +2,7 @@ require 'spec_helper'
 require 'factories'
 
 describe UsersController do
+  render_views
   before(:each) do
     @referer = (0..55).map { |x| ("a".."z").map{ |y| y }[rand(26)] }.join
     request.env['HTTP_REFERER'] = @referer
@@ -27,11 +28,12 @@ describe UsersController do
     end
   end
 
+  #changed this test to make it a bit more useful
   describe "GET 'index'" do
     it "should be successful" do
       get 'index'
-      response.should be_success
-    end
+      assigns[:user].should == User.all
+     end
   end
   
   describe "creates" do
@@ -120,13 +122,29 @@ describe UsersController do
     end # before
     describe "successful" do
       login_user
+
+      #Something was wrong with the lambda timing...
+      #changed to have the same effect but is much uglier
       it "should allow for updates" do
+        #store old values to see if we've truly changed'
+        old_value = {}
         @attr.each do |key, val|
-          lambda do
-            put :update, :id => @current_user.id, :user => @attr
-          end.should change( User.find(@current_user), key).from(@current_user[key]).to(val)
+         old_value[key] = @current_user[key]
         end # each
+
+        #call update action
+        put :update, :id => @current_user.id, :user => @attr
+
+        #see if the stuffs been updated
+        @changed_user = User.find(@current_user.id)
+        @attr.each do |key,val|
+          @changed_user[key].should == @attr[key]
+          @changed_user[key].should_not == old_value[key]
+        end
+
       end # it
+
+
       it "should redirect to the user show page" do
         put :update, :id => @current_user.id, :user => @attr
         response.should redirect_to users_path(@current_user)

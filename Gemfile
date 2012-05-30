@@ -6,7 +6,7 @@ gem "paperclip", "~> 3.0"
 gem "thin", '1.3.1'
 gem 'jquery-rails', '>= 1.0.12'
 gem 'devise', '1.5.3'
-
+gem 'multi_json'
 group :development do
   gem 'rspec-rails' , '2.0.1'
   gem 'faker', '~>1.0.0'

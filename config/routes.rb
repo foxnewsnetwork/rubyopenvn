@@ -7,7 +7,12 @@ Rubyopenvn::Application.routes.draw do
   end # stories
 
   devise_for :users
-  resource :users
+
+  #had to include index to get test to work. How odd?
+  #Seems like it works for now so leave it.
+  resource :users do
+    get :index
+  end
 
   # The priority is based upon order of creation:
   # first created -> highest priority.
