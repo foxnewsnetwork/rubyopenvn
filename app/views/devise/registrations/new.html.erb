@@ -12,6 +12,7 @@
     </div>
     <div class="h-divider"></div>
     <div class="span5 box">
+      <%= devise_error_messages! %>
       <%= render "users/partials/signup", :user => @user %>
     </div>
     <div class="span6">
@@ -29,3 +30,5 @@
     </div>
   </div>
 </div>
+<%= debug(flash) if Rails.env.development? %>
+

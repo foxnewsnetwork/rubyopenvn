@@ -9,8 +9,33 @@ body {
 	width : 30em;
 	height : 15em;
 }
+.flash-message { 
+  margin-top : 3.5em;
+  width : 60%;
+  margin-left : 20%;
+}
+.flash-message-list-error { 
+  background-color : rgb(244, 234, 204);
+}
+.flash-message-list-notice { 
+  background-color : rgb(244, 244, 224);
+}
+.flash-message-list-success { 
+  background-color : rgb(204, 244, 204);
+}
 .hiddencontent { 
 	visibility : hidden;
+}
+#error_explanation { 
+  border : 2px solid red;
+	background-color : rgb(244, 234, 204);
+  padding : 0.75em;
+}
+#error_explanation h2{ 
+  font-size : 1.25em;
+}
+#error_explanation ul li{ 
+  font-size : 1.15em;
 }
 .flash { 
 	border : 2px solid yellow;
@@ -244,6 +269,50 @@ li.introduction h4 {
 	box-shadow : 0 1px 3px #888888;
 	margin-left : 10%;
 }	
+.h-divider{ 
+  width : 95%;
+  height : 0.15px;
+  margin-top : 4em;
+  margin-bottom : 2em;
+  border : 1px solid #999999;
+	box-shadow : 0 1px 3px #888888;
+}
+.box { 
+  padding : 1em;
+	box-shadow : 1px 0px 3px #888888;
+  border-radius : 6px;
+}
+.hardcore {
+  background-color : rgb( 240, 243, 255);
+  width : 30em;
+  height : 24em;
+  margin-top : 3em;
+  margin-left : 32%;
+  border : 1px solid rgb(200, 190, 185);
+  border-radius : 10px;
+}
+.colorful {
+  border : 1px solid rgb(200, 190, 185);
+  background-color : rgb(255, 240, 242);
+  box-shadow : 1px 0px 0px #888888;
+  padding-top : 0.25em;
+  padding-bottom : 0.25em;
+}
+.grimdark {
+  padding : 1.75em;
+  padding-top : 0.5em;
+  padding-bottom : 0.5em;
+  border : 1px solid rgb(100, 90, 85);
+  background-color : rgb(65, 55, 65);
+  box-shadow : 1px 0px 0px #888888;
+  color : rgb(240, 255, 240);
+}
+ul.signupform { 
+  list-style: none;
+}
+li.signupform { 
+  margin-top : 0.5em;
+}
 .highlightbox{ 
 	padding-top : 2em;
 	padding-bottom : 2em;
@@ -365,4 +434,14 @@ li.featuredtabs {
 }
 .pushedown { 
   margin-top : 5em;
+}
+.input-obtrusive { 
+  width : 25em;
+  height : 1.85em;
+}
+ul.h-list { 
+  list-style : none;
+}
+ul.h-list li{ 
+  display : inline-block;
 }

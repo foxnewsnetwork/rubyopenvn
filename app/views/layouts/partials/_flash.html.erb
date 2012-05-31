@@ -1,0 +1,11 @@
+<!--Flash display for HTML requests-->
+<% unless flash.nil? || flash.empty? %>
+  <div id="error_explanation" class="flash-message">
+    <% flash.each do |key, val| %>
+      <ul class="flash-message-list-<%= key %>">
+        <li class="flash-message-list"><%= val %></li>
+      </ul>
+    <% end %>
+  </div>
+<% end %>
+
