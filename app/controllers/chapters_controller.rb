@@ -62,14 +62,14 @@ class ChaptersController < ApplicationController
               format.html { redirect_to edit_story_chapter_path(@story, @chapter) }
             end # respond_to
           else
-            flash[:notice] = "Failed due to permissions conflict"
+            flash[:error] = "Failed due to permissions conflict"
             respond_to do |format|
               format.js
-              format.html { redirect_to :back }
+              format.html { redirect_to edit_story_chapter_path(@story, @chapter) }
             end # respond_to
           end # if
         else
-          flash[:notice] = "Failed because you should not be making anonymous changes to people's stories"
+          flash[:error] = "Failed because you should not be making anonymous changes to people's stories"
           respond_to do |format|
             format.js { render "errors/flash.js.erb" }
             format.html { redirect_to new_user_session_path }
