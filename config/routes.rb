@@ -6,17 +6,25 @@ Rubyopenvn::Application.routes.draw do
     end # chapters
   end # stories
 
+  
   devise_for :users
 
   #had to include index to get test to work. How odd?
   #Seems like it works for now so leave it.
 # While this looks like a rspec / rails bug
 # experience says it's my fault
-  resource :users do
-    get :index
-  end
-
-  match "i", :to => "pages#index"
+# After extensive testing, it seems resource is broken altogether
+# It can't be helped, at this rate, we will have to do it the old fashion way
+# Once again, is there a hero amongst us who can figure out what's wrong?
+  match "users", :to => "users#index", :as => :users, :via => :get
+  match "users", :to => "users#create", :via => :post
+  match "users/new", :to => "users#new", :as => :new_user, :via => :get
+  match "users/:id/edit", :to => "users#edit", :as => :edit_user, :via => :get
+  match "users/:id", :to => "users#show", :as => :user, :via => :get
+  match "users/:id", :to => "users#update", :via => :put
+  match "users/:id", :to => "users#delete", :via => :delete
+  resource :users
+    
   # The priority is based upon order of creation:
   # first created -> highest priority.
 
@@ -67,7 +75,7 @@ Rubyopenvn::Application.routes.draw do
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
   root :to => "pages#home"
-
+  match "i", :to => "pages#index"
   # See how all your routes lay out with "rake routes"
 
   # This is a legacy wild controller route that's not recommended for RESTful applications.

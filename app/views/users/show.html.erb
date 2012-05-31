@@ -1,44 +1,22 @@
-<!--Standard user show page-->
-<%= render "users/partials/toolbar" %>
 <div class="container">
   <div class="row">
-    <h1 class="centered" style="margin-top: 2%;">&raquo; <%= @user.name %></h1>
+    <div class="pushedown" style="margin-top : 5em;"></div>
   </div>
   <div class="row">
-    <div id="usercontent" class="centered">
-      <% case @usertab %>
-        <% when "feed" %>
-          <%= render "partials/feed" %>
-        <% when "team" %>
-          <%= render "partials/team" %>          
-        <% when "profile" %>
-          <%= render "partials/profile" %>        
-        <% when "update" %>
-          <%= render "partials/update" %>        
-        <% when "novel" %>
-          <%= render "partials/novel" %>        
-        <% default %>
-          <%= render "users/partials/featured" %>
+    <div class="span8">
+      <h1>
+        <%= image_tag "/images/upa.png", :alt => "#{@user.name}'s avatar", :class => "avatar" %>
+        <%= @user.name %>
+      </h1>
+    </div>
+    <div class="span4">
+      <% if @user.id == current_user.id %>
+        <p class="inline">
+          This is you!
+          <%= link_to "Edit your profile", edit_user_path(@user), :class => "btn" %>
+        </p>
       <% end %>
     </div>
   </div>
+  <div class="h-divider"></div>
 </div>
-include partials/toolbar.jade
-.container
-	.row
-		h1.centered(style="margin-top : 2%;") &raquo; #{player.name}
-	.row
-		#usercontent.centered
-			-if ( usertab )
-				- if ( usertab == "feed" )
-					include partials/feed.jade
-				- if ( usertab == "team" )
-					include partials/team.jade
-				- if ( usertab == "profile" )
-					include partials/profile.jade	
-				- if ( usertab == "update" )
-					include partials/update.jade
-				- if ( usertab == "novel" )
-					include partials/novel.jade
-			-else
-				include partials/featured.jade
