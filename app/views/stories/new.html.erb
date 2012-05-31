@@ -1,0 +1,38 @@
+<!-- New story page -->
+<div class="container">
+  <div class="row">
+    <div class="pushedown" style="margin-top : 3.5em;"></div>
+  </div>
+  <div class="row">
+    <%= form_for @story do |f| %>
+      <div class="span2">
+        <h2>Author</h2>
+        <h2>
+          <%= link_to image_tag( "/images/upa.png", :alt => "#{current_user.name}'s avatar", :class => "avatar"), user_path(current_user) %>
+          <%= current_user.name %>
+        </h3>
+      </div>
+      <div class="span3">
+        <h2>Story title</h2>
+        <%= f.text_field :title, :class => "input-obtrusive" %>
+      </div>
+      <div class="span12">
+        <p>Any great story needs a good name. But any name will do for now; you can always change it later.</p>
+      </div>
+      <div class="span12 h-divider" style="margin-top : 1em; margin-bottom : 1em;"></div>
+      <div class="span12">
+        <h2>Summary (optional)</h2>
+        <%= f.text_field :summary, :class => "input-obtrusive-large" %>
+      </div>
+      <div class="span12">
+        <h4>Public (not implemented yet)</h4>
+        <h4>Private (not implemented yet)</h4>
+      </div>
+      <div class="span12 h-divider" style="margin-top : 1em; margin-bottom : 1em;"></div>
+      <div class="span4">
+        <%= f.submit :submit, :value => "Create new story", :class => "btn btn-primary btn-large" %>
+      </div>
+    <% end %>
+  </div>
+</div>
+

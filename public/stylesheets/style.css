@@ -12,6 +12,9 @@
   font-weight:normal;
   font-style:normal;
 }
+.mini-icon-private-repo::before, .mega-icon-private-repo::before, .mini-icon-repo-forked::before, .mega-icon-repo-forked::before, .mini-icon-private-mirror::before, .mega-icon-private-mirror::before, .mini-icon-public-mirror::before, .mega-icon-public-mirror::before, .mini-icon-public-repo::before, .mega-icon-public-repo::before {
+  color: #666;
+}
 .mini-icon, .mega-icon {
   line-height: 1;
   font-family: 'Octicons Regular', github;
@@ -33,6 +36,12 @@
 }
 a:hover .mini-icon {
   color: #4183C4;
+}
+.mega-icon-public-repo::before {
+  content: "";
+}
+.mega-icon::before {
+  font-size: 32px;
 }
 body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
@@ -481,6 +490,10 @@ li.featuredtabs {
   width : 25em;
   height : 1.85em;
 }
+.input-obtrusive-large { 
+  width : 99.75%;
+  height : 1.85em;
+}
 ul.h-list { 
   list-style : none;
 }
@@ -507,4 +520,62 @@ img.avatar {
 .icontabs-infographic { 
   background-color : rgb(254,253,252);
   margin : 0.35em;
+}
+.btn-standard { 
+  width : 5em;
+}
+.social-count {
+  border: 1px solid #D4D4D4;
+  font-size: 11px;
+  padding: 6px 7px 5px;
+  line-height: 20px;
+  margin-left: 8px;
+  border-radius: 3px;
+  color: #333;
+  background-color: #FAFAFA;
+  position: relative;
+}
+.social-count:hover {
+  color: #4183C4;
+  cursor: pointer;
+  text-decoration: none;
+}
+.social-count::before {
+  content: "";
+  display: block;
+  width: 0;
+  height: 0;
+  border: 6px solid #D4D4D4;
+  border-color: transparent #D4D4D4 transparent transparent;
+  position: absolute;
+  right: 100%;
+  margin-right: 0;
+  top: 50%;
+  margin-top: -6px;
+}
+.social-count::after {
+  content: "";
+  display: block;
+  width: 0;
+  height: 0;
+  border: 6px solid #FAFAFA;
+  border-color: transparent #FAFAFA transparent transparent;
+  position: absolute;
+  right: 100%;
+  margin-right: -1px;
+  top: 50%;
+  margin-top: -6px;
+}
+ul.menubar { 
+  list-style : none;
+  margin-left : -0.25em;
+  margin-top : 1em;
+}
+ul.menubar li.menubar { 
+  display : inline;
+  margin-left : -0.35em;
+}
+.btn-menubar { 
+  height : 2em;
+  width : 10.05em;
 }

@@ -34,23 +34,59 @@ describe StoriesController do
   
   describe "Get 'edit'" do
     render_views
-    before(:each) do
-      @user = Factory(:user)
-      @story = Factory(:story, :author => @user )
-    end # before
+    describe "success" do
+      login_user
+      before(:each) do
+        @story = Factory(:story, :author => @current_user)
+      end # before
+      it "should redirect to the user-sign-in page" do
+        get 'edit', :id => @story
+        response.should be_success
+      end # it
+    end # success
+    describe "failure anonymous user" do
+      before(:each) do
+        @user = Factory(:user)
+        @story = Factory(:story, :author => @user )
+      end # before
+      it "should redirect to the sign-in page" do
+        get "edit", :id => @story
+        response.should redirect_to new_user_session_path
+      end # it
+    end # failure-anonymous
+    describe "failure wrong user" do
+      login_user
+      before(:each) do
+        @user = Factory(:user)
+        @story = Factory(:story, :author => @user )
+      end # before
+      it "should redirect back to the show page" do
+        get "edit", :id => @story
+        response.should redirect_to story_path(@story)
+      end # it
+      it "should display some sort of flash message" do
+        get "edit", :id => @story
+        flash[:error].should =~ /can/i
+      end # it
+    end # failure-wrong
     
-    it "should be successful" do
-      get 'edit', :id => @story
-      response.should be_success
-    end # it
   end # describe
   
   describe "Get 'new'" do
     render_views
-    it "should be successful" do
-      get 'new'
-      response.should be_success
-    end # it
+    describe "success" do
+      login_user
+      it "should be successful" do
+        get "new"
+        response.should be_successful
+      end # it
+    end # success
+    describe "failure - anonymous" do
+      it "should redirect to the signing page" do
+        get "new"
+        response.should redirect_to new_user_session_path
+      end # it
+    end # failure anonymous
   end # describe
   
   describe "failed post 'create'" do
@@ -105,12 +141,12 @@ describe StoriesController do
     
     it "should redirect to the correct story edit page" do
       post :create, :story => @attr
-      response.should redirect_to edit_story_path(assigns(:story))
+      response.should redirect_to story_path(assigns(:story))
     end # it
     
     it "should leave some sort of flash notice" do
       post :create, :story => @attr
-      flash[:notice].should =~ /success/i
+      flash[:success].should =~ /success/i
     end # it
   end # describe
   
