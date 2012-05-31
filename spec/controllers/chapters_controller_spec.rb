@@ -205,11 +205,13 @@ describe ChaptersController do
       before(:each) do
         @story = Factory(:story, :author => @current_user)
         @chapter = @story.chapters.create
+
         @attr = { :title => Factory.next(:random_string) }
       end # before
       
       # Once again, the lambda.should is broken, forcing me to uglifiy
       it "should change the title" do
+
         # lambda do
         #  put :update, :id => @chapter, :story_id => @story.id, :chapter => @attr
         # end.should change(@chapter, :title).from("Untitled").to(@attr[:title])
@@ -225,6 +227,7 @@ describe ChaptersController do
       end # it
       
       it "should display a flash message" do
+
         put :update, :id => @chapter, :story_id => @story.id, :chapter => @attr
         flash[:notice].should =~ /success/i
         flash[:error].should_not eq("Trevor is a fag")
@@ -236,6 +239,7 @@ describe ChaptersController do
         @story = Factory(:story, :author => @user)
         @chapter = @story.chapters.create
         @attr = { 
+
           :title => Factory.next(:random_string)
         }
       end # before
@@ -243,19 +247,22 @@ describe ChaptersController do
       it "should not change anything" do
         @attr.each do |key, val|
           lambda do 
-            put :update, :story_id => @story.id, :id => @chapter.id, :chapter => @attr
+            put :update,:id =>@chapter, :story_id => @story.id, :chapter => @attr
+
           end.should_not change(Chapter.find_by_id(@chapter.id), key)
         end # each
       end # it
       
       it "should redirect the user to the signin page" do
-        put :update, :story_id => @story.id, :id => @chapter.id, :chapter => @attr
+        put :update,:id => @chapter, :story_id => @story.id, :chapter => @attr
+
         response.should redirect_to new_user_session_path
       end # it
       
       it "should display a flash message" do
-        put :update, :story_id => @story.id, :id => @chapter.id, :chapter => @attr
-        flash[:notice].should =~ /fail/i
+        put :update, :id => @chapter, :story_id => @story.id, :chapter => @attr
+        flash[:error].should =~ /fail/i
+
       end # it
     end # fail anonymous
     describe "failure - wrong user" do
@@ -268,22 +275,26 @@ describe ChaptersController do
           :title => Factory.next(:random_string)
         }
       end # before
+
+       #Summary is not yet defined for a chapter. Need to migrate
       it "should not change anything" do
         @attr.each do |key, val|
           lambda do 
-            put :update, :story_id => @story.id, :id => @chapter.id, :chapter => @attr
+            put :update, :id => @chapter, :story_id => @story.id, :chapter => @attr
+
           end.should_not change(Chapter.find_by_id(@chapter.id), key)
         end # each
       end # it
       
       it "should redirect the user back" do
-        put :update, :story_id => @story.id, :id => @chapter.id, :chapter => @attr
-        response.should redirect_to @referer
+        put :update,:id => @chapter, :story_id => @story.id, :chapter => @attr
+        response.should redirect_to edit_story_chapter_path(@story, @chapter)
       end # it
       
       it "should display a flash message" do
-        put :update, :story_id => @story.id, :id => @chapter.id, :chapter => @attr
-        flash[:notice].should =~ /fail/i
+        put :update,:id => @chapter, :story_id => @story.id, :chapter => @attr
+        flash[:error].should =~ /fail/i
+
       end # it
     end # fail wrong
   end # put requests
