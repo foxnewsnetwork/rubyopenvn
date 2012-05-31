@@ -12,6 +12,7 @@
     <div class="span4 rightify">
       <% if current_user && @user.id == current_user.id %>
         <h4 class="inline" style="font-size : 1em;">
+
           This is you!
           <%= link_to "Edit your profile", edit_user_path(@user), :class => "btn" %>
         </h4>
@@ -58,7 +59,7 @@
           <li class="storyicontabs">
             <div class="icontabs-title">&raquo; <%= story.title %></div>
             <p><%= story.summary %></p>
-            Last update: <%= story.updated_at.to_date_readable_inspect %>
+            Last update: <%= story.updated_at.to_date.readable_inspect %>
             <div class="icontabs-infographic">Stuff goes here</div>
           </li>
         <% end %>

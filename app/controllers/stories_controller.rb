@@ -4,16 +4,36 @@ class StoriesController < ApplicationController
   # Get Section
   ######
   def show
-    
-  end
+    @usertab = params[:usertab]
+    @story = Story.find(params[:id])
+    @user = @story.author
+    respond_to do |format| 
+      format.js
+      format.html
+    end # respond_to
+  end # show
   
   def new
-  
-  end
+    if user_signed_in?
+      @story = Story.new
+    else
+      redirect_to new_user_session_path
+      return
+    end # if
+  end # new
   
   def edit
-  
-  end
+    unless user_signed_in?
+      redirect_to new_user_session_path
+      return
+    end # unless
+    @story = Story.find_by_id(params[:id])
+    unless current_user.id == @story.owner_id
+      flash[:error] = "Sorry buddy, but you can't be editing someone else's story directly. Try forking it instead!"
+      redirect_to story_path(@story)
+      return
+    end # unless
+  end # edit
   
   def index
   
@@ -37,11 +57,11 @@ class StoriesController < ApplicationController
     if user_signed_in?
     	@story = current_user.stories.new(params[:story])
     	success_flag = @story.save
-    	flash[:notice] = success_flag ? "Story successfully created" : "Story creation failled; blank"
+    	flash[:success] = success_flag ? "Story successfully created" : "Story creation failled; blank"
     	respond_to do |format|
     		format.js
     		format.html do
-    			redirect_to edit_story_path( @story ) if success_flag
+    			redirect_to story_path( @story ) if success_flag
     			redirect_to new_story_path unless success_flag
     		end # format.html
     	end # respond_to
