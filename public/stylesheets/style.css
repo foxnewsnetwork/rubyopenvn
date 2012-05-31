@@ -215,6 +215,12 @@ button.obtrusive {
 .centered { 
 	text-align : center;
 }
+.rightify { 
+  text-align : right;
+}
+.leftify { 
+  text-align : left;
+}
 .examples { 
 	color : #666666;
 }
@@ -270,9 +276,9 @@ li.introduction h4 {
 	margin-left : 10%;
 }	
 .h-divider{ 
-  width : 95%;
+  width : 100%;
   height : 0.15px;
-  margin-top : 4em;
+  margin-top : 2em;
   margin-bottom : 2em;
   border : 1px solid #999999;
 	box-shadow : 0 1px 3px #888888;
@@ -444,4 +450,25 @@ ul.h-list {
 }
 ul.h-list li{ 
   display : inline-block;
+}
+img.avatar { 
+  width : 40px;
+  height : 40px;
+}
+.inline { 
+  display : inline;
+}
+.storyicontabs {
+  background-color : rgb(175,175,180);
+  border : 1px solid rgb(135, 145, 135);
+  border-radius : 8px;
+}
+.icontabs-title { 
+  background-color : rgb(254,253,252);
+  border-top-left-radius : 8px;
+  border-top-right-radius : 8px;
+}
+.icontabs-infographic { 
+  background-color : rgb(254,253,252);
+  margin : 0.35em;
 }
