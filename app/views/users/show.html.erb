@@ -1,44 +1,78 @@
-<!--Standard user show page-->
-<%= render "users/partials/toolbar" %>
 <div class="container">
   <div class="row">
-    <h1 class="centered" style="margin-top: 2%;">&raquo; <%= @user.name %></h1>
+    <div class="pushedown" style="margin-top : 3.5em;"></div>
   </div>
   <div class="row">
-    <div id="usercontent" class="centered">
-      <% case @usertab %>
-        <% when "feed" %>
-          <%= render "partials/feed" %>
-        <% when "team" %>
-          <%= render "partials/team" %>          
-        <% when "profile" %>
-          <%= render "partials/profile" %>        
-        <% when "update" %>
-          <%= render "partials/update" %>        
-        <% when "novel" %>
-          <%= render "partials/novel" %>        
-        <% default %>
-          <%= render "users/partials/featured" %>
+    <div class="span8">
+      <h1>
+        <%= image_tag "/images/upa.png", :alt => "#{@user.name}'s avatar", :class => "avatar" %>
+        <%= @user.name %>
+      </h1>
+    </div>
+    <div class="span4 rightify">
+      <% if current_user && @user.id == current_user.id %>
+        <h4 class="inline" style="font-size : 1em;">
+          This is you!
+          <%= link_to "Edit your profile", edit_user_path(@user), :class => "btn" %>
+        </h4>
       <% end %>
     </div>
   </div>
+  <div class="span12 h-divider" style="margin-top : 1em; margin-left : -0.25em;"></div>
+  <div class="row">
+    <div class="span2">
+      <ul class="signup">
+        <% ["URL", "Group", "Location", "Member Since"].each do |k| %>
+          <li style="font-size : 1em; margin-bottom : 0.25em"><%= k %></li>
+        <% end %>
+      </ul>
+    </div>
+    <div class="span3">
+      <ul class="signup">
+        <% [ link_to( "#", "#"), "#", "#", @user.created_at.to_date.readable_inspect ].each do |k| %>
+          <li style="font-size : 1em; margin-bottom : 0.25em"><%= k %></li>
+        <% end %>
+      </ul>
+    </div>
+    <div class="span6">
+      <ul class="h-list">
+        <% { :readers => "#", :stories => @user.stories.count, :reading => "#" }.each do |key, val| %>
+          <li class="centered" style="margin-left : 3em;">
+            <h1 style="font-size : 3em;"><%= val %></h1>
+            <p style="font-size : 1.25em;"><%= key %></p>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
+  <div class="span12 h-divider" style="margin-top : 1em; margin-left : -0.25em; margin-bottom : 1em;"></div>
+  <div class="row">
+    <div class="span6">
+      <h3 class="inline">Stories</h3>
+      <h6 class="inline" style="float : right; margin-top : 0.25em;">
+        <%= link_to "New Story", new_story_path, :class => "btn btn-secondary" %>
+      </h6>
+      <!-- rendering stories tabs here -->
+      <ul class="signup">
+        <% @user.stories.each do |story| %>
+          <li class="storyicontabs">
+            <div class="icontabs-title">&raquo; <%= story.title %></div>
+            <p><%= story.summary %></p>
+            Last update: <%= story.updated_at.to_date_readable_inspect %>
+            <div class="icontabs-infographic">Stuff goes here</div>
+          </li>
+        <% end %>
+      </ul>
+    </div>
+    <div class="span6">
+      <h3>
+        Public Activity 
+        <a href="#">
+          <span class="mini-icon mini-icon-create"></span>
+        </a>
+      </h3>
+      <!-- Feed generation section -->
+      <h1>Not Implemented Yet!</h1>
+    </div>
+  </div>
 </div>
-include partials/toolbar.jade
-.container
-	.row
-		h1.centered(style="margin-top : 2%;") &raquo; #{player.name}
-	.row
-		#usercontent.centered
-			-if ( usertab )
-				- if ( usertab == "feed" )
-					include partials/feed.jade
-				- if ( usertab == "team" )
-					include partials/team.jade
-				- if ( usertab == "profile" )
-					include partials/profile.jade	
-				- if ( usertab == "update" )
-					include partials/update.jade
-				- if ( usertab == "novel" )
-					include partials/novel.jade
-			-else
-				include partials/featured.jade

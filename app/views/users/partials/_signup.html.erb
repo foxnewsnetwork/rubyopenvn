@@ -1,30 +1,35 @@
-<script type="text/javascript">
-  $(document).ready( function() { 
-    $("#user-signup-form").submit( function() { 
-      alert("submitted");
-      $( "submit-signup-form" ).attr("disabled", "disabled");
-      $( "submit-signup-form" ).attr("value", "Process...");
-      return true;
-    } ); // $().submit
-  } ); // document.ready
-</script>
 <!-- User signup form -->
 <%= form_tag users_path, :method => "post", :id => "user-signup-form" do %>
   <ul class="signupform">
     <li class="signupform">
-      <%= text_field_tag "user[name]", "", :placeholder => "Name..." %>
+      <h4>Username</h4>
     </li>
     <li class="signupform">
-      <%= email_field_tag "user[email]", "", :placeholder => "Email..." %>
+      <%= text_field_tag "user[name]", "", :placeholder => "Name..." , :class => "input-obtrusive"%>
     </li>
     <li class="signupform">
-      <%= password_field_tag "user[password]", "", :placeholder => "Password..." %>
+      <h4>Email</h4>
     </li>
     <li class="signupform">
-      <%= password_field_tag "user[password_confirmation]", "", :placeholder => "Password again..." %>
+      <%= email_field_tag "user[email]", "", :placeholder => "Email..." , :class => "input-obtrusive"%>
     </li>
     <li class="signupform">
-      <%= submit_tag "", :value => "Submit", :id => "submit-signup-form" %>
+      <h4>Password</h4>
+    </li>
+    <li class="signupform">
+      <%= password_field_tag "user[password]", "", :placeholder => "Password..." , :class => "input-obtrusive"%>
+    </li>
+    <li class="signupform">
+      <h4>Confirm Password</h4>
+    </li>
+    <li class="signupform">
+      <%= password_field_tag "user[password_confirmation]", "", :placeholder => "Password again..." , :class => "input-obtrusive"%>
+    </li>
+    <li class="signupform box colorful">
+      <h6>By clicking on "Create an account" below, you are agreeing to the Terms of Service and the Privacy Policy.</h6>
+    </li>
+    <li class="signupform" style="text-align: right;">
+      <%= submit_tag "", :value => "Create an account", :id => "submit-signup-form", :class => "btn btn-primary btn-large" %>
     </li>
   </ul>
 <% end %>  
