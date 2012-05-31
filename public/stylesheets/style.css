@@ -1,3 +1,39 @@
+@font-face {
+  font-family :'Octicons Regular';
+  src : url("/fonts/octicons-regular-webfont.eot");
+  src : url("/fonts/octicons-regular-webfont.eot")
+    format("embedded-opentype"),
+    url("/fonts/octicons-regular-webfont.woff")
+    format("woff"),
+    url("/fonts/octicons-regular-webfont.ttf") 
+    format("truetype"),
+    url("/fonts/octicons-regular-webfont.svg") 
+    format("svg");
+  font-weight:normal;
+  font-style:normal;
+}
+.mini-icon, .mega-icon {
+  line-height: 1;
+  font-family: 'Octicons Regular', github;
+  font-weight: normal;
+  font-style: normal;
+  display: inline-block;
+  text-decoration: inherit;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  text-decoration: none;
+}
+.mini-icon {
+  height: 18px;
+  line-height: 18px;
+  font-size: 16px;
+}
+.mini-icon-create::before {
+  content: "";
+}
+a:hover .mini-icon {
+  color: #4183C4;
+}
 body {
   font: 14px "Lucida Grande", Helvetica, Arial, sans-serif;
 }
