@@ -8,7 +8,10 @@
       <%= render "stories/partials/titlebar" %>
     </div>
     <div class="span4 rightify">
-      <%= link_to "Back to the reading room", story_path(@story), :class => "btn" %>
+      <a href="<%= story_path(@story) %>" class="btn">
+        <span class="mini-icon mini-icon-reference"></span>
+        Back to the reading room
+      </a>
     </div>
     <div class="span12">
       <div class="seperator" style="margin-top : 1em;">

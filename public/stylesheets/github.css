@@ -1,0 +1,46 @@
+ @font-face {
+  font-family :'Octicons Regular';
+  src : url("/fonts/octicons-regular-webfont.eot");
+  src : url("/fonts/octicons-regular-webfont.eot")
+    format("embedded-opentype"),
+    url("/fonts/octicons-regular-webfont.woff")
+    format("woff"),
+    url("/fonts/octicons-regular-webfont.ttf") 
+    format("truetype"),
+    url("/fonts/octicons-regular-webfont.svg") 
+    format("svg");
+  font-weight:normal;
+  font-style:normal;
+}
+.mini-icon-private-repo::before, .mega-icon-private-repo::before, .mini-icon-repo-forked::before, .mega-icon-repo-forked::before, .mini-icon-private-mirror::before, .mega-icon-private-mirror::before, .mini-icon-public-mirror::before, .mega-icon-public-mirror::before, .mini-icon-public-repo::before, .mega-icon-public-repo::before {
+  color: #666;
+}
+.mini-icon, .mega-icon {
+  line-height: 1;
+  font-family: 'Octicons Regular', github;
+  font-weight: normal;
+  font-style: normal;
+  display: inline-block;
+  text-decoration: inherit;
+  line-height: 1;
+  -webkit-font-smoothing: antialiased;
+  text-decoration: none;
+}
+.mini-icon {
+  height: 18px;
+  line-height: 18px;
+  font-size: 16px;
+}
+.mega-icon::before {
+  font-size: 32px;
+}
+
+a:hover .mini-icon {
+  color: #4183C4;
+}
+.mini-icon-public-repo::before, .mega-icon-public-repo::before {
+  content: "";
+}
+.mini-icon-create::before, .mega-icon-public-repo::before {
+  content: "";
+}
