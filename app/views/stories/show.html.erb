@@ -8,7 +8,9 @@
       <%= render "stories/partials/titlebar" %>
     </div>
     <div class="span4 rightify">
-      <%= link_to "Edit", edit_story_path(@story), :class => "btn btn-standard" %>
+      <% if user_signed_in? && current_user.id == @user.id %>
+        <%= link_to "Edit", edit_story_path(@story), :class => "btn btn-standard" %>
+      <% end %>
       <%= link_to "Read", "#", :class => "btn btn-standard" %>
       <%= link_to "#", "#", :class => "social-count js-count-social" %>
     </div>

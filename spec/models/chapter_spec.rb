@@ -18,6 +18,21 @@ describe Chapter do
       @chap2.parent.should eql(@chap)
     end # it
     
+    it "should spawn chapters that correctly reference the parent" do
+      @parent = Factory(:chapter, :story => @story, :author => @user)
+      @child = @parent.children.create
+      @child.author.should eq(@parent.author)
+      @child.story.should eq(@parent.story)
+      @child.parent.should eq(@parent)
+    end # it
+    
+    it "should spawn children with the spawn function" do
+      @parent = Factory(:chapter, :author => @user, :story => @story)
+      @child = @parent.spawn
+      @child.author.should eq(@parent.author)
+      @child.parent.should eq(@parent)
+    end # it
+    
     it "should let a story pull out all its chapters" do
       @c1 = @story.chapters.create( :title => "chapter 1" )
       @c2 = @c1.spawn( :title => "chapter 2" )

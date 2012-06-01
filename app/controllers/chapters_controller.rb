@@ -25,8 +25,15 @@ class ChaptersController < ApplicationController
     if user_signed_in?
       @story = Story.find_by_id(params[:story_id])
       if @story.owner_id == current_user.id
-        @chapter = @story.chapters.create!(params[:chapter])
-        flash[:notice] = "New chapter creation successful"
+        unless params[:chapter].nil?
+          @parent = Chapter.find_by_id(params[:chapter][:parent]) unless params[:chapter][:parent].nil?
+        end # unless
+        if @parent.nil?
+          @chapter = @story.chapters.create!(params[:chapter])
+        else
+          @chapter = @parent.spawn(params[:chapter])
+        end # if
+        flash[:success] = "New chapter creation successful"
         respond_to do |format|
           format.js 
           format.html { redirect_to edit_story_chapter_path(@story, @chapter) }

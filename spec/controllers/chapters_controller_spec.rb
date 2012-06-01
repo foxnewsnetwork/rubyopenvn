@@ -37,6 +37,26 @@ describe ChaptersController do
       request.env['HTTP_REFERER'] = @referer
     end # before
     
+    describe "successful spawning" do
+      login_user
+      before(:each) do
+        @story = Factory(:story, :author => @current_user)
+        @chapter = Factory(:chapter, :author => @current_user, :story => @story)
+      end # before
+      
+      it "should successful create a chapter" do
+        lambda do
+          post :create, :story_id => @story.id, :chapter => { :parent => @chapter.id }
+        end.should change(Chapter, :count).by(1)
+      end # it
+      
+      it "should successful do it in ajax also" do
+        lambda do
+          xhr :post, :create, :story_id => @story.id, :chapter => { :parent => @chapter.id }
+        end.should change(Chapter, :count).by(1)
+      end # it
+    end # successful spanwing
+    
     describe "successful create" do
       login_user
       before(:each) do
@@ -60,7 +80,7 @@ describe ChaptersController do
 
       it "should should show a flash message" do
         post :create, :story_id => @story.id
-        flash[:notice].should == "New chapter creation successful"
+        flash[:success].should == "New chapter creation successful"
       end # it
     end # successful create
     
@@ -69,6 +89,12 @@ describe ChaptersController do
         @user = Factory(:user)
         @story = Factory(:story, :author => @user)
       end # before
+      
+      it "should not change anything even with ajax" do
+        lambda do
+          xhr :post, :create, :story_id => @story.id
+        end.should_not change(Chapter, :count)
+      end # it
       
       it "should not change anything" do
         lambda do 
@@ -79,6 +105,11 @@ describe ChaptersController do
       it "should redirect to login path" do
         post :create, :story_id => @story.id
         response.should redirect_to new_user_session_path
+      end # it
+      
+      it "should render the flash error page when ajax" do
+        xhr :post, :create, :story_id => @story.id
+        response.should render_template "errors/flash"
       end # it
       
       it "should display some sort of flash message" do
@@ -97,6 +128,17 @@ describe ChaptersController do
         lambda do 
           post :create, :story_id => @story.id
         end.should_not change(Chapter, :count)
+      end # it
+      
+      it "should not change anything even with ajax" do
+        lambda do
+          xhr :post, :create, :story_id => @story.id
+        end.should_not change(Chapter, :count)
+      end # it
+      
+      it "should render the flash error page when ajax" do
+        xhr :post, :create, :story_id => @story.id
+        response.should render_template "errors/flash"
       end # it
       
       it "should redirect to login path" do

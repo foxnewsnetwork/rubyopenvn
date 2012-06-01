@@ -7,16 +7,26 @@ class Chapter < ActiveRecord::Base
   belongs_to :story
   has_many :scenes, :dependent => :destroy 
   belongs_to :parent, :class_name => "Chapter"
-  has_many :children, :class_name => "Chapter", :foreign_key => :parent_id
+  has_many :children, :class_name => "Chapter", :foreign_key => :parent_id do 
+    def create(*data)
+      chapter = Chapter.new(data)
+      chapter.story_id = proxy_owner.story_id
+      chapter.owner_id = proxy_owner.owner_id
+      chapter.parent_id = proxy_owner.id
+      chapter.save
+      return chapter
+    end # create
+  end # has_many
 
 	# spawns children; use this instead of self.children.create
-	def spawn(data)
+	def spawn(*data)
 		child = self.children.create!(data)
 		child.story_id = self.story_id
+    child.owner_id = self.owner_id
 		child.save
 		return child
 	end # spawn
-	
+  
 	def dirty_jsonify
     sids = self.scenes # 1
     sdids = SceneData.where(:id => sids) # 2

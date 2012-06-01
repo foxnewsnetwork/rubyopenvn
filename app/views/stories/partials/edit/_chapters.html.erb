@@ -9,7 +9,7 @@
   <% end %>
 <% else %>
   <div>
-    <%= form_tag story_chapters_path(@story), :method => :post, :class => "centered" do %>
+    <%= form_tag story_chapters_path(@story), :method => :post, :class => "centered", :remote => true do %>
       <%= hidden_field_tag "chapter[parent]", @story.chapters.last.id %>
       <button type="submit" class="btn">
         <span class="mega-icon mega-icon-add"></span>
@@ -22,7 +22,7 @@
       <li class="chaptericontabs" style="margin-left : 2em;">
         <ul class="chapterinternals">
           <li class="chapterinternals">
-            <%= form_tag story_chapters_path(@story), :method => :post, :style => "width : 10em;" do %>
+            <%= form_tag story_chapters_path(@story), :method => :post, :style => "width : 10em;", :remote => true do %>
               <%= hidden_field_tag "chapter[parent]", chapter.id %>
               <button type="submit" class="btn">
                 <span class="mega-icon mega-icon-branch-create"></span>
@@ -32,7 +32,7 @@
           </li>
           <li class="chapterinternals">
             <div class="chaptericon box-form">
-              <%= form_for story_chapter_path(@story, chapter), :method => :put, :class => "box-form" do |f| %>
+              <%= form_for [@story, chapter], :method => :put, :class => "box-form", :remote => true do |f| %>
                 <div class="icontabs-title" style="margin-left : -0.7em;">
                   <a href="<%= story_chapter_path(@story, chapter)%>">
                     <span class="mini-icon mini-icon-create"></span>

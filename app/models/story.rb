@@ -3,7 +3,15 @@ class Story < ActiveRecord::Base
   
   # relationships (and anonymous modules)
   belongs_to :author, :class_name => "User", :foreign_key => :owner_id
-  has_many :chapters 
+  has_many :chapters do
+    def create(*data)
+      chapter = Chapter.new(data)
+      chapter.owner_id = proxy_owner.owner_id
+      chapter.story_id = proxy_owner.id
+      chapter.save
+      return chapter
+    end # create
+  end # has_many
   
   validates :title, :presence => true  
 end

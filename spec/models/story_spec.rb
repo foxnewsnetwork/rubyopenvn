@@ -25,7 +25,23 @@ describe Story do
     	@user.stories.should include(@s1, @s2, @s3)
     end # it
   end # story creation
-  
+  describe "chapter association" do
+    before(:each) do
+      @user = Factory(:user)
+      @story = Factory(:story, :author => @user)
+    end # before
+    
+    it "should create a child chapter" do
+      @chapter = @story.chapters.create
+      @chapter.should_not be_nil
+    end # it
+    
+    it "the child should have the appropriate properties" do
+      @chapter = @story.chapters.create
+      @chapter.author.should eq(@story.author)
+      @chapter.story.should eq(@story)
+    end # it
+  end # chapter association 
 end # end Story
 
 
