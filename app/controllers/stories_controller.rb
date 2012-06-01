@@ -27,12 +27,19 @@ class StoriesController < ApplicationController
       redirect_to new_user_session_path
       return
     end # unless
+    @usertab = params[:usertab]
     @story = Story.find_by_id(params[:id])
+    @user = @story.author
     unless current_user.id == @story.owner_id
       flash[:error] = "Sorry buddy, but you can't be editing someone else's story directly. Try forking it instead!"
       redirect_to story_path(@story)
       return
     end # unless
+    
+    respond_to do |format| 
+      format.js
+      format.html
+    end # respond_to
   end # edit
   
   def index

@@ -1,0 +1,38 @@
+<!-- Story edit page -->
+<div class="container">
+  <div class="row">
+    <div class="pushedown" style="margin-top : 3.5em;"></div>
+  </div>
+  <div class="row">
+    <div class="span8">
+      <%= render "stories/partials/titlebar" %>
+    </div>
+    <div class="span4 rightify">
+      <%= link_to "Back to the reading room", story_path(@story), :class => "btn" %>
+    </div>
+    <div class="span12">
+      <div class="seperator" style="margin-top : 1em;">
+        <h5 class="inline"><%= link_to @story.title, story_path(@story) %></h5>
+        <span class="separator">→</span>
+        <h7 class="inline">Story Administration</h7>
+      </div>
+    </div>
+  </div>
+  <div class="row" style="margin-top : 1em;">
+    <div class="span2" id="vbar">
+      <%= render "stories/partials/edit/vbar" %>
+    </div>
+    <div class="span10" id="usertab">
+      <% case @usertab %>
+        <% when "contributors" %>
+          <%= render "stories/partials/edit/contributors" %>
+        <% when "chapters" %>
+          <%= render "stories/partials/edit/chapters" %>
+        <% when "artwork" %>
+          <%= render "stories/partials/edit/artwork" %>
+        <% else %>
+          <%= render "stories/partials/edit/options" %>
+      <% end %>
+    </div>
+  </div>
+</div>

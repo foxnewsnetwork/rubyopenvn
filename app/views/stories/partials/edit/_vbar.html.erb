@@ -1,0 +1,12 @@
+<ul class="vbar">
+  <% ["Options", "Contributors", "Chapters", "Artwork"].each do |k| %>
+    <% if @usertab.nil? && k == "Options" %>
+      <li class="vbar"><h5><%= link_to k, "?usertab=#{k.downcase}", :class => "btn vbar btn-primary", :remote => true %></h5></li>
+    <% elsif @usertab == k.downcase %>
+      <li class="vbar"><h5><%= link_to k, "?usertab=#{k.downcase}", :class => "btn vbar btn-primary", :remote => true %></h5></li>
+    <% else %>
+      <li class="vbar"><h5><%= link_to k, "?usertab=#{k.downcase}", :class => "btn vbar", :remote => true %></h5></li>
+    <% end %>
+  <% end %>
+</ul>
+

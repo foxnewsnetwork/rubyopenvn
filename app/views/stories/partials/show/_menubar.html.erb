@@ -1,6 +1,10 @@
 <ul class="menubar">
   <% ["Splash", "Reviews", "Artwork", "Issues", "Forks", "Credits"].each do |k| %>
-    <% if @usertab.nil? || @usertab == k.downcase %>
+    <% if @usertab.nil? && k == "Splash" %>
+      <li class="menubar"><h3 style="display: inline;">
+        <%= link_to k, "#", :class => "btn btn-menubar btn-large", :remote => true %>
+      </h3></li>
+    <% elsif @usertab == k.downcase %>
       <li class="menubar"><h3 style="display: inline;">
         <%= link_to k, "#", :class => "btn btn-menubar btn-large", :remote => true %>
       </h3></li>

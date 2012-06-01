@@ -5,13 +5,10 @@
   </div>
   <div class="row">
     <div class="span8">
-      <h2>
-        <span class="mega-icon mega-icon-public-repo"></span>
-        <%= link_to @user.name, user_path(@user) %> &raquo; <%= link_to @story.title, story_path(@story) %>
-      </h2>
+      <%= render "stories/partials/titlebar" %>
     </div>
-    <div class="span4">
-      <%= link_to "Manage", "#", :class => "btn btn-standard" %>
+    <div class="span4 rightify">
+      <%= link_to "Edit", edit_story_path(@story), :class => "btn btn-standard" %>
       <%= link_to "Read", "#", :class => "btn btn-standard" %>
       <%= link_to "#", "#", :class => "social-count js-count-social" %>
     </div>
@@ -24,17 +21,17 @@
   <div class="row" id="usertab">
     <% case @usertab %>
       <% when "reviews" %>
-        <%= render "stories/partials/reviews" %>
+        <%= render "stories/partials/show/reviews" %>
       <% when "artwork" %>
-        <%= render "stories/partials/artwork" %>
+        <%= render "stories/partials/show/artwork" %>
       <% when "issues" %>
-        <%= render "stories/partials/issues" %>
+        <%= render "stories/partials/show/issues" %>
       <% when "forks" %>
-        <%= render "stories/partials/forks" %>
+        <%= render "stories/partials/show/forks" %>
       <% when "credits" %>
-        <%= render "stories/partials/credits" %>
+        <%= render "stories/partials/show/credits" %>
       <% else %>
-        <%= render "stories/partials/splash" %>
+        <%= render "stories/partials/show/splash" %>
     <% end %>
   </div>
 </div>
