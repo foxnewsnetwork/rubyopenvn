@@ -6,17 +6,20 @@ describe UsersController do
   before(:each) do
     @referer = (0..55).map { |x| ("a".."z").map{ |y| y }[rand(26)] }.join
     request.env['HTTP_REFERER'] = @referer
+
+    @existing_user = Factory(:user)
+
   end # before
   describe "GET 'show'" do
     it "should be successful" do
-      get 'show'
+      get 'show', :id => @existing_user
       response.should be_success
     end
   end
 
   describe "GET 'edit'" do
     it "should be successful" do
-      get 'edit'
+      get 'edit',:id => @existing_user
       response.should be_success
     end
   end
