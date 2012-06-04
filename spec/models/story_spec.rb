@@ -46,15 +46,20 @@ end # end Story
 
 
 
+
 # == Schema Information
 #
 # Table name: stories
 #
-#  id         :integer(4)      not null, primary key
-#  owner_id   :integer(4)
-#  created_at :datetime
-#  updated_at :datetime
-#  title      :string(255)     default("Untitled")
-#  summary    :string(255)     default("Unwritten")
+#  id                 :integer(4)      not null, primary key
+#  owner_id           :integer(4)
+#  created_at         :datetime
+#  updated_at         :datetime
+#  title              :string(255)     default("Untitled")
+#  summary            :string(255)     default("Unwritten")
+#  cover_file_name    :string(255)
+#  cover_content_type :string(255)
+#  cover_file_size    :integer(4)
+#  cover_updated_at   :datetime
 #
 

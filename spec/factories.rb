@@ -6,15 +6,19 @@ Factory.define :user do |user|
 end # user
 
 Factory.define :story do |story|
+  include ActionDispatch::TestProcess
   story.association :author
   story.title "Alice in Testland"
   story.summary "Alice writes model, controller, and integration tests to make sure her code isn't crap when it goes to production"
+  story.cover fixture_file_upload(Rails.root + 'spec/pics/pic0.png', "image/png")
 end # story
 
 Factory.define :chapter do |chapter|
+  include ActionDispatch::TestProcess
   chapter.association :author
   chapter.association :story
   chapter.title { Factory.next(:name) }
+  chapter.cover fixture_file_upload(Rails.root + 'spec/pics/pic0.png', "image/png")
 end # chapter
 
 Factory.define :scene do |scene|

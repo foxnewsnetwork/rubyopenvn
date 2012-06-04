@@ -7,5 +7,14 @@
     </div>
   </div>
 <% else %>
-
+  <div class="vn-splash">
+    <div class="vn-logo" id="vn-logo">
+      <h1>Cover-page logo goes here</h1>
+      <ul class="vn-buttons">
+        <% ["Start", "Load"].each do |k| %>
+          <li><button class="btn" id="<%= k.downcase %>"><%= k %></button></li>
+        <% end %>
+      </ul>
+    </div>
+  </div>
 <% end %>

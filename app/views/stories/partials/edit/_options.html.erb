@@ -1,1 +1,10 @@
-edit options
+<h2>Story Options</h2>
+<%= form_for @story, :method => :put, :html => { :multipart => true } do |f| %>
+  <h4>Story title</h4>
+  <%= f.text_field :title %>
+  <h4>Story summary</h4>
+  <%= f.text_field :summary %>
+  <h4>Cover logo (png, gif only)</h4>
+  <%= f.file_field :cover %>
+  <%= f.submit :submit, :class => "btn btn-large" %>
+<% end %>

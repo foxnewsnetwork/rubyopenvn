@@ -242,6 +242,54 @@ describe ChaptersController do
       @referer = oo
       request.env['HTTP_REFERER'] = @referer
     end # before
+    describe "successful - file ul" do
+      login_user
+      before(:each) do
+        @story = Factory(:story, :author => @current_user)
+        @chapter = @story.chapters.create
+        @attr = { 
+          :title => Factory.next(:random_string),
+          :cover => fixture_file_upload("spec/pics/pic0.png", "image/png")
+        }
+      end # before
+      
+      it "should change the database" do
+        put :update, :story_id => @story.id, :id => @chapter.id, :chapter => @attr
+        chapter = assigns(:chapter)
+        chapter.cover.url.should_not =~ /missing/i
+      end # it
+      it "should change the database xhr" do
+        xhr :put, :update, :story_id => @story.id, :id => @chapter.id, :chapter => @attr
+        chapter = assigns(:chapter)
+        chapter.cover.url.should_not =~ /missing/i
+      end # it
+    end # successful - file ul
+    describe "failure - bad file" do
+      before(:each) do
+        @types = ['html', 'image', 'xml', 'json', 'bson']
+        @formats = ['jpg', 'tiff', 'fag','ass', 'trevor', 'likes','dicks','bmp','text','css','binary','hex']
+        @attr = {
+          :title => Factory.next(:random_string),
+          :cover => fixture_file_upload("spec/pics/pic0.png", @types[rand(@types.length)] + "/" + @formats[rand(@formats.length)])
+        }
+        @story = Factory(:story, :author => @current_user)
+        @chapter = Factory(:chapter, :author => @current_user, :story => @story)
+      end # before
+      it "should not change the db" do
+        @attr.each do |key, value|
+          lambda do
+            put :update, :story_id => @story.id, :id => @chapter.id, :chapter => @attr
+          end.should_not change(Chapter.find(@chapter), key)
+        end # each
+      end # it
+      it "should not change the db xhr" do
+        @attr.each do |key, value|
+          lambda do
+            xhr :put, :update, :story_id => @story.id, :id => @chapter.id, :chapter => @attr
+          end.should_not change(Chapter.find(@chapter), key)
+        end # each
+      end # it
+    end # failure - bad file
     describe "successful" do
       login_user
       before(:each) do

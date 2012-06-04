@@ -11,15 +11,19 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120529214458) do
+ActiveRecord::Schema.define(:version => 20120601234103) do
 
   create_table "chapters", :force => true do |t|
     t.integer  "story_id"
     t.integer  "parent_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "title",      :default => "Untitled"
+    t.string   "title",              :default => "Untitled"
     t.integer  "owner_id"
+    t.string   "cover_file_name"
+    t.string   "cover_content_type"
+    t.integer  "cover_file_size"
+    t.datetime "cover_updated_at"
   end
 
   add_index "chapters", ["owner_id"], :name => "index_chapters_on_owner_id"
@@ -84,8 +88,12 @@ ActiveRecord::Schema.define(:version => 20120529214458) do
     t.integer  "owner_id"
     t.datetime "created_at"
     t.datetime "updated_at"
-    t.string   "title",      :default => "Untitled"
-    t.string   "summary",    :default => "Unwritten"
+    t.string   "title",              :default => "Untitled"
+    t.string   "summary",            :default => "Unwritten"
+    t.string   "cover_file_name"
+    t.string   "cover_content_type"
+    t.integer  "cover_file_size"
+    t.datetime "cover_updated_at"
   end
 
   create_table "users", :force => true do |t|

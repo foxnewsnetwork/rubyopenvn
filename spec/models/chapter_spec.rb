@@ -1,6 +1,12 @@
 require 'spec_helper'
 
 describe Chapter do
+  describe "cover page uploading" do
+    before(:each) do
+      @user = Factory(:user)
+    end # before
+    
+  end # cover
   describe "Creation" do
     before(:each) do
       @user = User.create!( :name => "Test1", :email => "test@test.com", :password => "testtest" )
@@ -89,16 +95,21 @@ end # chapter
 
 
 
+
 # == Schema Information
 #
 # Table name: chapters
 #
-#  id         :integer(4)      not null, primary key
-#  story_id   :integer(4)
-#  parent_id  :integer(4)
-#  created_at :datetime
-#  updated_at :datetime
-#  title      :string(255)     default("Untitled")
-#  owner_id   :integer(4)
+#  id                 :integer(4)      not null, primary key
+#  story_id           :integer(4)
+#  parent_id          :integer(4)
+#  created_at         :datetime
+#  updated_at         :datetime
+#  title              :string(255)     default("Untitled")
+#  owner_id           :integer(4)
+#  cover_file_name    :string(255)
+#  cover_content_type :string(255)
+#  cover_file_size    :integer(4)
+#  cover_updated_at   :datetime
 #
 

@@ -89,6 +89,33 @@ describe StoriesController do
     end # failure anonymous
   end # describe
   
+  describe "post file upload" do
+    before(:each) do
+      @referer = Factory.next(:random_string)
+    end # before
+    describe "failure" do
+      before(:each) do
+        @attr = {
+          :title => Factory.next(:random_string) ,
+          :summary => Factory.next(:random_string) ,
+          :cover => fixture_file_upload("spec/pics/pic0.png", "image/png")
+        }
+      end # before
+      describe "anonymous user" do
+        it "should not change anything" do
+          lambda do
+            post :create, :story => @attr
+          end.should_not change(Story, :count)
+          
+        end # it
+      end # anonymous user
+      
+    end # failure
+    describe "success" do
+    
+    end # success
+  end # post upload
+  
   describe "failed post 'create'" do
     before(:each) do
       o =  [('a'..'z'),('A'..'Z')].map{|i| i.to_a}.flatten
@@ -132,7 +159,8 @@ describe StoriesController do
     		:password => "1234567"
   		}  
   	end # end before
-  	
+    
+    
     it "should let an user create a story" do
     	lambda do
       	post :create, :story => @attr
@@ -189,7 +217,7 @@ describe StoriesController do
     
     it "should redirect back to the story page" do
       put :update, :id => @story.id, :story => @attr
-      response.should redirect_to story_path( @story )
+      response.should redirect_to edit_story_path( @story )
     end # it
     
     it "should display some sort of flash message" do
@@ -197,6 +225,98 @@ describe StoriesController do
       flash[:notice].should =~ /success/i
     end # it
   end # successful put updates
+  
+  describe "put file uploads" do
+    before(:each) do
+      @referer = Factory.next(:random_string)
+      request.env['HTTP_REFERER'] = @referer
+      @attr = {
+        :title => Factory.next(:random_string) ,
+        :summary => Factory.next(:random_string),
+        :cover => fixture_file_upload("spec/pics/pic1.png", "image/png")
+      }
+    end # before
+    describe "success - no previous" do
+      login_user
+      before(:each) do
+        @story = @current_user.stories.create(:title => Factory.next(:random_string), :summary => Factory.next(:random_string))
+      end # before
+      it "should update the db" do
+        put :update, :id => @story.id, :story => @attr
+        story = assigns(:story)
+        story.cover.url.should_not =~ /missing/i
+      end # it
+      it "should update the db when done in xhr" do
+        xhr :put, :update, :id => @story.id, :story => @attr
+        story = assigns(:story)
+        story.cover.url.should_not =~ /missing/i
+      end # it
+    end # success - no previous
+    describe "success - yes previous" do
+      login_user
+      before(:each) do
+        @story = Factory(:story, :author => @current_user)
+      end # before
+      it "should update the db" do
+        old_value = @story.cover.url
+        put :update, :id => @story.id, :story => @attr
+        story = assigns(:story)
+        story.cover.url.should_not eq(old_value)
+      end # it
+      it "should update the db when done in xhr" do
+        old_value = @story.cover.url
+        xhr :put, :update, :id => @story.id, :story => @attr
+        story = assigns(:story)
+        story.cover.url.should_not eq(old_value)
+      end # it
+    end # success - yes pervious
+    describe "failure - wrong user" do
+      login_user
+      before(:each) do
+        @user = Factory(:user)
+        @story = Factory(:story, :author => @user)
+      end # before
+      
+      it "should not change anything" do
+        @attr.each do |key, value|
+          lambda do
+            put :update, :id => @story.id, :story => @attr
+          end.should_not change(Story.find(@story), key)
+        end # each
+      end # it
+      
+      it "should not change anything with ajax" do
+        @attr.each do |key, value|
+          lambda do
+            xhr :put, :update, :id => @story.id, :story => @attr
+          end.should_not change(Story.find(@story), key)
+        end # each
+      end # it
+    end # failure - wrong
+    describe "failure - wrong format" do
+      login_user
+      before(:each) do
+        @types = ['html', 'image', 'xml', 'json', 'bson']
+        @formats = ['jpg', 'tiff', 'fag','ass', 'trevor', 'likes','dicks','bmp','text','css','binary','hex']
+        @attr[:cover] = fixture_file_upload("spec/pics/pic0.png", @types[rand(@types.length)] + "/" + @formats[rand(@formats.length)])
+        @story = Factory(:story, :author => @current_user)
+      end # before
+      it "should not change anything" do
+        @attr.each do |key, value|
+          lambda do
+            put :update, :id => @story.id, :story => @attr
+          end.should_not change(Story.find(@story), key)
+        end # each
+      end # it
+      it "should not change anything xhr" do
+        @attr.each do |key, value|
+          lambda do
+            xhr :put, :update, :id => @story.id, :story => @attr
+          end.should_not change(Story.find(@story), key)
+        end # each
+      end # it 
+    end # failure failure - format
+  end # describe
   
   describe "failed put updates - access control" do
     before(:each) do
@@ -253,7 +373,7 @@ describe StoriesController do
     
     it "should redirect back" do
       put :update, :id => @story.id, :story => @attr
-      response.should redirect_to story_path(@story)
+      response.should redirect_to edit_story_path(@story)
     end # it
     
     it "should display some sort of flash message" do

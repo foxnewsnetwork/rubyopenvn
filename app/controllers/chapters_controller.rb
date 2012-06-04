@@ -11,7 +11,7 @@ class ChaptersController < ApplicationController
   end
   
   def edit
-  
+    redirect_to edit_story_path(params[:story_id]) + "?usertab=chapters"
   end
   
   def index
@@ -59,30 +59,30 @@ class ChaptersController < ApplicationController
   ######
   def update
     if user_signed_in?
-          @chapter = Chapter.find_by_id( params[:id] )
-          @story = @chapter.story
-          if current_user.id == @story.owner_id
-            @chapter.update_attributes( params[:chapter] )
-            flash[:notice] = "Successfully updated chapter attributes"
-            respond_to do |format|
-              format.js
-              format.html { redirect_to edit_story_chapter_path(@story, @chapter) }
-            end # respond_to
-          else
-            flash[:error] = "Failed due to permissions conflict"
-            respond_to do |format|
-              format.js
-              format.html { redirect_to edit_story_chapter_path(@story, @chapter) }
-            end # respond_to
-          end # if
-        else
-          flash[:error] = "Failed because you should not be making anonymous changes to people's stories"
+        @chapter = Chapter.find_by_id( params[:id] )
+        @story = @chapter.story
+        if current_user.id == @story.owner_id
+          @chapter.update_attributes( params[:chapter] )
+          flash[:notice] = "Successfully updated chapter attributes"
           respond_to do |format|
-            format.js { render "errors/flash.js.erb" }
-            format.html { redirect_to new_user_session_path }
+            format.js
+            format.html { redirect_to edit_story_chapter_path(@story, @chapter) }
           end # respond_to
-      end
-  end
+        else
+          flash[:error] = "Failed due to permissions conflict"
+          respond_to do |format|
+            format.js
+            format.html { redirect_to edit_story_chapter_path(@story, @chapter) }
+          end # respond_to
+        end # if
+      else
+        flash[:error] = "Failed because you should not be making anonymous changes to people's stories"
+        respond_to do |format|
+          format.js { render "errors/flash.js.erb" }
+          format.html { redirect_to new_user_session_path }
+        end # respond_to
+    end # if
+  end # update
   
   ######
   # Delete Section

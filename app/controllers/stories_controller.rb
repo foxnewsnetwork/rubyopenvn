@@ -99,7 +99,7 @@ class StoriesController < ApplicationController
       end # if
       respond_to do |format|
         format.js
-        format.html { redirect_to story_path(@story) }
+        format.html { redirect_to edit_story_path(@story) }
       end # respond_to
     else
       flash[:error] = "Failed because you should not be making anonymous changes to people's stories"

@@ -32,12 +32,17 @@
           </li>
           <li class="chapterinternals">
             <div class="chaptericon box-form">
-              <%= form_for [@story, chapter], :method => :put, :class => "box-form", :remote => true do |f| %>
+              <%= form_for [@story, chapter], :method => :put, :class => "box-form", :remote => true, :html => {:multipart => true} do |f| %>
                 <div class="icontabs-title" style="margin-left : -0.7em;">
                   <a href="<%= story_chapter_path(@story, chapter)%>">
                     <span class="mini-icon mini-icon-create"></span>
                   </a>
                   <%= f.text_field :title, :placeholder => "Title" %>
+                  <h6>
+                    Cover logo (png, gif only)
+                    <%= image_tag chapter.cover.url(:small) %>
+                  </h6>
+                  <%= f.file_field :cover, :accept => "image/gif,image/png" %>
                 </div>
                 <p class="timestatus">Last update: <%= chapter.updated_at.to_date.readable_inspect %></p>
                 <%= f.submit :value => "Update", :class => "btn" %>                      
