@@ -11,6 +11,8 @@ class User < ActiveRecord::Base
   has_many :stories, :foreign_key => :owner_id
   has_many :chapters, :foreign_key => :owner_id
   has_many :scenes, :foreign_key => :owner_id
+  has_many :user_element_relationships
+  has_many :elements, :through => :user_element_relationships, :foreign_key  => :user_id
   
   def self.authenticate(data)
     return nil if data.nil?
@@ -21,6 +23,13 @@ class User < ActiveRecord::Base
     return @user if @user.valid_password?( data[:password] )
     return nil
   end # authenticate
+  
+  # fork
+  def fork(element)
+    a = UserElementRelationship.create(:user_id => self.id, :element_id => element.id)
+    a.save
+    return a
+  end # fork
 end # User
 
 

@@ -1,1 +1,9 @@
-story artwork page
+<!-- story show artwork -->
+<div class="span12">
+  <h3>Categories</h3>
+</div>
+<% @elements.each do |element| %>
+  <div class="span3">
+    <%= image_tag element.picture.url(:small) %>
+  </div>
+<% end %>

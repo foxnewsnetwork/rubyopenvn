@@ -1,8 +1,15 @@
 class Element < ActiveRecord::Base
   # Relationships
   has_many :scene_data
+  has_many :element_relationships
+  has_many :user_element_relationships
+  has_many :story_element_relationships
+  has_many :chapter_element_relationships
   has_many :children, :through => :element_relationships, :foreign_key => :pid
   has_many :parents, :through => :element_relationships, :foreign_key => :cid
+  has_many :chapters, :through => :chapter_element_relationships, :foreign_key => :element_id
+  has_many :stories, :through => :story_element_relationships, :foreign_key => :element_id
+  has_many :users, :through => :user_element_relationships, :foreign_key => :element_id
 
   # Attachments (be sure to change these for S3 environment in production)
   has_attached_file :picture, :styles => { :small => "50x50>" } ,
@@ -13,7 +20,13 @@ class Element < ActiveRecord::Base
   validates_attachment_presence :picture
   validates_attachment_size :picture, :less_than => 5.megabytes
   validates_attachment_content_type :picture, :content_type => ['image/png', 'image/gif']
-end
+  
+  # Whatever thing is, it needs to have the fork method
+  def forked_by(thing)
+    a = thing.fork(self)
+    return a
+  end # forked_by
+end # element
 
 
 

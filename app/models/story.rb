@@ -2,6 +2,8 @@ class Story < ActiveRecord::Base
   attr_accessible :summary, :title, :cover
   
   # relationships (and anonymous modules)
+  has_many :story_element_relationships
+  has_many :elements, :through => :story_element_relationships, :foreign_key  => :story_id
   belongs_to :author, :class_name => "User", :foreign_key => :owner_id
   has_many :chapters do
     def create(*data)
@@ -21,7 +23,15 @@ class Story < ActiveRecord::Base
     :path => ":rails_root/public/images/stories/:id/:style/:basename.:extension"
   validates_attachment_size :cover, :less_than => 5.megabytes
   validates_attachment_content_type :cover, :content_type => ['image/png', 'image/gif', 'image/jpg']
-end
+  
+  # fork an element
+  def fork(element)
+    a = StoryElementRelationship.create!(:story_id => self.id, :element_id => element.id)
+    self.author.fork(element)
+    a.save
+    return a
+  end # fork
+end # Story
 
 
 

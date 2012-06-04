@@ -11,7 +11,18 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120601234103) do
+ActiveRecord::Schema.define(:version => 20120604215932) do
+
+  create_table "chapter_element_relationships", :force => true do |t|
+    t.integer  "chapter_id"
+    t.integer  "element_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "chapter_element_relationships", ["chapter_id", "element_id"], :name => "index_chapter_element_relationships_on_chapter_id_and_element_id", :unique => true
+  add_index "chapter_element_relationships", ["chapter_id"], :name => "index_chapter_element_relationships_on_chapter_id"
+  add_index "chapter_element_relationships", ["element_id"], :name => "index_chapter_element_relationships_on_element_id"
 
   create_table "chapters", :force => true do |t|
     t.integer  "story_id"
@@ -95,6 +106,28 @@ ActiveRecord::Schema.define(:version => 20120601234103) do
     t.integer  "cover_file_size"
     t.datetime "cover_updated_at"
   end
+
+  create_table "story_element_relationships", :force => true do |t|
+    t.integer  "story_id"
+    t.integer  "element_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "story_element_relationships", ["element_id"], :name => "index_story_element_relationships_on_element_id"
+  add_index "story_element_relationships", ["story_id", "element_id"], :name => "index_story_element_relationships_on_story_id_and_element_id", :unique => true
+  add_index "story_element_relationships", ["story_id"], :name => "index_story_element_relationships_on_story_id"
+
+  create_table "user_element_relationships", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "element_id"
+    t.datetime "created_at"
+    t.datetime "updated_at"
+  end
+
+  add_index "user_element_relationships", ["element_id"], :name => "index_user_element_relationships_on_element_id"
+  add_index "user_element_relationships", ["user_id", "element_id"], :name => "index_user_element_relationships_on_user_id_and_element_id", :unique => true
+  add_index "user_element_relationships", ["user_id"], :name => "index_user_element_relationships_on_user_id"
 
   create_table "users", :force => true do |t|
     t.string   "email",                                 :default => "",          :null => false

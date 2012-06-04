@@ -10,6 +10,8 @@ class Chapter < ActiveRecord::Base
   validates_attachment_content_type :cover, :content_type => ['image/png', 'image/gif', 'image/jpg']
   
   # relationships
+  has_many :chapter_element_relationships
+  has_many :elements, :through => :chapter_element_relationships, :foreign_key  => :chapter_id
   belongs_to :author, :class_name => "User", :foreign_key => :owner_id
   belongs_to :story
   has_many :scenes, :dependent => :destroy 
@@ -25,6 +27,14 @@ class Chapter < ActiveRecord::Base
     end # create
   end # has_many
 
+  # forks elements
+  def fork(element)
+    a = ChapterElementRelationship.create!(:chapter_id => self.id, :element_id => element.id)
+    self.story.fork(element)
+    a.save
+    return a
+  end # fork
+  
 	# spawns children; use this instead of self.children.create
 	def spawn(*data)
 		child = self.children.create!(data)
