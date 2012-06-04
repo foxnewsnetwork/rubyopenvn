@@ -46,7 +46,7 @@
                 </div>
                 <p class="timestatus">Last update: <%= chapter.updated_at.to_date.readable_inspect %></p>
                 <%= f.submit :value => "Update", :class => "btn" %>                      
-                <a href="<%= edit_story_chapter_path(@story, chapter) %>" class="btn" style="float : right; margin-right : 1em;">
+                <a href="<%= edit_story_chapter_path(@story, chapter) + "?cmd=jsedit" %>" class="btn" style="float : right; margin-right : 1em;">
                   <span class="mini-icon mini-icon-edit"></span>
                   Edit chapter
                 </a>             

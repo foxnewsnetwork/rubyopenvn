@@ -604,6 +604,18 @@ li.chapterinternals {
   width : 20em;
 }
 .vn-splash{
-  width : 100%;
-  border : 1px solid black;
+}
+.vn-logo {
+  margin-left : 26em;
+  width : 320px;
+  height : 320px;
+  background-repeat : no-repeat;
+  background-position : center;
+  background-size : contain;
+}
+ul.vn-buttons {
+  list-style : none;
+}
+ul.vn-buttons li {
+  margin-top : 1em;
 }
