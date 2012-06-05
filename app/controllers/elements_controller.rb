@@ -58,6 +58,13 @@ class ElementsController < ApplicationController
   # DELETE
   #######
   def destroy
+    unless user_signed_in?
+      flash[:notice] = "You need to be an admin to delete this junk."
+      respond_to do |format|
+        format.js
+        format.html { redirect_to new_user_session_path }
+      end # respond_to  
+    end # if    
   end # destroy
 
   #######

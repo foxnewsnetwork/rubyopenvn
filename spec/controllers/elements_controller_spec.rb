@@ -208,7 +208,31 @@ describe ElementsController do
   end # post
   
   describe "destroy" do
-    pending "Not written yet"
+    describe "success" do
+      pending "Not implemented yet"
+    end # success
+    describe "failure - not-admin" do
+      pending "Not implemented yet"
+    end # failure - not-admin
+    describe "failure - anonymous" do
+      before(:each) do
+        @element = Factory(:element)
+      end # before
+      it "should not change anything" do
+        lambda do
+          delete :destroy, :id => @element.id
+        end.should_not change(Element, :count)
+      end # it
+      it "should not change anything (xhr)" do
+        lambda do
+          xhr :delete, :destroy, :id => @element.id
+        end.should_not change(Element, :count)
+      end # it
+      it "should redirect to the login page" do
+        delete :destroy, :id => @element.id
+        response.should redirect_to new_user_session_path
+      end # it
+    end # failure - anonymous
   end # destroy
   
   describe "update" do
