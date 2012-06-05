@@ -1,6 +1,37 @@
 require 'spec_helper'
+require "factories"
 
 describe StoryElementRelationship do
+  describe "destructions" do
+    before(:each) do
+      @user = Factory(:user)
+      @story = Factory(:story, :author => @user)
+      @element = Factory(:element)
+      @story.fork(@element)
+    end # before
+    
+    it "should destroy the relationship is the element is removed" do
+      lambda do
+        @element.destroy
+      end.should change(StoryElementRelationship, :count).by(-1)
+    end # it
+    
+    it "should  destroy the relationships if the story is removed" do
+      lambda do
+        @story.destroy
+      end.should change(StoryElementRelationship, :count).by(-1)
+    end # it
+    
+    it "should update the relationships" do
+      element = @element.destroy
+      @story.elements.should_not include(element)
+    end # it
+    
+    it "should update the reverse relationship" do
+      story = @story.destroy
+      @element.stories.should_not include(story)
+    end # it
+  end # destructions
   describe "ownership" do
     before(:each) do
       @user = Factory(:user)

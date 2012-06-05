@@ -2,6 +2,37 @@ require 'spec_helper'
 require 'factories'
 
 describe ChapterElementRelationship do
+  describe "destructions" do
+    before(:each) do
+      @user = Factory(:user)
+      @story = Factory(:story, :author => @user)
+      @chapter = Factory(:chapter, :author => @user, :story => @story)
+      @element = Factory(:element)
+      @chapter.fork(@element)
+    end # before
+    
+    it "should destroy the relationship is the element is removed" do
+      lambda do
+        @element.destroy
+      end.should change(ChapterElementRelationship, :count).by(-1)
+    end # it
+    
+    it "should  destroy the relationships if the chapter is removed" do
+      lambda do
+        @chapter.destroy
+      end.should change(ChapterElementRelationship, :count).by(-1)
+    end # it
+    
+    it "should update the relationships" do
+      element = @element.destroy
+      @chapter.elements.should_not include(element)
+    end # it
+    
+    it "should update the reverse relationship" do
+      chapter = @chapter.destroy
+      @element.chapters.should_not include(chapter)
+    end # it
+  end # destructions
   describe "ownership" do
     before(:each) do
       @user = Factory(:user)

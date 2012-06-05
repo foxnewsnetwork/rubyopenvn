@@ -2,9 +2,9 @@ class Element < ActiveRecord::Base
   # Relationships
   has_many :scene_data
   has_many :element_relationships
-  has_many :user_element_relationships
-  has_many :story_element_relationships
-  has_many :chapter_element_relationships
+  has_many :user_element_relationships, :dependent => :destroy
+  has_many :story_element_relationships, :dependent => :destroy
+  has_many :chapter_element_relationships, :dependent => :destroy
   has_many :children, :through => :element_relationships, :foreign_key => :pid
   has_many :parents, :through => :element_relationships, :foreign_key => :cid
   has_many :chapters, :through => :chapter_element_relationships, :foreign_key => :element_id

@@ -1,6 +1,36 @@
 require 'spec_helper'
+require "factories"
 
 describe UserElementRelationship do
+  describe "destructions" do
+    before(:each) do
+      @user = Factory(:user)
+      @element = Factory(:element)
+      @user.fork(@element)
+    end # before
+    
+    it "should destroy the relationship is the element is removed" do
+      lambda do
+        @element.destroy
+      end.should change(UserElementRelationship, :count).by(-1)
+    end # it
+    
+    it "should  destroy the relationships if the user is removed" do
+      lambda do
+        @user.destroy
+      end.should change(UserElementRelationship, :count).by(-1)
+    end # it
+    
+    it "should update the relationships" do
+      element = @element.destroy
+      @user.elements.should_not include(element)
+    end # it
+    
+    it "should update the reverse relationship" do
+      user = @user.destroy
+      @element.users.should_not include(user)
+    end # it
+  end # destructions
   describe "ownership" do
     before(:each) do
       @user = Factory(:user)

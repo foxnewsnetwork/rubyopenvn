@@ -11,7 +11,7 @@ class User < ActiveRecord::Base
   has_many :stories, :foreign_key => :owner_id
   has_many :chapters, :foreign_key => :owner_id
   has_many :scenes, :foreign_key => :owner_id
-  has_many :user_element_relationships
+  has_many :user_element_relationships, :dependent => :destroy
   has_many :elements, :through => :user_element_relationships, :foreign_key  => :user_id do
     def create(*data)
       element = Element.create(data)

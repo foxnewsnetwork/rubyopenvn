@@ -2,7 +2,7 @@ class Story < ActiveRecord::Base
   attr_accessible :summary, :title, :cover
   
   # relationships (and anonymous modules)
-  has_many :story_element_relationships
+  has_many :story_element_relationships, :dependent => :destroy
   has_many :elements, :through => :story_element_relationships, :foreign_key  => :story_id do
     def create(*data)
       element = Element.create(data)

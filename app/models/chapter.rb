@@ -10,7 +10,7 @@ class Chapter < ActiveRecord::Base
   validates_attachment_content_type :cover, :content_type => ['image/png', 'image/gif', 'image/jpg']
   
   # relationships
-  has_many :chapter_element_relationships
+  has_many :chapter_element_relationships, :dependent => :destroy
   has_many :elements, :through => :chapter_element_relationships, :foreign_key  => :chapter_id do
     def create(*data)
       element = Element.create!(data)
