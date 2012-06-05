@@ -1,4 +1,6 @@
 Rubyopenvn::Application.routes.draw do
+  # Element / Artwork
+  resources :elements, :only => [:create, :destroy, :update]
   # Story stacks
   resources :stories do
     resources :chapters, :except => [:new] do
@@ -15,7 +17,6 @@ Rubyopenvn::Application.routes.draw do
   resources :users
   resources :cats
 
-  match "i", :to => "pages#index"
 
 # After extensive testing, it seems resource is broken altogether
 # It can't be helped, at this rate, we will have to do it the old fashion way

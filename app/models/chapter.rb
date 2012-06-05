@@ -11,7 +11,13 @@ class Chapter < ActiveRecord::Base
   
   # relationships
   has_many :chapter_element_relationships
-  has_many :elements, :through => :chapter_element_relationships, :foreign_key  => :chapter_id
+  has_many :elements, :through => :chapter_element_relationships, :foreign_key  => :chapter_id do
+    def create(*data)
+      element = Element.create!(data)
+      proxy_owner.fork(element)
+      return element
+    end # create
+  end # has_many
   belongs_to :author, :class_name => "User", :foreign_key => :owner_id
   belongs_to :story
   has_many :scenes, :dependent => :destroy 
@@ -29,10 +35,13 @@ class Chapter < ActiveRecord::Base
 
   # forks elements
   def fork(element)
-    a = ChapterElementRelationship.create!(:chapter_id => self.id, :element_id => element.id)
-    self.story.fork(element)
-    a.save
-    return a
+    begin
+      self.story.fork(element)
+      a = ChapterElementRelationship.create!(:chapter_id => self.id, :element_id => element.id)
+      return a
+    rescue
+      return nil
+    end # begin-rescue
   end # fork
   
 	# spawns children; use this instead of self.children.create

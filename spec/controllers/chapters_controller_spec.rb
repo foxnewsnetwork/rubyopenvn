@@ -18,7 +18,7 @@ describe ChaptersController do
     describe "get 'edit'" do
       it "should be successful" do
         get 'edit', :story_id => @story.id, :id => @chapter.id
-        response.should redirect_to edit_story_path(@story)
+        response.should redirect_to edit_story_path(@story) + "?usertab=chapters"
       end # it
     end # Get edit
     describe "get 'index'" do

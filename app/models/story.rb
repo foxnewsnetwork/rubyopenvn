@@ -3,7 +3,13 @@ class Story < ActiveRecord::Base
   
   # relationships (and anonymous modules)
   has_many :story_element_relationships
-  has_many :elements, :through => :story_element_relationships, :foreign_key  => :story_id
+  has_many :elements, :through => :story_element_relationships, :foreign_key  => :story_id do
+    def create(*data)
+      element = Element.create(data)
+      proxy_owner.fork(element)
+      return element
+    end # create
+  end # has_many
   belongs_to :author, :class_name => "User", :foreign_key => :owner_id
   has_many :chapters do
     def create(*data)
@@ -26,10 +32,13 @@ class Story < ActiveRecord::Base
   
   # fork an element
   def fork(element)
-    a = StoryElementRelationship.create!(:story_id => self.id, :element_id => element.id)
-    self.author.fork(element)
-    a.save
-    return a
+    begin
+      self.author.fork(element)
+      a = StoryElementRelationship.create!(:story_id => self.id, :element_id => element.id)
+      return a
+    rescue
+      return nil
+    end # begin-rescue
   end # fork
 end # Story
 

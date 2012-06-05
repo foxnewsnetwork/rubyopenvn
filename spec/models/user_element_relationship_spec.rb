@@ -19,6 +19,30 @@ describe UserElementRelationship do
       @element.users.should include(@user)
     end # it
   end # ownership
+  describe "preexistence" do
+    before(:each) do
+      @current_user = Factory(:user)
+      @story = Factory(:story, :author => @current_user)
+      @chapter = Factory(:chapter, :author => @current_user, :story => @story)
+      @element = Factory(:element)
+      @current_user.fork @element
+    end # before
+    it "should not let user fork again" do
+      lambda do
+        @current_user.fork(@element)
+      end.should_not change(UserElementRelationship, :count)
+    end # it
+    it "should let stories fork" do
+      lambda do
+        @story.fork(@element)
+      end.should change(StoryElementRelationship, :count).by(1)
+    end # it
+    it "should let chapters fork" do
+      lambda do
+        @chapter.fork(@element)
+      end.should change(ChapterElementRelationship, :count).by(1)
+    end # it
+  end # preexistence
 end # UserElementRelationship
 
 # == Schema Information

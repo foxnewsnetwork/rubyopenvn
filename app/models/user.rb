@@ -12,7 +12,13 @@ class User < ActiveRecord::Base
   has_many :chapters, :foreign_key => :owner_id
   has_many :scenes, :foreign_key => :owner_id
   has_many :user_element_relationships
-  has_many :elements, :through => :user_element_relationships, :foreign_key  => :user_id
+  has_many :elements, :through => :user_element_relationships, :foreign_key  => :user_id do
+    def create(*data)
+      element = Element.create(data)
+      proxy_owner.fork(element)
+      return element
+    end # create
+  end # has_many
   
   def self.authenticate(data)
     return nil if data.nil?
@@ -26,9 +32,12 @@ class User < ActiveRecord::Base
   
   # fork
   def fork(element)
-    a = UserElementRelationship.create(:user_id => self.id, :element_id => element.id)
-    a.save
-    return a
+    begin
+      a = UserElementRelationship.create!(:user_id => self.id, :element_id => element.id)
+      return a
+    rescue
+      return nil
+    end # begin-rescue
   end # fork
 end # User
 
