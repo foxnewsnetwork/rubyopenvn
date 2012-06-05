@@ -27,8 +27,8 @@ body {
 	visibility : hidden;
 }
 #error_explanation { 
-  border : 2px solid red;
-	background-color : rgb(244, 234, 204);
+  border : 2px solid rgb(225, 225, 170);
+	background-color : rgb(245, 255, 255);
   padding : 0.75em;
 }
 #error_explanation h2{ 
@@ -287,6 +287,11 @@ li.introduction h4 {
   padding : 1em;
 	box-shadow : 1px 0px 3px #888888;
   border-radius : 6px;
+}
+.simple {
+  background-color : rgb(243, 243, 245);
+  border : 1px solid rgb(223, 223, 230);
+  width : 95%;
 }
 .filler {
   background-color : rgb(244, 235, 229);
@@ -618,4 +623,33 @@ ul.vn-buttons {
 }
 ul.vn-buttons li {
   margin-top : 1em;
+}
+.btn-secondary {
+  width : 10em;
+}
+.pictab-title {
+  width : 55px;
+  height : 55px;
+  background-color : rgb(255,254,253);
+  float : left;
+}
+.pictab-text {
+  margin-left : 60px;
+  height : 55px;
+  width : 100%;
+}
+ul.picicontabs {
+  list-style : none;
+  width : 100%;
+  margin-left : -0.15em;
+  margin-top : 0.65em;
+  width : 100%
+}
+ul.picicontabs li {
+  border : 1px solid rgb(245,245,250);
+  height : 55px;
+  width : 36em;
+  background-color : rgb(239,239,235);
+  border : 1px solid rgb(220, 220, 215);
+  border-radius : 4px;
 }

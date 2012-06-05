@@ -1,7 +1,7 @@
 class UsersController < ApplicationController
   def show
     @user = User.find_by_id( params[:id] )
-    @tabbar = ["Novel", "Feed", "Team", "Profile", "???", "???"]
+    @element = Element.new
     @usertab = params[:usertab]
     if @user.nil?
       render "pages/404"
