@@ -15,8 +15,8 @@ class ChaptersController < ApplicationController
       render "chapters/edit"
     else
       redirect_to edit_story_path(params[:story_id]) + "?usertab=chapters"
-    end
-  end
+    end # cmd = jsedit
+  end # edit
   
   def index
   

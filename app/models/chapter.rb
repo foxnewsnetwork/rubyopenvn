@@ -70,6 +70,7 @@ end # Chapter
 
 
 
+
 # == Schema Information
 #
 # Table name: chapters
@@ -85,5 +86,6 @@ end # Chapter
 #  cover_content_type :string(255)
 #  cover_file_size    :integer(4)
 #  cover_updated_at   :datetime
+#  number             :integer(4)
 #
 

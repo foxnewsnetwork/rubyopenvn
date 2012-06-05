@@ -27,6 +27,7 @@ describe SceneData do
 end # SceneData
 
 
+
 # == Schema Information
 #
 # Table name: scene_data
@@ -41,5 +42,6 @@ end # SceneData
 #  created_at :datetime
 #  updated_at :datetime
 #  zindex     :integer(4)      default(0)
+#  dialogue   :text
 #
 

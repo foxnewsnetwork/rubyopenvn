@@ -653,3 +653,12 @@ ul.picicontabs li {
   border : 1px solid rgb(220, 220, 215);
   border-radius : 4px;
 }
+#now-loading {
+  position : absolute;
+  left : 42%;
+  top : 25%;
+  width : 10em;
+  height : 10em;
+  background-image : url('/images/general/youtube.gif');
+  background-size : contain;
+}
