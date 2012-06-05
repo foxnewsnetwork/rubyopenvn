@@ -2,7 +2,7 @@
 <div class="span12">
   <h3>Categories</h3>
 </div>
-<% @elements.each do |element| %>
+<% @story.elements.each do |element| %>
   <div class="span3">
     <%= image_tag element.picture.url(:small) %>
   </div>
