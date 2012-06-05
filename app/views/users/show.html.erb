@@ -88,6 +88,9 @@
             </div>
             <div class="pictab-text">
               <p><%= element.metadata %></p>
+              <% if current_user && @user.id == current_user.id %>
+                <%= link_to content_tag(:span, "",:class => "mini-icon mini-icon-remove-close"), element_path(element), :method => :delete %>
+              <% end %>
             </div>
           </li>
         <% end %>

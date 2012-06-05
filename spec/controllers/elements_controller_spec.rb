@@ -209,11 +209,122 @@ describe ElementsController do
   
   describe "destroy" do
     describe "success" do
-      pending "Not implemented yet"
+      login_user
+      before(:each) do
+        @element = Factory(:element)
+        @current_user.fork(@element)
+      end # before
+      it "should delete the element" do
+        lambda do
+          delete :destroy, :id => @element
+        end.should change(Element, :count).by(-1)
+      end # it 
+      it "should delete the element (xhr)" do
+        lambda do
+          xhr :delete, :destroy, :id => @element
+        end.should change(Element, :count).by(-1)
+      end # it
+      it "should reflect in the relationships"  do
+        delete :destroy, :id => @element
+        @current_user.elements.should_not include(@element)
+      end # it
+      it "should redirect back" do
+        delete :destroy, :id => @element
+        flash[:success].should =~ /success/i
+        response.should redirect_to @referer
+      end # it
+      it "should render the flash page" do
+        xhr :delete, :destroy, :id => @element
+        flash[:success].should =~ /success/i
+        response.should render_template "elements/destroy"
+      end # it
     end # success
+    describe "failure - not yours" do
+      login_user
+      before(:each) do
+        @element = Factory(:element)
+      end # before
+      it "should not change anything" do
+        lambda do
+          delete :destroy, :id => @element
+        end.should_not change(Element, :count)
+      end # it
+      it "should not change anything" do  
+        lambda do
+          xhr :delete, :destroy, :id => @element
+        end.should_not change(Element, :count)
+      end # it
+      it "should should not affect relationships" do
+        lambda do
+          delete :destroy, :id => @element
+        end.should_not change(@element, :users)
+      end # it
+      it "should should not affect relationships" do
+        lambda do
+          xhr :delete, :destroy, :id => @element
+        end.should_not change(@element, :users)
+      end # it
+      it "should should not affect relationships" do
+        lambda do
+          delete :destroy, :id => @element
+        end.should_not change(@current_user, :elements)
+      end # it
+      it "should should not affect relationships" do
+        lambda do
+          xhr :delete, :destroy, :id => @element
+        end.should_not change(@current_user, :elements)
+      end # it
+      it "should redirect back" do
+        delete :destroy, :id => @element
+        response.should redirect_to @referer
+        flash[:notice].should =~ /can/i
+      end # it
+      it "should render the flash error page" do
+        xhr :delete, :destroy, :id => @element
+        response.should render_template "errors/flash"
+        flash[:notice].should =~ /can/i
+      end # it
+    end # failure - not yours
     describe "failure - not-admin" do
       pending "Not implemented yet"
     end # failure - not-admin
+    describe "failure - already forked" do
+      login_user
+      before(:each) do
+        @user = Factory(:user)
+        @element = Factory(:element)
+        @current_user.fork(@element)
+        @user.fork(@element)
+      end # before
+      it "should not delete" do
+        lambda do
+          delete :destroy, :id => @element.id
+        end.should_not change(Element, :count)
+      end # it
+      it "should not delete (xhr))" do
+        lambda do
+          xhr :delete, :destroy, :id => @element.id
+        end.should_not change(Element, :count)
+      end # it
+      it "should not affect people's relationships" do
+        delete :destroy, :id => @element
+        @user.elements.should include(@element)
+        @current_user.elements.should include(@element)
+      end # it
+      it "should redirect back" do
+        delete :destroy, :id => @element
+        response.should redirect_to @referer
+      end # it
+      it "should have a flash message" do
+        delete :destroy, :id => @element
+        flash[:notice] =~ /can/i
+      end # it
+      it "should render the flash page" do
+        xhr :delete, :destroy, :id => @element
+        response.should render_template("errors/flash")
+        flash[:notice].should =~ /can/i
+      end # it
+    end # failure - already forked
     describe "failure - anonymous" do
       before(:each) do
         @element = Factory(:element)

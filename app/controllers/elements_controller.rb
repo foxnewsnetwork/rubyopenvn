@@ -58,13 +58,44 @@ class ElementsController < ApplicationController
   # DELETE
   #######
   def destroy
+    # Step 1: Login redirection
     unless user_signed_in?
       flash[:notice] = "You need to be an admin to delete this junk."
       respond_to do |format|
         format.js
         format.html { redirect_to new_user_session_path }
       end # respond_to  
-    end # if    
+      return
+    end # unless
+    
+    # Step 2: Check killable
+    @element = Element.find_by_id(params[:id])
+    if @element.users.count > 1
+      flash[:notice] = "You cannot delete what doesn't belong only to you"
+      respond_to do |format|
+        format.js { render "errors/flash.js.erb" }
+        format.html { redirect_to :back }
+      end # respond_to
+      return
+    end # user.count > 1
+    
+    # Step 3: Check permission
+    unless @element.users.include?(current_user)
+      flash[:notice] = "You cannot delete what isn't yours"
+      respond_to do |format|
+        format.js { render "errors/flash.js.erb" }
+        format.html { redirect_to :back }
+      end # respond_to
+      return
+    end # users.include current_user
+    
+    # Step 4: Kill it!
+    @element.delete
+    flash[:success] = "Element destruction successful :("
+    respond_to do |format|
+      format.js
+      format.html { redirect_to :back }
+    end # respond_to
   end # destroy
 
   #######
