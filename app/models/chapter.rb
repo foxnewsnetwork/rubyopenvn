@@ -63,7 +63,7 @@ class Chapter < ActiveRecord::Base
       eid << x.cid
     end # each
     elements = Element.where(:id => eid) # 4
-    return { :scenes => sids, :scene_data => sdids, :relationships => relationships, :elements => elements }.as_json
+    return { :scenes => sids, :scene_data => sdids, :relationships => relationships, :elements => elements }
   end # dirty_jsonify
 end # Chapter
 

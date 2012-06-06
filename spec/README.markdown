@@ -6,3 +6,8 @@ Some Notes
 3. Integration tests will be implemented in the nearby future
 4. Helper tests and views tests will not be implemented
 5. Be sure to occasionally purge ./public/images/elements/ otherwise that folder is going to overflow
+
+Suggestions
+=
+Periodically run the following command to purge the folders:
+$ bundle exec rake db:test:prepare && rm public/images/elements/* -r && rm public/images/stories/* -r && rm public/images/chapters/* -r

@@ -2,7 +2,7 @@ class SceneData < ActiveRecord::Base
   belongs_to :scene 
 	belongs_to :element
   has_many :element_relationships, :foreign_key => :sid, :dependent => :destroy
-  attr_accessible :scene_id, :element_id, :width, :height, :left, :top
+  attr_accessible :scene_id, :element_id, :width, :height, :left, :top, :zindex, :dialogue
   def load_dirty
     # Step 1: Pull out all the element relationships
     relationships = self.element_relationships

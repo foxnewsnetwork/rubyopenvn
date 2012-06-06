@@ -1,13 +1,13 @@
-<%= javascript_include_tag "javascripts/flotile/flotile.js" %>
-<%= javascript_include_tag "javascripts/flotile/flotile-bridge.js" %>
-<%= javascript_include_tag "javascripts/chapters/edit.js" %>
+<%= javascript_include_tag "flotile/flotile.js" %>
+<%= javascript_include_tag "flotile/flotile-bridge.js" %>
+<%= javascript_include_tag "chapters/edit.js" %>
 <script type="text/javascript">
   $(document).ready(function(){
     // Step 1: Initializing constants
     var myvneditor = new FFOpenVNEditor();
     
     // Step 2: AJAX request raw data
-    $.get(<%= story_chapter_path(@story, @chapter) %>, function(rawdata){ 
+    $.get("<%= story_chapter_path(@story, @chapter) %>", function(rawdata){ 
       var data = myvneditor.process(rawdata)
       myvneditor.Load(data)
       myvneditor.EnterEditMode(function(p){return;}, function(s){return;});

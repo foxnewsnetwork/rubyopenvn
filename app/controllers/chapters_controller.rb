@@ -11,11 +11,39 @@ class ChaptersController < ApplicationController
   end
   
   def edit
-    if params[:cmd] == "jsedit"
-      render "chapters/edit"
-    else
-      redirect_to edit_story_path(params[:story_id]) + "?usertab=chapters"
-    end # cmd = jsedit
+    # Step 1 : Permission
+    unless user_signed_in?
+      redirect_to new_user_session_path
+      return
+    end # unless
+    @story = Story.find_by_id(params[:story_id])
+    unless current_user.id == @story.owner_id
+      flash[:notice] = "You cannot edit someone else's work"
+      redirect_to user_path(current_user)
+      return
+    end # unless
+    
+    respond_to do |format|
+      format.html do
+        if params[:cmd] == "jsedit"
+          @chapter = Chapter.find_by_id(params[:id])
+          render "chapters/edit"
+        else
+          redirect_to edit_story_chapter_path(params[:story_id], params[:id]) + "?usertab=chapters"
+        end # cmd = jsedit
+      end # html
+      format.json do
+        # Step 1: Load up
+        @chapter = Chapter.find_by_id(params[:id]).dirty_jsonify # 1
+        @scenes = @chapter[:scenes]
+        @scene_data = @chapter[:scene_data] 
+        @element_relationships = @chapter[:relationships]
+        @elements = @chapter[:elements]
+        
+        # Step 2: Render
+        render "chapters/edit.json.json_builder"
+      end # json
+    end # respond_to
   end # edit
   
   def index
