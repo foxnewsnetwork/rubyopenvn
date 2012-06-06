@@ -39,6 +39,7 @@ class ChaptersController < ApplicationController
         @scene_data = @chapter[:scene_data] 
         @element_relationships = @chapter[:relationships]
         @elements = @chapter[:elements]
+        @stockpile = current_user.elements
         
         # Step 2: Render
         render "chapters/edit.json.json_builder"

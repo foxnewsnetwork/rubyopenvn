@@ -30,3 +30,9 @@ element_relationships @element_relationships do |er|
   scene_data_id er.sid
   zindex er.zindex
 end
+stockpile @stockpile do |stock|
+  id stock.id
+  metadata stock.metadata
+  picture_small stock.picture.url(:small)
+  picture stock.picture.url
+end

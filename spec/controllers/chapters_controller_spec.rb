@@ -3,6 +3,25 @@ require 'factories'
 
 describe ChaptersController do
   render_views
+  describe "GET JSONs - stockpiles" do
+    login_user
+    before(:each) do
+      @story = Factory(:story, :author => @current_user)
+      @chapter = Factory(:chapter, :author => @current_user, :story => @story)
+      @elements = []
+      (0..50).each do |k|
+        @elements << Factory(:element)
+        @current_user.fork(@elements[k]) if rand(2) == 0
+      end # each
+    end # before
+    it "should displayed all the forked" do
+      get "edit", :story_id => @story, :id => @chapter, :format => "json"
+      data = MultiJson.load(response.body)
+      data["stockpile"].each do |stock|
+        @current_user.elements.map { |x| x.id }.should include(stock["id"])
+      end # each
+    end # it
+  end # GET JSONs - stockpile
   describe "GET JSONs" do
     login_user
     before(:each) do
