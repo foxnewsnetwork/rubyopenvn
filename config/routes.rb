@@ -19,6 +19,7 @@ Rubyopenvn::Application.routes.draw do
 
   #match ':controller/:show/:id/reviews'
   match 'stories/:id/*tab' => 'stories#show'
+  match '/stories/:id/:title' => 'stories#show', :as => :story_with_title
 
 # After extensive testing, it seems resource is broken altogether
 # It can't be helped, at this rate, we will have to do it the old fashion way

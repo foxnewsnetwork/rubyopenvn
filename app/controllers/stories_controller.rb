@@ -6,7 +6,7 @@ class StoriesController < ApplicationController
   def show
     @usertab = params[:usertab]
     @id = params[:id]
-    @story = Story.find(params[:id])
+    @story = Story.find_by_slug(params[:id])
     @user = @story.author
 
 

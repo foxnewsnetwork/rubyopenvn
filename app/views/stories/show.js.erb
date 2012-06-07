@@ -5,6 +5,6 @@ $("#menubar").html('<%= escape_javascript(render "stories/partials/show/menubar"
 history.pushState( null, "", '<%= escape_javascript("#{@usertab}") %>' )
 <% else %>
 
-window.location ="<%= story_path(Story.find(params[:id])) %>"+"/splash";
+window.location ="<%= story_path(Story.find_by_slug(params[:id])) %>"+"/splash";
 
 <% end %>

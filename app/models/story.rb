@@ -1,6 +1,8 @@
 class Story < ActiveRecord::Base
   attr_accessible :summary, :title, :cover
-  
+  before_create :create_slug
+
+
   # relationships (and anonymous modules)
   has_many :story_element_relationships, :dependent => :destroy
   has_many :elements, :through => :story_element_relationships, :foreign_key  => :story_id do
@@ -40,6 +42,17 @@ class Story < ActiveRecord::Base
       return nil
     end # begin-rescue
   end # fork
+
+   #slug stuff
+    def to_param
+      slug
+    end
+
+    def create_slug
+      self.slug = self.title.parameterize
+    end
+
+
 end # Story
 
 
