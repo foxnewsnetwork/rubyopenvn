@@ -5,8 +5,11 @@ class StoriesController < ApplicationController
   ######
   def show
     @usertab = params[:usertab]
-    @story = Story.find(params[:id])
+    @id = params[:id]
+    @story = Story.find_by_slug(params[:id])
     @user = @story.author
+
+
     respond_to do |format| 
       format.js
       format.html
