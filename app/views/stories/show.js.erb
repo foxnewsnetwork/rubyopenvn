@@ -1,2 +1,10 @@
+
+<% if @usertab %>
 $("#usertab").html('<%= escape_javascript(render "stories/partials/show/#{@usertab}") %>');
 $("#menubar").html('<%= escape_javascript(render "stories/partials/show/menubar") %>');
+history.pushState( null, "", '<%= escape_javascript("#{@usertab}") %>' )
+<% else %>
+
+window.location ="<%= story_path(Story.find(params[:id])) %>"+"/splash";
+
+<% end %>

@@ -17,6 +17,8 @@ Rubyopenvn::Application.routes.draw do
   resources :users
   resources :cats
 
+  #match ':controller/:show/:id/reviews'
+  match 'stories/:id/*tab' => 'stories#show'
 
 # After extensive testing, it seems resource is broken altogether
 # It can't be helped, at this rate, we will have to do it the old fashion way
