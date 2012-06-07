@@ -29,7 +29,7 @@ class ChaptersController < ApplicationController
           @chapter = Chapter.find_by_id(params[:id])
           render "chapters/edit"
         else
-          redirect_to edit_story_chapter_path(params[:story_id], params[:id]) + "?usertab=chapters"
+          redirect_to edit_story_chapter_path(@story, params[:id]) + "?usertab=chapters"
         end # cmd = jsedit
       end # html
       format.json do

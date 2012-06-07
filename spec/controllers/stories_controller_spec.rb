@@ -19,7 +19,7 @@ describe StoriesController do
     end # before
     
     it "should be successful" do
-      get 'show', :id => @story
+      get 'show', :id => @story.slug
       response.should be_success
     end # it
   end # describe
