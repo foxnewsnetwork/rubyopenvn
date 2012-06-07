@@ -1,0 +1,38 @@
+scenes @scenes do |scene|
+  id scene.id
+  number scene.number
+  parent_id scene.parent_id
+end 
+scene_data @scene_data do |sd|
+  id sd.id
+  scene_id sd._scene_id
+  element_id sd.element_id
+  width sd.width
+  height sd.height
+  left sd.left
+  top sd.top
+  zindex sd.zindex
+  dialogue sd.dialogue
+end
+elements @elements do |element|
+  id element.id
+  picture_small element.picture.url(:small)
+  picture element.picture.url
+end
+element_relationships @element_relationships do |er|
+  id er.id
+  width er.width
+  height er.height
+  left er.left
+  top er.top
+  parent_id er.pid
+  child_id er.cid
+  scene_data_id er.sid
+  zindex er.zindex
+end
+stockpile @stockpile do |stock|
+  id stock.id
+  metadata stock.metadata
+  picture_small stock.picture.url(:small)
+  picture stock.picture.url
+end

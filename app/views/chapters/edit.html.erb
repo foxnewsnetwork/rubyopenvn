@@ -1,0 +1,25 @@
+<%= javascript_include_tag "flotile/flotile.js" %>
+<%= javascript_include_tag "flotile/flotile-bridge.js" %>
+<%= javascript_include_tag "chapters/edit.js" %>
+<script type="text/javascript">
+  $(document).ready(function(){
+    // Step 1: Initializing constants
+    var myvneditor = new FFOpenVNEditor();
+    
+    // Step 2: AJAX request raw data
+    $.get("<%= story_chapter_path(@story, @chapter) %>", function(rawdata){ 
+      var data = myvneditor.process(rawdata)
+      myvneditor.Load(data)
+      myvneditor.EnterEditMode(function(p){return;}, function(s){return;});
+    } ); // ajax
+  }); // document.ready
+</script>
+
+<div class="container">
+  <div class="row">
+    <div class="pusheddown"></div>
+  </div>
+  <div class="row">
+    <div class="span12" id="now-loading"></div>
+  </div>
+</div>

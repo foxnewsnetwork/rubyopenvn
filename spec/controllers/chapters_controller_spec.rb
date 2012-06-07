@@ -3,6 +3,92 @@ require 'factories'
 
 describe ChaptersController do
   render_views
+  describe "GET JSONs - stockpiles" do
+    login_user
+    before(:each) do
+      @story = Factory(:story, :author => @current_user)
+      @chapter = Factory(:chapter, :author => @current_user, :story => @story)
+      @elements = []
+      (0..50).each do |k|
+        @elements << Factory(:element)
+        @current_user.fork(@elements[k]) if rand(2) == 0
+      end # each
+    end # before
+    it "should displayed all the forked" do
+      get "edit", :story_id => @story, :id => @chapter, :format => "json"
+      data = MultiJson.load(response.body)
+      data["stockpile"].each do |stock|
+        @current_user.elements.map { |x| x.id }.should include(stock["id"])
+      end # each
+    end # it
+  end # GET JSONs - stockpile
+  describe "GET JSONs" do
+    login_user
+    before(:each) do
+      @story = Factory(:story, :author => @current_user)
+      @chapter = Factory(:chapter, :author => @current_user, :story => @story)
+      @elements = []
+      (0..24).each do |k|
+        @elements << Factory(:element)
+      end # each
+      @scenes = []
+      @scene_data = []
+      @scenes[0] = @chapter.scenes.create
+      (1..rand(29)).each do |k|
+        @scenes << @scenes[k-1].spawn
+        (0..rand(6)).each do |j|
+          scend = @scenes[k].scene_data.create({
+            :element_id => @elements[rand(24)].id ,
+            :width => rand(355) ,
+            :height => rand(355) ,
+            :top => rand(355) ,
+            :left => rand(355) ,
+            :zindex => rand(355) ,
+            :dialogue => Factory.next(:random_string)
+          })
+          @scene_data << scend
+          scend.relate({
+            :width => rand(355) ,
+            :height => rand(355) ,
+            :top => rand(355) ,
+            :left => rand(355) ,
+            :zindex => rand(355) ,
+            :parent => @elements[rand(24)],
+            :child => @elements[rand(24)]
+          })
+        end # each j
+      end # each k
+    end # before
+    
+    it "should respond with json" do
+      get "edit", :story_id => @story, :id => @chapter, :format => "json"
+      response.should be_success
+    end # it
+    it "the json should have the correct keys" do
+      get "edit", :story_id => @story, :id => @chapter, :format => "json"
+      data = MultiJson.load(response.body)
+      data["scenes"].should_not be_nil
+      data["scene_data"].should_not be_nil
+      data["elements"].should_not be_nil
+      data["element_relationships"].should_not be_nil
+    end # it
+    it "should leave no child behind" do
+      get "edit", :story_id => @story, :id => @chapter, :format => "json"
+      data = MultiJson.load(response.body)      
+      data['scenes'].each do |scene|
+        @scenes.map { |s| s.id }.should include(scene["id"])
+      end # scenes.each
+      data['scene_data'].each do |scenedata|
+        @scene_data.map { |sd| sd.id }.should include(scenedata["id"])
+      end # scene_data.each
+      data['elements'].each do |element|
+        @elements.map { |e| e.id }.should include(element["id"])
+      end # elements.each
+      data['element_relationships'].each do |elemenetrelationship|
+        @element_relationships.map { |er| er.id }.should include(elemenetrelationship["id"])
+      end # element_relationships.each
+    end # it
+  end # GET JSONs
   describe "Get requests" do
     before(:each) do
       @user = Factory(:user)
@@ -16,10 +102,34 @@ describe ChaptersController do
       end # it
     end # Get show  
     describe "get 'edit'" do
-      it "should be successful" do
-        get 'edit', :story_id => @story.id, :id => @chapter.id
-        response.should redirect_to edit_story_path(@story) + "?usertab=chapters"
-      end # it
+      describe "success" do
+        login_user
+        before(:each) do
+          @story2 = Factory(:story, :author => @current_user)
+          @chapter2 = Factory(:chapter, :author => @current_user, :story => @story2)
+        end # before
+        it "should be successful" do
+          get 'edit', :story_id => @story2.id, :id => @chapter2.id
+          response.should redirect_to edit_story_chapter_path(@story2, @chapter2) + "?usertab=chapters"
+        end # it
+        it "should be successful p2" do
+          get 'edit', :story_id => @story2.id, :id => @chapter2.id, :cmd => "jsedit"
+          response.should be_success
+        end # it
+      end # success
+      describe "failure - anonymous" do
+        it "should redirect to user sign in" do
+          get 'edit', :story_id => @story.id, :id => @chapter.id
+          response.should redirect_to new_user_session_path
+        end # it
+      end # failure - anonymous
+      describe "failure - wrong" do
+        login_user
+        it "should redirect to the root path" do
+          get 'edit', :story_id => @story.id, :id => @chapter.id
+          response.should redirect_to user_path(@current_user)
+        end # it
+      end # failure - wrong
     end # Get edit
     describe "get 'index'" do
       it "should be successful" do

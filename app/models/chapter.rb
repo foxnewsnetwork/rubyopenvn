@@ -63,9 +63,10 @@ class Chapter < ActiveRecord::Base
       eid << x.cid
     end # each
     elements = Element.where(:id => eid) # 4
-    return { :scenes => sids, :scene_data => sdids, :relationships => relationships, :elements => elements }.as_json
+    return { :scenes => sids, :scene_data => sdids, :relationships => relationships, :elements => elements }
   end # dirty_jsonify
 end # Chapter
+
 
 
 
@@ -85,5 +86,6 @@ end # Chapter
 #  cover_content_type :string(255)
 #  cover_file_size    :integer(4)
 #  cover_updated_at   :datetime
+#  number             :integer(4)
 #
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120604215932) do
+ActiveRecord::Schema.define(:version => 20120606214809) do
 
   create_table "chapter_element_relationships", :force => true do |t|
     t.integer  "chapter_id"
@@ -35,6 +35,7 @@ ActiveRecord::Schema.define(:version => 20120604215932) do
     t.string   "cover_content_type"
     t.integer  "cover_file_size"
     t.datetime "cover_updated_at"
+    t.integer  "number"
   end
 
   add_index "chapters", ["owner_id"], :name => "index_chapters_on_owner_id"
@@ -78,10 +79,11 @@ ActiveRecord::Schema.define(:version => 20120604215932) do
     t.datetime "created_at"
     t.datetime "updated_at"
     t.integer  "zindex",     :default => 0
+    t.text     "dialogue"
   end
 
   add_index "scene_data", ["element_id"], :name => "index_scene_data_on_element_id"
-  add_index "scene_data", ["scene_id", "element_id"], :name => "index_scene_data_on_scene_id_and_element_id", :unique => true
+  add_index "scene_data", ["scene_id", "element_id"], :name => "index_scene_data_on_scene_id_and_element_id"
   add_index "scene_data", ["scene_id"], :name => "index_scene_data_on_scene_id"
 
   create_table "scenes", :force => true do |t|
