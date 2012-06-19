@@ -1,3 +1,4 @@
+<!-- Stuff -->
 <h2 class="inline">Chapters</h2>
 <% if @story.chapters.empty? %>
   <h3 class="centered">You don't have any content yet!</h3>
@@ -18,7 +19,7 @@
     <% end %>
   </div>
   <ul class="chaptericontabs">
-    <% @story.chapters.each do |chapter| %>
+    <% @story.chapters.reverse.each do |chapter| %>
       <li class="chaptericontabs" style="margin-left : 2em;">
         <ul class="chapterinternals">
           <li class="chapterinternals">

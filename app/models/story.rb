@@ -58,6 +58,7 @@ end # Story
 
 
 
+
 # == Schema Information
 #
 # Table name: stories
@@ -72,5 +73,6 @@ end # Story
 #  cover_content_type :string(255)
 #  cover_file_size    :integer(4)
 #  cover_updated_at   :datetime
+#  slug               :string(255)
 #
 

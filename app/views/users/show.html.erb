@@ -59,7 +59,8 @@
           <li class="storyicontabs">
             <div class="icontabs-title">
               <span class="mini-icon mini-icon-public-repo"></span>
-              <%= link_to story.title, story_path(story),:remote => true %>
+              <%= link_to story.title, story_path(story.id) if story.slug.nil? %>
+              <%= link_to story.title, story_path(story.id) unless story.slug.nil? %>
             </div>
             <p><%= story.summary %></p>
             <p class="timestatus">Last update: <%= story.updated_at.to_date.readable_inspect %></p>

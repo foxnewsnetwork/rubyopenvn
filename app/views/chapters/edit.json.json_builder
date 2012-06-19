@@ -2,6 +2,11 @@ scenes @scenes do |scene|
   id scene.id
   number scene.number
   parent_id scene.parent_id
+  children_id scene.children do |child|
+    child.id
+  end
+  fork_text scene.fork_text
+  fork_number scene.fork_number
 end 
 scene_data @scene_data do |sd|
   id sd.id

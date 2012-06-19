@@ -1,4 +1,4 @@
 <h2>
   <span class="mega-icon mega-icon-public-repo"></span>
-  <%= link_to @user.name, user_path(@user) %> &raquo; <%= link_to @story.title, story_path(@story) %>
+  <%= link_to @user.name, user_path(@user) %> &raquo; <%= link_to @story.title, story_path(@story.slug.nil? ? @story.id : @story) %>
 </h2>

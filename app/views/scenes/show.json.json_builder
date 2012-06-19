@@ -1,0 +1,4 @@
+id @scene.id
+chapter_id @scene.chapter_id
+parent_id @scene.parent_id
+owner_id @scene.owner_id

@@ -1,6 +1,6 @@
 class ElementRelationship < ActiveRecord::Base
   belongs_to :parents, :class_name => "Element", :foreign_key => :pid
-  belongs_to :children, :class_name => "Element", :foreign_key => :cid
+  belongs_to :children, :class_name => "Element", :foreign_key => :cid # this is really dumb and should be removed
   belongs_to :scene_data, :foreign_key => :sid
 
 	attr_accessible :width, :height, :left, :top, :pid, :cid, :sid, :zindex

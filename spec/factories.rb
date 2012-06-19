@@ -25,6 +25,8 @@ Factory.define :scene do |scene|
   scene.association :author
   scene.association :chapter
   scene.number 0
+  scene.fork_text Factory.next( :random_string )
+  scene.fork_number 0
 end # scene
 
 Factory.define :element do |element|
@@ -44,3 +46,4 @@ end
 Factory.sequence :random_string do |n|
   (0..55).map { |x| ("a".."z").map { |y| y }[rand(26)] }.join
 end
+

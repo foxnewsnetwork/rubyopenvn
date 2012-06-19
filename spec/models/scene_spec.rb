@@ -31,16 +31,19 @@ end # end Scene
 
 
 
+
 # == Schema Information
 #
 # Table name: scenes
 #
-#  id         :integer(4)      not null, primary key
-#  chapter_id :integer(4)
-#  parent_id  :integer(4)
-#  created_at :datetime
-#  updated_at :datetime
-#  number     :integer(4)
-#  owner_id   :integer(4)
+#  id          :integer(4)      not null, primary key
+#  chapter_id  :integer(4)
+#  parent_id   :integer(4)
+#  created_at  :datetime
+#  updated_at  :datetime
+#  number      :integer(4)
+#  owner_id    :integer(4)
+#  fork_text   :string(255)
+#  fork_number :integer(4)      default(0)
 #
 

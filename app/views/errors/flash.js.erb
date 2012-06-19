@@ -1,1 +1,2 @@
 // Flash error display javascript version
+$("body").prepend('<%= escape_javascript( render "layouts/partials/flash", :flash => flash ) %>');

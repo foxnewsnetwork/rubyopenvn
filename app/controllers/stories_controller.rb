@@ -7,6 +7,7 @@ class StoriesController < ApplicationController
     @usertab = params[:usertab]
     @id = params[:id]
     @story = Story.find_by_slug(params[:id])
+    @story ||= Story.find_by_id(params[:id]) 
     @user = @story.author
 
 
@@ -31,7 +32,8 @@ class StoriesController < ApplicationController
       return
     end # unless
     @usertab = params[:usertab]
-    @story = Story.find_by_id(params[:id])
+    @story = Story.find_by_slug(params[:id])
+    @story ||= Story.find_by_id(params[:id]) 
     @user = @story.author
     unless current_user.id == @story.owner_id
       flash[:error] = "Sorry buddy, but you can't be editing someone else's story directly. Try forking it instead!"

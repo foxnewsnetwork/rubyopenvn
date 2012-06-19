@@ -3,8 +3,13 @@ class ChaptersController < ApplicationController
   # Get Section
   ######
   def show
-    
-  end
+    @story = Story.find_by_slug( params[:story_id] )
+    @story ||= Story.find_by_id( params[:story_id] )
+    @chapter = Chapter.find_by_id( params[:id] )
+    if @story.nil? || @chapter.nil?
+      render "pages/404.html.erb"
+    end # if
+  end # show
   
   def new
   
@@ -16,7 +21,8 @@ class ChaptersController < ApplicationController
       redirect_to new_user_session_path
       return
     end # unless
-    @story = Story.find_by_id(params[:story_id])
+      @story = Story.find_by_slug(params[:story_id])
+      @story ||= Story.find_by_id(params[:story_id])
     unless current_user.id == @story.owner_id
       flash[:notice] = "You cannot edit someone else's work"
       redirect_to user_path(current_user)
@@ -56,13 +62,14 @@ class ChaptersController < ApplicationController
   ######
   def create
     if user_signed_in?
-      @story = Story.find_by_id(params[:story_id])
+      @story = Story.find_by_slug(params[:story_id])
+      @story ||= Story.find_by_id(params[:story_id])
       if @story.owner_id == current_user.id
         unless params[:chapter].nil?
           @parent = Chapter.find_by_id(params[:chapter][:parent]) unless params[:chapter][:parent].nil?
         end # unless
         if @parent.nil?
-          @chapter = @story.chapters.create!(params[:chapter])
+          @chapter = @story.chapters.create(params[:chapter])
         else
           @chapter = @parent.spawn(params[:chapter])
         end # if

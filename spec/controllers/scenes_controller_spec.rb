@@ -32,16 +32,40 @@ describe ScenesController do
       @story = Factory(:story, :author => @current_user)
       @chapter = Factory(:chapter, :author => @current_user, :story => @story)
     end # before
-    it "should create" do
-      lambda do
-        xhr :post, :create, :story_id => @story.id, :chapter_id => @chapter.id
-      end.should change(Scene, :count).by(1)
-    end # it
     
-    it "should render the create page" do
-      xhr :post, :create, :story_id => @story.id, :chapter_id => @chapter.id
-      response.should render_template( "scenes/create" )
-    end # it
+    describe "vanilla creation" do
+      it "should create" do
+        lambda do
+          xhr :post, :create, :story_id => @story.id, :chapter_id => @chapter.id
+        end.should change(Scene, :count).by(1)
+      end # it
+      
+      it "should render the create page" do
+        xhr :post, :create, :story_id => @story.id, :chapter_id => @chapter.id
+        response.should render_template( "scenes/create" )
+      end # it    
+    end # vanilla creation
+  
+    # Added June 18 5:20pm    
+    describe "fork creation" do
+      before(:each) do
+        @scene = Factory(:scene, :author => @current_user, :chapter => @chapter )
+      end # before
+      
+      it "should spawn a child scene" do
+        post :create, :story_id => @story.id, :chapter_id => @chapter.id, :parent_id => @scene.id
+        scene = assigns[:scene]
+        scene.parent.should eq(@scene)
+        @scene.children.should include(scene)
+      end # it
+      
+      it "should spawn a child scene" do
+        xhr :post, :create, :story_id => @story.id, :chapter_id => @chapter.id, :parent_id => @scene.id
+        scene = assigns[:scene]
+        scene.parent.should eq(@scene)
+        @scene.children.should include(scene)        
+      end # it
+    end # fork creation
   end # successful post
   
   describe "failed post - anonymous" do
@@ -92,27 +116,75 @@ describe ScenesController do
         @attr = { :number => rand(56) }
       end # before
       
-      # ATTN: This test won't pass for some reason. 3 cheers for whoever can get it to pass
-      # Since we're only testing numbers, might as well hardcode the test
-      # if that attribute updates then all other attributes would change if added.
-      # if it is a weird special attribute we'll just need another test'
-      it "should update the scene" do
+      describe "vanilla update" do
+        # ATTN: This test won't pass for some reason. 3 cheers for whoever can get it to pass
+        # Since we're only testing numbers, might as well hardcode the test
+        # if that attribute updates then all other attributes would change if added.
+        # if it is a weird special attribute we'll just need another test'
+        it "should update the scene" do
 
-        #Unelegant as hell but it works. It tests the same thing as the previous test.
-        old_number = @scene.number
-        @scene.number.should_not == @attr[:number]
-        xhr :put, :update, :story_id => @story.id, :chapter_id => @chapter.id, :id => @scene.id, :scene => @attr
-        @changed_scene = Scene.find(@scene.id)
-        @changed_scene.number.should == @attr[:number]
-        @changed_scene.number.should_not == old_number
+          #Unelegant as hell but it works. It tests the same thing as the previous test.
+          old_number = @scene.number
+          @scene.number.should_not == @attr[:number]
+          xhr :put, :update, :story_id => @story.id, :chapter_id => @chapter.id, :id => @scene.id, :scene => @attr
+          @changed_scene = Scene.find(@scene.id)
+          @changed_scene.number.should == @attr[:number]
+          @changed_scene.number.should_not == old_number
 
 
-      end # it
+        end # it
+        
+        it "should render the view" do
+          xhr :put, :update, :story_id => @story.id, :chapter_id => @chapter.id, :id => @scene.id, :scene => @attr
+          response.should render_template("scenes/update")
+        end # it
+      end # vanilla update
       
-      it "should render the view" do
-        xhr :put, :update, :story_id => @story.id, :chapter_id => @chapter.id, :id => @scene.id, :scene => @attr
-        response.should render_template("scenes/update")
-      end # it
+      describe "batch update" do
+        before(:each) do
+          @scenes = [@scene]
+          @scenedata = [{ 
+            :layers => [{
+              :layer_id : nil ,
+              :image => Factory.next( :random_string ) , 
+              :width => rand(256) ,
+              :height => rand(256) ,
+              :x => rand(256) ,
+              :y => rand(256)
+            }] ,
+            :text => Factory.next( :random_string ) ,
+            :id => @scene.id ,
+            :parent_id => @scene.parent_id ,
+            :children_id => @scene.children.map { |child| child.id } ,
+            :fork_text => Factory.next( :random_string ) ,
+            :fork_image => nil ,
+            :fork_number => @scene.fork_number
+          }]
+          (1..10).each do |k|
+            @scenes << @scenes[k-1].fork( Factory.next(:random_string), k ); 
+            @scenedata << { 
+            :layers => [{ 
+              :layer_id => nil 
+              :image => Factory.next( :random_string ) , 
+              :width => rand(256) ,
+              :height => rand(256) ,
+              :x => rand(256) ,
+              :y => rand(256)
+            }] ,
+            :text => Factory.next( :random_string ) ,
+            :id => @scenes[k-1].id ,
+            :parent_id => @scenes[k-1].parent_id ,
+            :children_id => @scenes[k-1].children.map { |child| child.id } ,
+            :fork_text => Factory.next( :random_string ) ,
+            :fork_image => nil ,
+            :fork_number => @scenes[k-1].fork_number
+          }
+          end # each
+          
+          it "should allow a batch update"
+        end # before
+      end # batch update
+        
     end # successful 
     
     describe "failed - wrong" do

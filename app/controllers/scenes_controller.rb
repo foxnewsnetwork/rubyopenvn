@@ -17,11 +17,27 @@ class ScenesController < ApplicationController
   def create
     # Step 1: Check permission
     unless user_signed_in?
+      flash.now[:notice] = "You must be signed in"
       render "errors/flash.js.erb"
       return
     end # unless
     @chapter = Chapter.find_by_id(params[:chapter_id])
+    
+    # Step 1.5: Forking
+    # TODO: properly handle external forking
+    unless params[:parent_id].nil?
+      @parent = Scene.find_by_id(params[:parent_id]) 
+      unless @parent.nil?
+        @scene = @parent.spawn 
+        flash[:success] = "Forking successful"
+        render "scenes/show.json.json_builder"
+        return  
+      end # unless @parent.nil
+    end # unless parent_id.nil
+    
+    # Step 1.75: wrong user redirects
     unless @chapter.owner_id == current_user.id
+      flash.now[:notice] = "This belongs to #{@chapter.owner_id} and you are #{current_user.id}"
       render "errors/flash.js.erb"
       return
     end # unless
@@ -31,9 +47,12 @@ class ScenesController < ApplicationController
       @scene = @chapter.scenes.create( params[:scene] )
       if @scene
           @scene.owner_id = @chapter.owner_id
+          flash.now[:success] = "Scene creation successful"
           format.js if @scene.save
+          format.html { puts "success" }
           return
       end # end
+      flash.now[:notice] = "Something went wrong"
       format.js { "errors/flash.js.erb" }
     end # respond_to
   end # create
