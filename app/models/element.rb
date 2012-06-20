@@ -10,6 +10,7 @@ class Element < ActiveRecord::Base
   has_many :chapters, :through => :chapter_element_relationships, :foreign_key => :element_id
   has_many :stories, :through => :story_element_relationships, :foreign_key => :element_id
   has_many :users, :through => :user_element_relationships, :foreign_key => :element_id
+  has_many :layers
 
   # Attachments (be sure to change these for S3 environment in production)
   has_attached_file :picture, :styles => { :small => "50x50>" } ,

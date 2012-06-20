@@ -1,4 +1,5 @@
 require 'spec_helper'
+require "factories"
 
 describe Chapter do
   describe "cover page uploading" do
@@ -46,6 +47,43 @@ describe Chapter do
       @story.chapters.should include(@c1, @c2, @c3)
     end # it
   end # end describe
+  describe "iky-load" do
+    before(:each) do
+      @user = Factory(:user)
+      @story = Factory(:story, :author => @user)
+      @chapter = Factory(:chapter, :author => @user, :story => @story)
+      @elements = []
+      (0..29).each do |x|
+        @elements << Factory(:element)
+      end # each
+      @scenes = [Factory(:scene, :author => @user, :chapter => @chapter)]
+      @layers = []
+      (1..10).each do |x|
+        @scenes << @scenes[x-1].fork( { :fork_text => Factory.next( :random_string), :fork_number => x } )
+        (0..5).each do |y|
+          @layers << Factory( :layer, :scene => @scenes[x-1], :element => @elements[rand(30)] )
+        end # each y
+      end # each x
+    end # before
+    
+    it "should respond to iky-load" do
+      iky = @chapter.iky_jsonify
+      iky.should_not be_blank
+    end # it
+    
+    it "should have jsonified the correct data" do
+      iky = @chapter.iky_jsonify
+      iky[:scenes].each do |scene|
+        @scenes.should include(scene)
+      end # each scene
+      iky[:elements].each do |element|
+        @elements.should include(element)
+      end # each element
+      iky[:layers].each do |layer|
+        @layers.should include(layer)
+      end # each layer
+    end # it
+  end # iky-load
   describe "dirty-load" do
     before(:each) do
       # step 1: standard stuff
@@ -87,7 +125,7 @@ describe Chapter do
     end # before
     it "should at least respond" do
       dirty_json = @chapter.dirty_jsonify
-      puts dirty_json
+#      puts dirty_json
       dirty_json.should_not be_blank
     end # it
   end # dirty-jsonify

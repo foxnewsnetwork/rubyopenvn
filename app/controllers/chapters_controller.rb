@@ -40,10 +40,9 @@ class ChaptersController < ApplicationController
       end # html
       format.json do
         # Step 1: Load up
-        @chapter = Chapter.find_by_id(params[:id]).dirty_jsonify # 1
+        @chapter = Chapter.find_by_id(params[:id]).iky_jsonify # (3 hits to the database)
         @scenes = @chapter[:scenes]
-        @scene_data = @chapter[:scene_data] 
-        @element_relationships = @chapter[:relationships]
+        @layers = @chapter[:layers] 
         @elements = @chapter[:elements]
         @stockpile = current_user.elements
         

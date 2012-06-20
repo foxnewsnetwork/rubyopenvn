@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120619015335) do
+ActiveRecord::Schema.define(:version => 20120619183415) do
 
   create_table "chapter_element_relationships", :force => true do |t|
     t.integer  "chapter_id"
@@ -69,6 +69,19 @@ ActiveRecord::Schema.define(:version => 20120619015335) do
     t.datetime "picture_updated_at"
   end
 
+  create_table "layers", :force => true do |t|
+    t.integer  "scene_id"
+    t.float    "width",      :default => 0.0
+    t.float    "height",     :default => 0.0
+    t.float    "x",          :default => 0.0
+    t.float    "y",          :default => 0.0
+    t.datetime "created_at"
+    t.datetime "updated_at"
+    t.integer  "element_id"
+  end
+
+  add_index "layers", ["scene_id"], :name => "index_layers_on_scene_id"
+
   create_table "scene_data", :force => true do |t|
     t.integer  "scene_id"
     t.integer  "element_id"
@@ -95,6 +108,7 @@ ActiveRecord::Schema.define(:version => 20120619015335) do
     t.integer  "owner_id"
     t.string   "fork_text"
     t.integer  "fork_number", :default => 0
+    t.text     "texts"
   end
 
   add_index "scenes", ["owner_id"], :name => "index_scenes_on_owner_id"

@@ -5,9 +5,10 @@ class Scene < ActiveRecord::Base
   belongs_to :parent, :class_name => "Scene"
   has_many :children, :class_name => "Scene", :foreign_key => :parent_id
   has_many :scene_data, :class_name => "SceneData", :dependent => :destroy
+  has_many :layers, :dependent => :destroy
   
   # Attributes
-  attr_accessible :number, :fork_text, :fork_number
+  attr_accessible :number, :fork_text, :fork_number, :texts
   
   # spawns children; use this instead of self.children.create
 	def spawn
@@ -19,7 +20,7 @@ class Scene < ActiveRecord::Base
   
   def fork(data)
     child = self.spawn
-    child.fork_text = data[:fork_data]
+    child.fork_text = data[:fork_text]
     child.fork_number = data[:fork_number]
     child.save
     return child
@@ -29,6 +30,7 @@ class Scene < ActiveRecord::Base
     
   end # load_dirty
 end
+
 
 
 
@@ -46,5 +48,6 @@ end
 #  owner_id    :integer(4)
 #  fork_text   :string(255)
 #  fork_number :integer(4)      default(0)
+#  texts       :text
 #
 

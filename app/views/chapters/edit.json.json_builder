@@ -5,35 +5,23 @@ scenes @scenes do |scene|
   children_id scene.children do |child|
     child.id
   end
+  text scene.texts
   fork_text scene.fork_text
   fork_number scene.fork_number
 end 
-scene_data @scene_data do |sd|
-  id sd.id
-  scene_id sd._scene_id
-  element_id sd.element_id
-  width sd.width
-  height sd.height
-  left sd.left
-  top sd.top
-  zindex sd.zindex
-  dialogue sd.dialogue
+layers @layers do |layer|
+  id layer.id
+  scene_id layer.scene_id
+  width layer.width
+  height layer.height
+  x layer.x
+  y layer.y
+  element_id layer.element_id
 end
 elements @elements do |element|
   id element.id
   picture_small element.picture.url(:small)
   picture element.picture.url
-end
-element_relationships @element_relationships do |er|
-  id er.id
-  width er.width
-  height er.height
-  left er.left
-  top er.top
-  parent_id er.pid
-  child_id er.cid
-  scene_data_id er.sid
-  zindex er.zindex
 end
 stockpile @stockpile do |stock|
   id stock.id

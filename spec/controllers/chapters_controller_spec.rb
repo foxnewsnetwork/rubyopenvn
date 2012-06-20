@@ -32,30 +32,12 @@ describe ChaptersController do
         @elements << Factory(:element)
       end # each
       @scenes = []
-      @scene_data = []
+      @layers = []
       @scenes[0] = @chapter.scenes.create
       (1..rand(29)).each do |k|
         @scenes << @scenes[k-1].spawn
         (0..rand(6)).each do |j|
-          scend = @scenes[k].scene_data.create({
-            :element_id => @elements[rand(24)].id ,
-            :width => rand(355) ,
-            :height => rand(355) ,
-            :top => rand(355) ,
-            :left => rand(355) ,
-            :zindex => rand(355) ,
-            :dialogue => Factory.next(:random_string)
-          })
-          @scene_data << scend
-          scend.relate({
-            :width => rand(355) ,
-            :height => rand(355) ,
-            :top => rand(355) ,
-            :left => rand(355) ,
-            :zindex => rand(355) ,
-            :parent => @elements[rand(24)],
-            :child => @elements[rand(24)]
-          })
+          @layers << Factory(:layer, :scene => @scenes[k-1], :element => @elements[rand(25)] )
         end # each j
       end # each k
     end # before
@@ -68,9 +50,8 @@ describe ChaptersController do
       get "edit", :story_id => @story, :id => @chapter, :format => "json"
       data = MultiJson.load(response.body)
       data["scenes"].should_not be_nil
-      data["scene_data"].should_not be_nil
+      data["layers"].should_not be_nil
       data["elements"].should_not be_nil
-      data["element_relationships"].should_not be_nil
     end # it
     it "should leave no child behind" do
       get "edit", :story_id => @story, :id => @chapter, :format => "json"
@@ -78,15 +59,12 @@ describe ChaptersController do
       data['scenes'].each do |scene|
         @scenes.map { |s| s.id }.should include(scene["id"])
       end # scenes.each
-      data['scene_data'].each do |scenedata|
-        @scene_data.map { |sd| sd.id }.should include(scenedata["id"])
+      data['layers'].each do |layer|
+        @layers.map { |l| l.id }.should include(layer["id"])
       end # scene_data.each
       data['elements'].each do |element|
         @elements.map { |e| e.id }.should include(element["id"])
       end # elements.each
-      #data['element_relationships'].each do |elemenetrelationship|
-       # @element_relationships.map { |er| er.id }.should include(elemenetrelationship["id"])
-#      end # element_relationships.each
     end # it
   end # GET JSONs
   describe "Get requests" do

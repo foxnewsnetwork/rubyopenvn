@@ -1,4 +1,5 @@
 require 'spec_helper'
+require 'factories'
 
 describe Scene do
   describe "Scene creation" do
@@ -32,6 +33,7 @@ end # end Scene
 
 
 
+
 # == Schema Information
 #
 # Table name: scenes
@@ -45,5 +47,6 @@ end # end Scene
 #  owner_id    :integer(4)
 #  fork_text   :string(255)
 #  fork_number :integer(4)      default(0)
+#  texts       :text
 #
 

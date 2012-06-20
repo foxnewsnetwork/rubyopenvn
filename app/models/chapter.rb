@@ -53,7 +53,15 @@ class Chapter < ActiveRecord::Base
 		return child
 	end # spawn
   
-	def dirty_jsonify
+  def iky_jsonify
+    scenes = self.scenes # 1
+    layers = Layer.where( :scene_id => scenes )  # 2
+    element_ids = layers.map { |layer| layer.id }
+    elements = Element.where( :id => element_ids ) # 3
+    return { :scenes => scenes, :layers => layers, :elements => elements }
+  end # iky_jsonify
+  
+	def dirty_jsonify # deprecated
     sids = self.scenes # 1
     sdids = SceneData.where(:id => sids) # 2
     relationships = ElementRelationship.where(:sid => sdids) # 3

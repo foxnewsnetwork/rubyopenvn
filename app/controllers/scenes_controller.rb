@@ -72,6 +72,30 @@ class ScenesController < ApplicationController
       return
     end # unless
     
+    # Step 1.5: Check batch
+    if params[:batch] == true
+    	scenes = params[:scenes]
+    	scenes.each do |scene|
+    		scene[:layers].each do |layer|
+    			@s = Scene.find_by_id(scene[:id]);
+    			@s.update_attributes( scene )
+    			unless layer[:id].nil?
+    				# TODO: Get the ActiveRecord-Import Gem to work here
+	    			@layer = Layer.find_by_id( layer[:id] )
+	    			@layer.update_attributes( layer )
+	    		else
+	    			@layer = @s.layers.create(layer)
+	    			@layer.element_id = layer[:element_id]
+	    			@layer.save
+	    		end # unless
+    		end # layers.each
+    	end # scenes.each
+    	respond_to do |format|
+    		format.js
+    	end # respond_to
+    	return
+    end # if
+    
     # Step 2: Update
     respond_to do |format|
       if @scene.update_attributes( params[:scene] )
