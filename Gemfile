@@ -9,6 +9,7 @@ gem 'devise', '1.5.3'
 gem 'multi_json'
 gem "remotipart", "~> 1.0"
 gem "json_builder"
+gem "activerecord-import", "~> 0.2.8"
 
 group :development do
   gem 'rspec-rails' , '2.0.1'

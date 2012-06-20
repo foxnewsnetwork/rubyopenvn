@@ -26,14 +26,17 @@ class Scene < ActiveRecord::Base
     return child
   end # fork
     
-  def load_dirty
+  def self.batch_import( scenes )
+    # Step 1 : Declare field names
+    names = [ :id, :chapter_id, :parent_id, :owner_id, :fork_text, :fork_number, :texts ]
     
-  end # load_dirty
+    # Step 2: Fill up field values
+    values = scenes.map { |scene| names.map { |name| scene[name] } }
+    
+    # Step 3: Import
+    Scene.import( names, values, :on_duplicate_key_update => [:fork_text, :fork_number, :texts] )
+  end # batch_import
 end
-
-
-
-
 
 # == Schema Information
 #

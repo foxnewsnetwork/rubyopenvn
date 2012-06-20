@@ -147,13 +147,15 @@ describe ScenesController do
           @scenes = [@scene]
           @generator = lambda do |scene|
             generator = lambda do |layer|
+              r = rand(10)
               return {
-                :layer_id => rand(100) > 85 ? nil : layer.id , # 15% chance of a new layer
-                :image => layer.element.picture.url(:small) , 
+                :id => rand(100) > 85 ? nil : layer.id , # 15% chance of a new layer
+                :image => @elements[r].picture.url(:small) ,
                 :width => rand(256) ,
                 :height => rand(256) ,
                 :x => rand(256) ,
-                :y => rand(256)
+                :y => rand(256) ,
+                :element_id => @elements[r].id
               } # return
             end # generator
             return { 

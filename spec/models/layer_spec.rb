@@ -8,6 +8,42 @@ describe Layer do
     @chapter = Factory(:chapter, :author => @user, :story => @story)
     @scene = Factory(:scene, :author => @user, :chapter => @chapter)
   end # before
+  
+  describe "batch creation and updates" do
+    before(:each) do
+      @elements = (0..9).map { Factory(:element) }
+      @layers = (0..59).map { Factory(:layer, :scene => @scene, :element => @elements[rand(10)] ) }
+      @layer_attributes = @layers.map do |layer|
+        { 
+          :id => rand(100) > 80 ? nil : layer.id ,
+          :scene_id => layer.scene_id ,
+          :element_id => @elements[ rand(10) ].id ,
+          :width => rand(365) ,
+          :height => rand(365) ,
+          :x => rand(365),
+          :y => rand(365)
+        }
+      end # map
+    end # before
+    
+    it "should create when blank and update on duplicate key" do
+      blank_count = 0
+      old_count = Layer.count
+      Layer.batch_import(@layer_attributes)
+      @layer_attributes.each do | layer_attribute |
+        if layer_attribute[:id].nil?
+        	blank_count += 1
+        else
+          layer = Layer.find_by_id( layer_attribute[:id] )
+          layer_attribute.each do |key, val|
+          	layer[key].should eq(val)
+          end # layer_attribute.each
+        end # if
+      end # @layer_attributes.each
+      Layer.count.should eq( old_count + blank_count )
+    end # it
+  end # before
+  
   describe "scene relationship" do    
     it "should allow creation" do
       layer = @scene.layers.create

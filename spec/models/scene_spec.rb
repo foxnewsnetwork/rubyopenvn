@@ -27,7 +27,36 @@ describe Scene do
       @s4 = @s3.spawn
       @chapter.scenes.should include(@scene, @s2, @s3, @s4)
     end # it
+    
+    describe "batch updates" do
+      before(:each) do
+        @scenes = (0..59).map { Factory(:scene, :author => @user, :chapter => @chapter) }
+        @attrs = @scenes.map do |scene|
+          { 
+            :id => scene.id , # protected
+            :parent_id => scene.parent_id,  # protected
+            :chapter_id => scene.chapter_id , # protected
+            :owner_id => scene.owner_id , #protected
+            :texts => Factory.next( :random_string ) , # mass-assigned
+            :fork_text => Factory.next( :random_string ), # mass-assigned
+            :fork_number => rand(15) # mass-assigned
+          } # return
+        end # map
+      end # before
+      
+      it "should properly update" do
+        Scene.batch_import(@attrs)
+        @attrs.each do |scene|
+          updated_scene = Scene.find_by_id( scene[:id] )
+          updated_scene.should_not be_nil
+          scene.each do |key, val|
+            updated_scene[key].should eq(val)
+          end # scene.each
+        end # @attrs.each
+      end # it
+    end # batch creation
   end # end describe
+  
 end # end Scene
 
 
