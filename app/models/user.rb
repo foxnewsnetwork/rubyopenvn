@@ -13,13 +13,16 @@ class User < ActiveRecord::Base
   has_many :scenes, :foreign_key => :owner_id
   has_many :user_element_relationships, :dependent => :destroy
   has_many :elements, :through => :user_element_relationships, :foreign_key  => :user_id do
-    def create(*data)
+    def create(data)
       element = Element.create(data)
       proxy_owner.fork(element)
       return element
     end # create
   end # has_many
   
+  # Callbacks
+  after_create :register_default
+   
   def self.authenticate(data)
     return nil if data.nil?
     return nil if data[:email].nil?
@@ -39,6 +42,11 @@ class User < ActiveRecord::Base
       return nil
     end # begin-rescue
   end # fork
+  
+  private
+  	def register_default
+  		self.fork(Element.first)
+  	end # register_default
 end # User
 
 

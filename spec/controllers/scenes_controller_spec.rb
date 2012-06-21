@@ -171,7 +171,7 @@ describe ScenesController do
           end # @generator
           @scenedata = [@generator.call(@scene)]
           (1..10).each do |k|
-            @scenes << @scenes[k-1].fork( :fork_text => Factory.next(:random_string), :fork_number => k )
+            @scenes << @scenes[k-1].fork( :fork_text => Factory.next(:random_string), :fork_number => k, :owner_id => @scenes[k-1].owner_id )
             rand(8).times { @layers << Factory(:layer, :scene => @scenes[k], :element => @elements[rand(10)]) }
             @scenedata << @generator.call( @scenes[k] )
           end # each

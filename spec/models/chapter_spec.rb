@@ -7,7 +7,23 @@ describe Chapter do
       @user = Factory(:user)
     end # before
     
+    it "should allow for a user to upload a cover page"
+    
   end # cover
+  describe "defaults" do
+  	before(:each) do
+  		@user = Factory(:user)
+  		@story = Factory(:story, :author => @user)
+  	end # before
+  	
+  	it "should create a chapter that by default has a blank scene in it" do
+  		chapter = @story.chapters.create( :title => "Trevor is a faggot" )
+  		chapter.scenes.count.should eq(1)
+  		scene = chapter.scenes.first
+  		scene.author.should eq(chapter.author)
+  		scene.chapter.should eq(chapter)
+  	end # it
+  end # defaults
   describe "Creation" do
     before(:each) do
       @user = User.create!( :name => "Test1", :email => "test@test.com", :password => "testtest" )
@@ -56,7 +72,7 @@ describe Chapter do
       (0..29).each do |x|
         @elements << Factory(:element)
       end # each
-      @scenes = [Factory(:scene, :author => @user, :chapter => @chapter)]
+      @scenes = [@chapter.scenes.first]
       @layers = []
       (1..10).each do |x|
         @scenes << @scenes[x-1].fork( { :fork_text => Factory.next( :random_string), :fork_number => x } )

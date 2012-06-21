@@ -22,6 +22,7 @@ class Scene < ActiveRecord::Base
     child = self.spawn
     child.fork_text = data[:fork_text]
     child.fork_number = data[:fork_number]
+    child.owner_id = data[:owner_id]
     child.save
     return child
   end # fork

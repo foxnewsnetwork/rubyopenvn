@@ -100,6 +100,22 @@ class ChaptersController < ApplicationController
     if user_signed_in?
         @chapter = Chapter.find_by_id( params[:id] )
         @story = @chapter.story
+        # Batch updates
+        if params[:batch]
+        	scenes = params[:scenes].map { |scene| scene if scene[:owner_id] == current_user.id }.compact
+					layers = []
+					scenes.each do |scene|
+						scene[:layers].each do |layer|
+						  layers << layer
+						end # layers.each
+					end # scenes.each
+					Scene.batch_import( scenes )
+					Layer.batch_import( layers )
+					respond_to do |format|
+						format.js
+					end # respond_to
+					return
+				end # if batch updates
         if current_user.id == @story.owner_id
           @chapter.update_attributes( params[:chapter] )
           flash[:notice] = "Successfully updated chapter attributes"

@@ -20,7 +20,15 @@ class Chapter < ActiveRecord::Base
   end # has_many
   belongs_to :author, :class_name => "User", :foreign_key => :owner_id
   belongs_to :story
-  has_many :scenes, :dependent => :destroy 
+  has_many :scenes, :dependent => :destroy do
+  	def create(*data)
+  		scene = Scene.new
+  		scene.owner_id = proxy_owner.owner_id
+  		scene.chapter_id = proxy_owner.id
+  		return scene if scene.save
+  		return nil
+  	end # create
+  end # has_many
   belongs_to :parent, :class_name => "Chapter"
   has_many :children, :class_name => "Chapter", :foreign_key => :parent_id do 
     def create(*data)
@@ -33,6 +41,9 @@ class Chapter < ActiveRecord::Base
     end # create
   end # has_many
 
+	# callbacks
+	after_create :register_default
+	
   # forks elements
   def fork(element)
     begin
@@ -73,6 +84,11 @@ class Chapter < ActiveRecord::Base
     elements = Element.where(:id => eid) # 4
     return { :scenes => sids, :scene_data => sdids, :relationships => relationships, :elements => elements }
   end # dirty_jsonify
+  
+  private
+  	def register_default
+  		self.scenes.create
+  	end # register_default
 end # Chapter
 
 

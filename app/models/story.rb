@@ -23,6 +23,7 @@ class Story < ActiveRecord::Base
     end # create
   end # has_many
   
+  # validations
   validates :title, :presence => true  
   
   # Attachments (be sure to change these for S3 environment in production)

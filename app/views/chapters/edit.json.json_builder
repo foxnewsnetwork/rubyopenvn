@@ -2,6 +2,7 @@ scenes @scenes do |scene|
   id scene.id
   number scene.number
   parent_id scene.parent_id
+  owner_id scene.owner_id
   children_id scene.children do |child|
     child.id
   end

@@ -33,7 +33,7 @@ describe ChaptersController do
       end # each
       @scenes = []
       @layers = []
-      @scenes[0] = @chapter.scenes.create
+      @scenes[0] = @chapter.scenes.first
       (1..rand(29)).each do |k|
         @scenes << @scenes[k-1].spawn
         (0..rand(6)).each do |j|
@@ -357,6 +357,88 @@ describe ChaptersController do
       @referer = oo
       request.env['HTTP_REFERER'] = @referer
     end # before
+    
+    ############# June 20
+    describe "batch update" do
+      login_user
+      before(:each) do
+        @user = Factory(:user)
+        @story = Factory(:story, :author => @current_user)
+        @chapter = Factory(:chapter, :author => @current_user, :story => @story)
+        @scene = @chapter.scenes.first
+        @elements = (1..10).map { Factory(:element) }
+        @layers = (1..4).map { Factory(:layer, :scene => @scene, :element => @elements[rand(10)] ) }
+        @scenes = [@scene]
+        @generator = lambda do |scene|
+          generator = lambda do |layer|
+            r = rand(10)
+            return {
+              :id => rand(100) > 85 ? nil : layer.id , # 15% chance of a new layer
+              :image => @elements[r].picture.url(:small) ,
+              :width => rand(256) ,
+              :height => rand(256) ,
+              :x => rand(256) ,
+              :y => rand(256) ,
+              :element_id => @elements[r].id
+            } # return
+          end # generator
+          return { 
+            :layers => scene.layers.map { |layer| generator.call( layer ) } ,
+            :texts => Factory.next( :random_string ) ,
+            :id => scene.id ,
+            :parent_id => scene.parent_id ,
+          	:owner_id => scene.owner_id ,            
+            :children_id => scene.children.map { |child| child.id } ,
+            :fork_text => Factory.next( :random_string ) ,
+            :fork_image => nil ,
+            :fork_number => scene.fork_number
+          } # return
+        end # @generator
+        @scenedata = [@generator.call(@scene)]
+        (1..10).each do |k|
+          @scenes << @scenes[k-1].fork( :fork_text => Factory.next(:random_string), :fork_number => k, :owner_id => @scenes[k-1].owner_id )
+          rand(8).times { @layers << Factory(:layer, :scene => @scenes[k], :element => @elements[rand(10)]) }
+          @scenedata << @generator.call( @scenes[k] )
+        end # each
+      end # before
+      
+      it "should only do batch updates on scenes that belong to the correct user"
+      
+      it "should do a scene-layer batch update" do
+        old_count = Layer.count
+        blanks = 0
+        xhr :put, :update, :story_id => @story.id, :id => @chapter.id, :scenes => @scenedata, :batch => true
+        @scenedata.each do |sd|
+          scene = Scene.find_by_id( sd[:id] )
+          sd.each do |key, val|
+            case key
+              when :layers
+                sd[:layers].each do |l|
+                  unless l[:id].nil?
+                    layer = Layer.find_by_id(l[:id])
+                    layer.element.picture.url(:small).should eq(l[:image])
+                    l.each do |k,v|
+                      layer[k].should eq(v) unless k == :image
+                    end # l.each
+                  else
+                    blanks += 1
+                  end # unless
+                end # layers.each
+              when :children_id
+                val.each do |k|
+                  scene.children.map { |child| child.id }.should include( k )
+                end # each k
+              else
+              	# Indeterministic failure here
+                scene[key].should eq(val)  
+            end # case
+          end # sd.each
+        end # @scenedata each
+        Layer.count.should eq( blanks + old_count )
+      end # it
+    end # batch update
+    ############# 
+    
     describe "successful - file ul" do
       login_user
       before(:each) do

@@ -1,7 +1,19 @@
 require 'spec_helper'
+require 'factories'
 
 describe User do
+	describe "defaults" do
+		before(:each) do
+			@element = Factory(:element)
+		end # before
+		
+		it "should create a user that has 1 element in his stockpile" do
+			user = User.create( :name => "Trevor", :email => "trevor@faggot.is", :password => "123123123132" )
+			user.elements.count.should eq(1);
+		end # it
+	end # defaults
   describe "Validations testing" do
+  	it "should have some tests here or not have this section at all"
   end # Validatiosn testing
   
   describe "tokens" do
