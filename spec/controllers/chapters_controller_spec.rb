@@ -258,7 +258,7 @@ describe ChaptersController do
       
       it "should redirect to login path" do
         post :create, :story_id => @story.id
-        response.should redirect_to @referer
+        response.should redirect_to user_path(@current_user)
       end # it
       
       it "should display some sort of flash message" do
@@ -384,7 +384,7 @@ describe ChaptersController do
           end # generator
           return { 
             :layers => scene.layers.map { |layer| generator.call( layer ) } ,
-            :texts => Factory.next( :random_string ) ,
+            :text => Factory.next( :random_string ) ,
             :id => scene.id ,
             :parent_id => scene.parent_id ,
           	:owner_id => scene.owner_id ,            

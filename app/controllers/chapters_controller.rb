@@ -102,6 +102,17 @@ class ChaptersController < ApplicationController
         @story = @chapter.story
         # Batch updates
         if params[:batch] == true
+        	# Because I don't want to pull out N scenes for each one a user might
+        	# have altered before doing batch updating, I will trust in my scrpt to
+        	# do client-side validations. This, of course, introduces a security
+        	# vulnerability since a smart client can spoof up his owner_id and directly
+        	# alter someone else's scene and layer.
+        	# 
+        	# If I ever get to the point where someone thinks highly enough of my
+        	# little project to hack it, I hope by then I will have already resolved
+        	# this issue.
+        	# 
+        	# TL;DR : exploit here, not gonna fix until someone exploits it
         	scenes = params[:scenes].map { |scene| scene if scene[:owner_id] == current_user.id }.compact
 					layers = []
 					scenes.each do |scene|

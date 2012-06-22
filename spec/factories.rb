@@ -24,7 +24,7 @@ end # chapter
 Factory.define :scene do |scene|
   scene.association :author
   scene.association :chapter
-  scene.texts { Factory.next(:random_string) }
+  scene.text { Factory.next(:random_string) }
   scene.number 0
   scene.fork_text { Factory.next( :random_string ) }
   scene.fork_number 0

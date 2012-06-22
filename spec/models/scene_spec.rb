@@ -37,7 +37,7 @@ describe Scene do
             :parent_id => scene.parent_id,  # protected
             :chapter_id => scene.chapter_id , # protected
             :owner_id => scene.owner_id , #protected
-            :texts => Factory.next( :random_string ) , # mass-assigned
+            :text => Factory.next( :random_string ) , # mass-assigned
             :fork_text => Factory.next( :random_string ), # mass-assigned
             :fork_number => rand(15) # mass-assigned
           } # return
@@ -63,6 +63,7 @@ end # end Scene
 
 
 
+
 # == Schema Information
 #
 # Table name: scenes
@@ -76,6 +77,6 @@ end # end Scene
 #  owner_id    :integer(4)
 #  fork_text   :string(255)
 #  fork_number :integer(4)      default(0)
-#  texts       :text
+#  text        :text
 #
 

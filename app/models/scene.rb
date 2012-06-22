@@ -8,7 +8,7 @@ class Scene < ActiveRecord::Base
   has_many :layers, :dependent => :destroy
   
   # Attributes
-  attr_accessible :number, :fork_text, :fork_number, :texts
+  attr_accessible :number, :fork_text, :fork_number, :text
   
   # spawns children; use this instead of self.children.create
 	def spawn
@@ -29,16 +29,16 @@ class Scene < ActiveRecord::Base
     
   def self.batch_import( scenes )
     # Step 1 : Declare field names
-    names = [ :id, :chapter_id, :parent_id, :owner_id, :fork_text, :fork_number, :texts ]
+    names = [ :id, :chapter_id, :parent_id, :owner_id, :fork_text, :fork_number, :text ]
     
     # Step 2: Fill up field values
-    values = scenes.map { |scene| names.map { |name| scene[name == :texts ? :text : name] } }
-    puts values
+    values = scenes.map { |scene| names.map { |name| scene[name] } }
     
     # Step 3: Import
-    Scene.import( names, values, :on_duplicate_key_update => [:fork_text, :fork_number, :texts] )
+    Scene.import( names, values, :on_duplicate_key_update => [:fork_text, :fork_number, :text] )
   end # batch_import
 end
+
 
 # == Schema Information
 #
@@ -53,6 +53,6 @@ end
 #  owner_id    :integer(4)
 #  fork_text   :string(255)
 #  fork_number :integer(4)      default(0)
-#  texts       :text
+#  text        :text
 #
 

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20120619183415) do
+ActiveRecord::Schema.define(:version => 20120622002957) do
 
   create_table "chapter_element_relationships", :force => true do |t|
     t.integer  "chapter_id"
@@ -108,7 +108,7 @@ ActiveRecord::Schema.define(:version => 20120619183415) do
     t.integer  "owner_id"
     t.string   "fork_text"
     t.integer  "fork_number", :default => 0
-    t.text     "texts"
+    t.text     "text"
   end
 
   add_index "scenes", ["owner_id"], :name => "index_scenes_on_owner_id"

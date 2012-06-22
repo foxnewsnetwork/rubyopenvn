@@ -160,7 +160,7 @@ describe ScenesController do
             end # generator
             return { 
               :layers => scene.layers.map { |layer| generator.call( layer ) } ,
-              :texts => Factory.next( :random_string ) ,
+              :text => Factory.next( :random_string ) ,
               :id => scene.id ,
               :parent_id => scene.parent_id ,
               :children_id => scene.children.map { |child| child.id } ,

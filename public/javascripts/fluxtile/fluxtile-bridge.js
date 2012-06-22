@@ -59,11 +59,13 @@ function GetVisualNovelLoadData( cb ) {
 		/**
     * Phase C : VN Loading
     */      
+    
 		cb( loaddata, stockpile );
 	} ); // req.done
 } // GetVisualNovelLoadData
 
 function FluxTileBridge_Commit(scenes) {
+	alert(JSON.stringify( scenes ) );
 	var output_data = { 
 		scenes : scenes ,
 		batch : true ,

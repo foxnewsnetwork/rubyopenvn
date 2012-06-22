@@ -6,7 +6,7 @@ scenes @scenes do |scene|
   children_id scene.children do |child|
     child.id
   end
-  text scene.texts
+  text scene.text
   fork_text scene.fork_text
   fork_number scene.fork_number
 end 
