@@ -1,0 +1,123 @@
+.visualnovel-placeholder { 
+	position : absolute;
+}
+div.now-loading { 
+	top : 25%;
+	left : 20%;
+	width : 60%;
+	height : 50%;
+	border : 2px solid black;
+}
+h4.now-loading { 
+	background: url( "../../images/general/youtube.gif" ) 100% 100%;	
+}
+.visualnovel-ui  { 
+	right : 5%;
+	z-index : 9999;
+	width : 10em;
+	height : 4em;
+}
+.visualnovel-tabs-holder { 
+	top : 50%;
+	left : 5%;
+	width : 500px;
+	height : 30px;
+	border : 2px solid blue;
+}
+.btn-next { 
+	top : 40%;	
+	background-color : rgb( 170, 255, 190);	
+}
+.btn-previous { 
+	top : 30%;
+	background: rgb( 255, 190, 200);	
+}
+.btn-fork { 
+	top : 5%;
+	background : rgb( 180, 180, 255);
+}
+.btn-edit { 
+	top : 15%;
+	right : 10% ;
+	background : rgb( 55, 55, 55);
+}
+.btn-commit { 
+	top : 25%;
+	right : 25% ;
+	background : rgb( 195, 174, 201);
+} 
+.scene-text  {}
+.textbox { 
+	left : 0.5%;
+	top : 60%;
+	width : 97%;
+	height : 37%;
+	border : 1px solid red;
+}
+p.textcontrol { 
+
+}
+ul.horizontal-bar { 
+	list-style : none;
+	list-style-position : inside;
+	display : inline;
+	width : 100%;
+	border : 2px solid blue;
+	margin-left : -2.5em;
+}
+li.horizontal-bar { 	
+	display : inline;
+}
+button.horizontal-bar-btn { 
+	background-color : rgb( 245, 230, 230 );
+	width : 	60px;
+	height :  30px;
+}
+
+ul.vertical-bar { 
+	list-style : none;
+}
+li.vertical-bar { 
+}
+button.vertical-bar-btn { 
+	background-color : rgb( 245, 230, 230 );
+	width : 	350px;
+	height : 90px;
+}
+.visualnovel-forkbox { 
+	width : 400px;
+	height : 300px;
+	border : 1px solid red;
+	top : 10%;
+	left : 25%;
+}
+.static-input-container { 
+	border : 2px solid blue;
+	width : 20em;
+	height  :10em;
+	left : 15%;
+	top : 25%;
+} 
+input.static-input-control { 
+	width : 15em;
+	height : 2em;
+}
+input.static-input-button { 
+	width : 5em;
+	height : 2em;
+}
+.visualnovel-icon-stockpile { 
+
+}
+.iconscontrol-icon { 
+
+}
+.iconscontrol-icon-0 { 
+
+}
+.haxetooltip { 
+	background-color : rgb( 125, 125, 125);
+	border : 1px solid rgb( 187, 145, 155);
+	z-index : 9999;
+}
+

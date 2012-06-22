@@ -33,7 +33,7 @@ class ChaptersController < ApplicationController
       format.html do
         if params[:cmd] == "jsedit"
           @chapter = Chapter.find_by_id(params[:id])
-          render "chapters/edit"
+          render "chapters/edit", :layout => false
         else
           redirect_to edit_story_chapter_path(@story, params[:id]) + "?usertab=chapters"
         end # cmd = jsedit
@@ -81,7 +81,7 @@ class ChaptersController < ApplicationController
         flash[:notice] = "Chapter forking not successful because forking has not been implemeneted yet. Sorry."
         respond_to do |format|
           format.js { render "errors/flash.js.erb" }
-          format.html { redirect_to :back }
+          format.html { redirect_to user_path( current_user ) }
         end # respond_to
       end # if
     else
@@ -101,7 +101,7 @@ class ChaptersController < ApplicationController
         @chapter = Chapter.find_by_id( params[:id] )
         @story = @chapter.story
         # Batch updates
-        if params[:batch]
+        if params[:batch] == true
         	scenes = params[:scenes].map { |scene| scene if scene[:owner_id] == current_user.id }.compact
 					layers = []
 					scenes.each do |scene|

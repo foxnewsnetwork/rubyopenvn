@@ -406,11 +406,11 @@ datastructures.TreeNode.prototype.__class__ = datastructures.TreeNode;
 tools.Measure = function() { }
 tools.Measure.__name__ = ["tools","Measure"];
 tools.Measure.ImageSize = function(img) {
-	var tile = new buildingblocks.Tile();
-	tile.Image(img);
-	var size = tile.Size();
-	tile.Hide();
-	tile.Remove();
+	var output = "<img alt='gettingsize' src='" + img + "' id='" + tools.Measure.NAME + "' style='position : absolute;' />";
+	new js.JQuery("body").append(output);
+	var jq = new js.JQuery("#" + tools.Measure.NAME);
+	var size = { width : jq.width() + 0.0, height : jq.height() + 0.0};
+	jq.replaceWith("");
 	return size;
 }
 tools.Measure.prototype.__class__ = tools.Measure;
@@ -428,6 +428,7 @@ visualnovel.Layer.prototype.Storage = function(data) {
 	return this.storage;
 }
 visualnovel.Layer.prototype.Load = function(data) {
+	this.storage = { id : null, element_id : null};
 	this.Image(data.image);
 	this.storage.id = data.id;
 	this.storage.element_id = data.element_id;
@@ -718,6 +719,7 @@ visualnovel.Scene = function(p) {
 	this.text.ClassName("scene-text textbox");
 	this.layers = [];
 	this.edit_flag = false;
+	this.storage = { id : null, owner_id : null, parent_id : null};
 }
 visualnovel.Scene.__name__ = ["visualnovel","Scene"];
 visualnovel.Scene.__super__ = buildingblocks.Tile;
@@ -936,8 +938,9 @@ visualnovel.VisualNovel.prototype.SetupStockpile = function(stockdata) {
 		var stock = stockdata[_g];
 		++_g;
 		this.icon_stockpile.AddIcon(stock.picture,(function(s) {
-			var size = tools.Measure.ImageSize(s.picture);
 			return function() {
+				var size = tools.Measure.ImageSize(s.picture);
+				haxe.Log.trace(size,{ fileName : "VisualNovel.hx", lineNumber : 152, className : "visualnovel.VisualNovel", methodName : "SetupStockpile"});
 				me.scenes.get(me.shown_scene.Data() + "").AddLayer({ id : null, image : s.picture, width : size.width, height : size.height, x : 50.0, y : 50.0, element_id : s.id});
 			};
 		})(stock));
@@ -952,6 +955,7 @@ visualnovel.VisualNovel.prototype.Commit = function() {
 			var self_node = history.pop();
 			temp_history.push(self_node);
 			var scene_state = me.scenes.get(self_node.Data() + "").GetState();
+			haxe.Log.trace(me.forks,{ fileName : "VisualNovel.hx", lineNumber : 214, className : "visualnovel.VisualNovel", methodName : "Commit"});
 			var fork_node = me.forks.get(self_node.Parent() + "-" + self_node.Data());
 			var _g = 0, _g1 = self_node.Children();
 			while(_g < _g1.length) {
@@ -974,7 +978,6 @@ visualnovel.VisualNovel.prototype.Commit = function() {
 }
 visualnovel.VisualNovel.prototype.Edit = function(flag) {
 	this.edit_flag = flag != null?flag:!this.edit_flag;
-	haxe.Log.trace(this.edit_flag,{ fileName : "VisualNovel.hx", lineNumber : 243, className : "visualnovel.VisualNovel", methodName : "Edit"});
 	this.scenes.get(this.shown_scene.Data() + "").Edit(this.edit_flag);
 	this.p_edittools();
 }
@@ -986,6 +989,9 @@ visualnovel.VisualNovel.prototype.Fork = function(text,cb) {
 		me.active_scene.Branch(id);
 		scene.Load(scenedata);
 		me.scenes.set(id + "",scene);
+		var fork = new visualnovel.Fork();
+		fork.Load(scenedata);
+		me.forks.set(scenedata.parent_id + "-" + scenedata.id,fork);
 		me.Next(me.active_scene.Children().length - 1);
 		cb(scene);
 	});
@@ -1744,38 +1750,14 @@ production.VisualNovelProduction = function() { }
 production.VisualNovelProduction.__name__ = ["production","VisualNovelProduction"];
 production.VisualNovelProduction.main = function() {
 	var vn = new visualnovel.VisualNovel();
-	var sd = [{ layers : [], text : "", id : 0, parent_id : null, children_id : [], owner_id : 0, fork_text : null, fork_number : 0, fork_image : null}];
-	vn.Load(sd);
-	vn.SetupCommitting(function(scenes) {
-		$.ajax( { 
-	    url : "/stories/" + VisualNovelMetadata['story'] + "/chapters/" + VisualNovelMetadata['chapter'] ,
-	    type : "PUT" ,
-	    data : $.merge( { scenes : scenes, batch : true }, VisualNovelMetadata )
-	  } ).done(function(html) { return; } );
-	} ); // SetupCommitting
+	vn.SetupCommitting(function(data) {
+		FluxTileBridge_Commit(data);
+	});
 	vn.SetupForking(function(cb) {
-		var req = $.ajax({
-			url : "/stories/" + VisualNovelMetadata['story'] + "/chapters/" + VisualNovelMetadata['chapter'] + "/scenes" ,
-			type : "POST" ,
-			data : $.merge( VisualNovelMetadata, scene )
-		}).done(function(html){ 
-			var data = JSON.parse(html);
-			cb(data['id']);
-		}); // ajax
-	}); // SetupForking
-	// vn.SetupPermission(0);
-	$.ajax({
-		url : "/stories/" + VisualNovelMetadata['story'] + "/chapters/" + VisualNovelMetadata['chapter'] + "/edit.json" ,
-		type : "GET" ,
-	}).done(function(data){ 
-		var scenes = { scenes : data['scenes'], layers : data['layers'], elements : data['elements'] };
-		var stockpile = data['stockpile'];
-		if ( scenes['scenes'] != null )
-			vn.Load(scenes);
-		vn.SetupStockpile(stockpile);	
-		vn.Show();
-	} ); // ajax done
-} // main
+		FluxTileBridge_Fork(cb);
+	});
+	FluxTileBridge_Load(vn);
+}
 production.VisualNovelProduction.prototype.__class__ = production.VisualNovelProduction;
 $_ = {}
 js.Boot.__res = {}
@@ -1900,6 +1882,7 @@ buildingblocks.Tile.ID = 0;
 buildingblocks.Tile.SelectedTile = new buildingblocks.Tile();
 controls.InputControl.NAME = "FFOpenVN-InputControl-" + tools.Random.Get(20000);
 controls.InputControl.ID = 0;
+tools.Measure.NAME = "FFOpenVN-MeasureTool-" + tools.Random.Get(999999);
 toolbar.HorizontalBar.NAME = "FFOpenVN-Horizontal-Bar-" + tools.Random.Get(10000);
 toolbar.HorizontalBar.ID = 0;
 controls.TextControl.ID = 0;

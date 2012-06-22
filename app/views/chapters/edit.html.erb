@@ -1,25 +1,30 @@
-<!-- HTML Page -->
-<script type="text/javascript">
-	var VisualNovelMetadata = { 
-		story : "<%= escape_javascript @story.slug %>" ,
-		chapter : "<%= @chapter.id %>" ,
-		authenticity_token : "<%= form_authenticity_token %>"
-	} ;
-</script>
-<%= javascript_include_tag "fluxtile/fluxtile-visualnovel.production.js" %>
-<div class="container">
-
-	<div class="row">
-		<div class="pusheddown"></div>
-	</div>
-	<div class="row">
-		<div class="span12" id="now-loading"></div>
-	</div>
-	<div class="row">
-		<h1>Stuff</h1>
-		<h1>Stuff</h1>
-		<div id="debug"></div>
-		<button id="createscene" class="btn">Create Scene</button>
-	</div>
-
+<!DOCTYPE html>
+<html>
+<head>
+  <title>FFOpenVN v0.0.2</title>
+  <%= stylesheet_link_tag :all %>
+  <%= stylesheet_link_tag "bootstrap/css/bootstrap.css" %>
+  <%= javascript_include_tag :all %>
+  <%= csrf_meta_tag %>
+</head>
+<body>
+	<%= stylesheet_link_tag "visualnovel/visualnovel.production.css" %>
+	<script type="text/javascript">
+		var VisualNovelMetadata = { 
+			story : "<%= escape_javascript @story.slug %>" ,
+			chapter : "<%= @chapter.id %>" ,
+			authenticity_token : "<%= form_authenticity_token %>"
+		} ;
+	</script>
+	<%= javascript_include_tag "fluxtile/fluxtile-bridge.js" %>
+	<%= javascript_include_tag "fluxtile/fluxtile-visualnovel.production.js" %>
+	<div class="container">
+		<div class="row">
+			<div class="span12" id="now-loading">
+			</div>
+			<div id="haxe:trace" style="position : absolute; top : 15%;"></div>
+		</div>
 </div>
+</body>
+<%= debug(params) if Rails.env.development? %>
+</html>

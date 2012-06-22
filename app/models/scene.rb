@@ -32,7 +32,8 @@ class Scene < ActiveRecord::Base
     names = [ :id, :chapter_id, :parent_id, :owner_id, :fork_text, :fork_number, :texts ]
     
     # Step 2: Fill up field values
-    values = scenes.map { |scene| names.map { |name| scene[name] } }
+    values = scenes.map { |scene| names.map { |name| scene[name == :texts ? :text : name] } }
+    puts values
     
     # Step 3: Import
     Scene.import( names, values, :on_duplicate_key_update => [:fork_text, :fork_number, :texts] )
