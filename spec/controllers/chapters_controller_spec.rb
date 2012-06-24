@@ -190,7 +190,7 @@ describe ChaptersController do
       it "should should render the newly created chapter" do
         post :create, :story_id => @story.id
         @chapter = assigns[:chapter]
-        response.should redirect_to edit_story_chapter_path(@story,@chapter)
+        response.should redirect_to edit_story_chapter_path(@story,@chapter) + "?usertab=chapters"
       end # it
 
       it "should should show a flash message" do

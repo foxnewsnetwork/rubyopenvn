@@ -113,9 +113,13 @@ class ChaptersController < ApplicationController
         	# this issue.
         	# 
         	# TL;DR : exploit here, not gonna fix until someone exploits it
-        	# scenes = params[:scenes].map { |key, scene| scene if scene[:owner_id] == current_user.id }.compact
+        	if params[:scenes].is_a?(Array)
+        		scenes = params[:scenes].map { |scene| scene if scene[:owner_id] == current_user.id }.compact
+        	elsif params[:scenes].is_a(Hash)
+	        	scenes = params[:scenes].map { |key, scene| scene if scene[:owner_id] == current_user.id }.compact
+	        end # if dumbshit
         	# Not using the above line because of an issue with visualnovel.js not correctly serializing owner_id
-        	scenes = params[:scenes].map { |key, scene| scene }
+#        	scenes = params[:scenes].map { |key, scene| scene }
 					layers = []
 					scenes.each do |scene|
 						unless scene[:layers].nil? || scene[:layers].empty?
@@ -124,7 +128,7 @@ class ChaptersController < ApplicationController
 							end # layers.each
 						end # unless no layers
 					end # scenes.each
-			 		logger.debug scenes
+			 		
 					Scene.batch_import( scenes )
 					Layer.batch_import( layers )
 					respond_to do |format|
