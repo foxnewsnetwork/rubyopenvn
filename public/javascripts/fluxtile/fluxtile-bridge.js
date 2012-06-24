@@ -97,8 +97,12 @@ function FluxTileBridge_Load(vn) {
 		
 		vn.Load(loaddata);
 		vn.SetupStockpile(stockdata);
+		vn.SetupPermission( { user_id : VisualNovelMetadata['user_id'], level : 6 } );
 		$("#now-loading").hide( 10, function() { 
 			vn.Start();
 		} ); // hide
 	} ); // GetVisualNovelLoadData
 }; // FluxTileBridge_Load
+function FluxTileBridege_Delete( data ) { 
+	alert( "Write me! fluxtile-bridge.js Line 106" );
+}; // FluxTileBridge_Delet

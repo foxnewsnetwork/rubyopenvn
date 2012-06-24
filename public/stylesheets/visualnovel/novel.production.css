@@ -1,0 +1,217 @@
+.visualnovel-placeholder { 
+	position : absolute;
+}
+div.now-loading { 
+	top : 0;
+	left : 0;
+	width : 100%;
+	height : 100%;
+	background-color : rgb(255,255,255);
+}
+h4.now-loading { 
+	background: url( "../../images/visualnovel/loading_icon.gif" );	
+	background-size : contain;
+}
+.visualnovel-ui  { 
+	right : 1%;
+	width : 4em;
+	height : 4em;
+}
+
+.btn-next { 
+	top : 80%;	
+	background-color : rgb( 170, 255, 190);	
+	background : url('../../images/visualnovel/next.png');
+	background-size : contain;
+}
+.btn-previous { 
+	top : 90%;
+	background: rgb( 255, 190, 200);
+	background : url('../../images/visualnovel/previous.png');
+	background-size : contain;	
+}
+.btn-fork { 
+	top : 70%;
+	background-color : rgb( 180, 180, 255);
+	background : url('../../images/visualnovel/fork.png');
+	background-size : contain;	
+}
+.btn-edit { 
+	top : 60%;
+	background : rgb( 55, 55, 55);
+	background : url('../../images/visualnovel/edit.png');
+	background-size : contain;	
+}
+.btn-commit { 
+	top : 50%;
+	background : rgb( 195, 174, 201);
+	background : url('../../images/visualnovel/save.png');
+	background-size : contain;	
+} 
+
+.scene-text  {}
+.textbox { 
+	left : 0.5%;
+	top : 60%;
+	width : 90%;
+	height : 37%;
+	-moz-border-image:url("../../images/visualnovel/../../images/visualnovel/border.png") 30 30 stretch; /* Firefox */
+	-webkit-border-image:url("../../images/visualnovel/../../images/visualnovel/border.png") 30 30 stretch; /* Safari */
+	-o-border-image:url("../../images/visualnovel/../../images/visualnovel/border.png") 30 30 stretch; /* Opera */
+	border-image:url("../../images/visualnovel/../../images/visualnovel/border.png") 30 30 stretch;
+	padding:5px 10px;
+	border-width:5px;
+	z-index : 9990;
+	background-color : rgb( 247, 247, 247 );
+	opacity:0.6;
+}
+p.textcontrol { 
+	font-size : 1.5em;
+	font-weight:bold;
+	color:#000000;
+}
+.visualnovel-tabs-holder { 
+	top : 55%;
+	left : 0.5%;
+	width : 500px;
+	height : 30px;
+	-moz-border-image:url("../../images/visualnovel/../../images/visualnovel/border.png") 30 30 stretch; /* Firefox */
+	-webkit-border-image:url("../../images/visualnovel/../../images/visualnovel/border.png") 30 30 stretch; /* Safari */
+	-o-border-image:url("../../images/visualnovel/../../images/visualnovel/border.png") 30 30 stretch; /* Opera */
+	border-image:url("../../images/visualnovel/../../images/visualnovel/border.png") 30 30 stretch;
+}
+ul.horizontal-bar { 
+	list-style : none;
+	list-style-position : inside;
+	display : inline;
+	width : 100%;
+	margin-left : -1em;
+}
+li.horizontal-bar { 	
+	display : inline;
+}
+button.horizontal-bar-btn { 
+	background-color : rgb( 108, 111, 109 );
+	width : 100px;
+	height :  30px;
+	text-align : right;
+	font-size : 1.1em;
+	text-transform:uppercase;
+	color : rgb(221,223,253);
+}
+button.hbar-btn-0 { 
+	background-image : url('../../images/visualnovel/hbar-text.png');
+	background-size : contain;
+	background-repeat : no-repeat;
+	background-position : 5px 0px;
+}
+button.hbar-btn-1 { 
+	background-image : url('../../images/visualnovel/hbar-image.png');
+	background-size : contain;
+	background-repeat : no-repeat;
+	background-position : 5px 0px;
+}
+.visualnovel-forkbox { 
+	width : 70%;
+	height : 15em;
+	top : 20%;
+	left : 12.5%;
+}
+ul.vertical-bar { 
+	list-style : none;
+	background-color : rgb(252,136,72);
+}
+li.vertical-bar { 
+}
+button.vertical-bar-btn { 
+	border : 3px solid rgb(175, 58, 0);
+	border-radius : 3px;
+	width : 100%;
+	height : 3em;
+	text-align : center;
+	font-size : 1.2em;
+	text-decoration : underline;
+}
+
+.static-input-container { 
+	border : 3px solid rgb(175, 58, 0);
+	border-radius : 5px;
+	width : 70%;
+	height  : 3em;
+	left : 12.5%;
+	top : 17%;
+} 
+input.static-input-control { 
+	width : 90%;
+	height : 100%;
+	font-size : 1.5em;
+}
+input.static-input-button { 
+	width : 10%;
+	height : 100%;
+	font-size : 1.5em;
+	text-transform: capitalize;
+}
+.visualnovel-icon-stockpile { 
+	top : 60%;
+	left : 0.5%;
+	width : 60%;
+	height : 35%;
+	-moz-border-image:url("../../images/visualnovel/../../images/visualnovel/border.png") 30 30 stretch; /* Firefox */
+	-webkit-border-image:url("../../images/visualnovel/../../images/visualnovel/border.png") 30 30 stretch; /* Safari */
+	-o-border-image:url("../../images/visualnovel/../../images/visualnovel/border.png") 30 30 stretch; /* Opera */
+	border-image:url("../../images/visualnovel/../../images/visualnovel/border.png") 30 30 stretch;
+	padding: 10px 15px;
+	border-width : 10px;
+}
+.iconscontrol-ui { 
+	width : 75px;
+	height : 75px;
+	border : 2px solid orange;
+	border-radius : 10px;
+	right : 30%;
+	text-align : center;
+	vertical-align : middle;
+	font-size : 1.5em;
+}
+.iconscontrol-pagename { 
+	font-size : 2.5em;
+	top : 90%;
+
+}
+.iconscontrol-nextbtn { 
+	top : 60%;
+	text-decoration : underline;
+}
+.iconscontrol-prevbtn { 
+	top : 70%;
+	font-size : 1em;
+	text-decoration : underline;
+}
+.iconscontrol-icon-ul { 
+	width : 100%;
+	height : 50%;
+	list-style : none;
+	margin-left : -5.5%;
+	margin-top : -1%;
+}
+.li-iconscontrol-icon { 
+	display : inline;
+}
+.btn-iconscontrol-icon { 
+	width : 18%;
+	height : 85%;
+}
+.iconscontrol-icon-0 { 
+
+}
+.haxetooltip { 
+	padding:10px 15px;
+	border-width:10px;
+	-moz-border-image:url("../../images/visualnovel/border.png") 30 30 round; /* Firefox */
+	-webkit-border-image:url("../../images/visualnovel/border.png") 30 30 round; /* Safari */
+	-o-border-image:url("../../images/visualnovel/border.png") 30 30 round; /* Opera */
+	border-image:url("../../images/visualnovel/border.png") 30 30 round;
+	background-color : rgb(251, 250, 252);
+	z-index : 9999;
+}

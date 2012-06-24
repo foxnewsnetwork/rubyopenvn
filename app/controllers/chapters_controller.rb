@@ -75,7 +75,7 @@ class ChaptersController < ApplicationController
         flash[:success] = "New chapter creation successful"
         respond_to do |format|
           format.js 
-          format.html { redirect_to edit_story_chapter_path(@story, @chapter) }
+          format.html { redirect_to edit_story_chapter_path(@story, @chapter) + "?usertab=chapters" }
         end # respond_to
       else
         flash[:notice] = "Chapter forking not successful because forking has not been implemeneted yet. Sorry."
@@ -101,7 +101,7 @@ class ChaptersController < ApplicationController
         @chapter = Chapter.find_by_id( params[:id] )
         @story = @chapter.story
         # Batch updates
-        if params[:batch] == true
+        if params[:batch] == "true" || params[:batch] == true || !params[:scenes].nil?
         	# Because I don't want to pull out N scenes for each one a user might
         	# have altered before doing batch updating, I will trust in my scrpt to
         	# do client-side validations. This, of course, introduces a security
@@ -113,13 +113,18 @@ class ChaptersController < ApplicationController
         	# this issue.
         	# 
         	# TL;DR : exploit here, not gonna fix until someone exploits it
-        	scenes = params[:scenes].map { |scene| scene if scene[:owner_id] == current_user.id }.compact
+        	# scenes = params[:scenes].map { |key, scene| scene if scene[:owner_id] == current_user.id }.compact
+        	# Not using the above line because of an issue with visualnovel.js not correctly serializing owner_id
+        	scenes = params[:scenes].map { |key, scene| scene }
 					layers = []
 					scenes.each do |scene|
-						scene[:layers].each do |layer|
-						  layers << layer
-						end # layers.each
+						unless scene[:layers].nil? || scene[:layers].empty?
+							scene[:layers].each do |layer|
+								layers << layer
+							end # layers.each
+						end # unless no layers
 					end # scenes.each
+			 		logger.debug scenes
 					Scene.batch_import( scenes )
 					Layer.batch_import( layers )
 					respond_to do |format|

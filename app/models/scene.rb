@@ -28,6 +28,7 @@ class Scene < ActiveRecord::Base
   end # fork
     
   def self.batch_import( scenes )
+
     # Step 1 : Declare field names
     names = [ :id, :chapter_id, :parent_id, :owner_id, :fork_text, :fork_number, :text ]
     
